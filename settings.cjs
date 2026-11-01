@@ -1,6 +1,7 @@
 'use strict';
 
 const {character,names,normalizeProfiles}=require('./characters.cjs');
+const {locale:normalizeLocale,conversation:normalizeConversation}=require('./i18n.js');
 const {normalizePrivacyConsents}=require('./privacy-consent.cjs');
 const MODES = Object.freeze(['active', 'quiet', 'sleep']);
 const CORNERS = Object.freeze(['bottom-right', 'bottom-left', 'top-right', 'top-left', 'free']);
@@ -14,7 +15,7 @@ const WAKE_SENSITIVITIES = Object.freeze(['sensitive','normal','strict']);
 const BRONCO_VOICE_EFFECTS=Object.freeze(['off','rough','hard','extreme']);
 const JEFFREY_VOICE_EFFECTS=Object.freeze(['off','light','tin','robot']);
 const DEFAULT_PRICING=Object.freeze({version:'2026-10-24',currency:'EUR',openai:Object.freeze({textInput:0.60,textOutput:2.40,audioInput:10,audioOutput:20,webSearchPer1000:10}),gemini:Object.freeze({textInput:0.75,textOutput:4.50,audioInput:3,audioOutput:12,webSearchPer1000:14}),local:Object.freeze({textInput:0,textOutput:0,audioInput:0,audioOutput:0,webSearchPer1000:0})});
-const DEFAULTS = Object.freeze({mouseGridOpacity:100,mouseGridMaxDepth:4,mouseSpeed:900,privacyConsents:Object.freeze({version:1,screen:Object.freeze({}),text:Object.freeze({})}),character:'jeffrey',mode:'active', comments:true, corner:'bottom-right', position:null, size:100, intensity:35, duration:1500, aiProvider:'openai', pricing:DEFAULT_PRICING, localBaseUrl:'http://127.0.0.1:11434/v1', localModel:'', geminiModel:'gemini-3.8-live', autoPaidFallback:false, monthlyBudgetEur:0, blockPaidAtBudget:false, speakReplies:true, readComments:false, wakeEnabled:false, wakeSensitivity:'sensitive', liveVoice:'shimmer', voiceStyle:'comic', webEnabled:false, browserEnabled:true, memoryEnabled:false, pcToolsEnabled:true, pcAlertsEnabled:false, commentVoice:'off', commentFrequency:'normal', broncoVoiceEffect:'hard', jeffreyVoiceEffect:'tin'});
+const DEFAULTS = Object.freeze({uiLocale:'de-DE',conversationLanguage:'auto',mouseGridOpacity:100,mouseGridMaxDepth:4,mouseSpeed:900,privacyConsents:Object.freeze({version:1,screen:Object.freeze({}),text:Object.freeze({})}),character:'jeffrey',mode:'active', comments:true, corner:'bottom-right', position:null, size:100, intensity:35, duration:1500, aiProvider:'openai', pricing:DEFAULT_PRICING, localBaseUrl:'http://127.0.0.1:11434/v1', localModel:'', geminiModel:'gemini-3.8-live', autoPaidFallback:false, monthlyBudgetEur:0, blockPaidAtBudget:false, speakReplies:true, readComments:false, wakeEnabled:false, wakeSensitivity:'sensitive', liveVoice:'shimmer', voiceStyle:'comic', webEnabled:false, browserEnabled:true, memoryEnabled:false, pcToolsEnabled:true, pcAlertsEnabled:false, commentVoice:'off', commentFrequency:'normal', broncoVoiceEffect:'hard', jeffreyVoiceEffect:'tin'});
 
 function safeModel(value, fallback='') {
   return typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9._:/-]{0,119}$/.test(value) ? value : fallback;
@@ -55,6 +56,7 @@ function normalizeSettings(input = {}) {
   }
   return {
     character:selectedCharacter,characterProfiles,
+    uiLocale:normalizeLocale(v.uiLocale),conversationLanguage:normalizeConversation(v.conversationLanguage),
     mouseGridOpacity:asNumber(v.mouseGridOpacity,100,0,100),
     mouseGridMaxDepth:Math.floor(asNumber(v.mouseGridMaxDepth,4,1,8)),
     mouseSpeed:Math.floor(asNumber(v.mouseSpeed,900,200,3000)),

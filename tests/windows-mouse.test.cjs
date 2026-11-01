@@ -8,3 +8,10 @@ test('Laufende Bewegung wird mit neuer Sequenz ersetzt und synchron per STOP abg
 test('Keine ungeprüften, nicht endlichen oder monitorfremden Ziele werden gesendet',()=>{const f=setup();assert.throws(()=>f.service.move({x:30,y:20},bounds,900));assert.throws(()=>f.service.move({x:NaN,y:20},bounds,900));});
 
 test('Verspätete Zielmeldungen älterer Bewegungen oder nach Stopp werden verworfen',()=>{const f=setup();f.service.start();f.child.stdout.emit('data',Buffer.from('READY\n'));f.service.move({x:-50,y:50},bounds,900);f.service.move({x:-20,y:20},bounds,900);f.child.stdout.emit('data',Buffer.from('DONE|1\n'));assert.equal(f.status.length,0);f.child.stdout.emit('data',Buffer.from('DONE|2\n'));assert.equal(f.status.length,1);f.service.stop();f.child.stdout.emit('data',Buffer.from('DONE|2\n'));assert.equal(f.status.length,1);});
+test('Native Start-/Enddiagnose korreliert nur das aktuelle bestätigte Ziel, ohne Koordinaten auszugeben',()=>{
+ const {EventEmitter}=require('node:events'),c=new EventEmitter(),rows=[];c.stdout=new EventEmitter();c.stderr=new EventEmitter();c.stdin={on(){},write(){}};c.kill=()=>{};
+ const m=create({platform:'win32',spawnImpl:()=>c,onTrace:(code,id)=>rows.push({code,id})});
+ m.move({x:-50,y:50},bounds,900,17);c.stdout.emit('data',Buffer.from('READY\nSTART|1\nDONE|1\n'));
+ assert.deepEqual(rows.map(r=>r.code),['helper-ready','native-write','native-start','native-done']);assert.ok(rows.every(r=>r.id===17));
+ m.stop();c.stdout.emit('data',Buffer.from('START|1\nDONE|1\n'));assert.equal(rows.length,4);
+});

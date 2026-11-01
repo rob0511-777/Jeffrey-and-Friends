@@ -20,11 +20,18 @@ const {createCostTracker}=require('./cost-tracker.cjs');
 const {createLocalProvider}=require('./providers/local-provider.cjs');
 const {createGeminiLiveProvider}=require('./providers/gemini-live-provider.cjs');
 const {createProviderManager}=require('./provider-manager.cjs');
-const {isDesktopRequest,parseDesktopIntent,isStopCommand}=require('./voice-commands.js');
+const {isDesktopRequest:baseDesktopRequest,parseDesktopIntent:baseDesktopIntent,isStopCommand}=require('./voice-commands.js');
+function isDesktopRequest(text,context={}){return baseDesktopRequest(text,{...context,locale:settings?.uiLocale});}
+function parseDesktopIntent(text,context={}){return baseDesktopIntent(text,{...context,locale:settings?.uiLocale});}
 const {createDesktopVision}=require('./desktop-vision.cjs');
 const {createWindowsDesktop}=require('./windows-desktop.cjs');
 const {createSelectedText}=require('./selected-text.cjs');
-const {parseMouseCommand}=require('./mouse-commands.js');
+const {parseMouseCommand:parseMouse}=require('./mouse-commands.js');
+const I18n=require('./i18n.js');
+const mouseDiagnostics=require('./mouse-diagnostics.cjs').createMouseDiagnostics();
+function parseMouseCommand(text){return parseMouse(text,settings?.uiLocale||'de-DE');}
+const ui=(key,params)=>I18n.t(key,settings?.uiLocale,params);
+const uiMessage=text=>I18n.message(text,settings?.uiLocale);
 const {createMouseControl}=require('./mouse-control.cjs');
 const {createWindowsMouse}=require('./windows-mouse.cjs');
 const {createGridListener}=require('./grid-listener.cjs');
@@ -38,7 +45,7 @@ let commentTimer = null, hideTimer = null, saveTimer = null;
 let hitCheckTimer = null, acceptsPointer = false, manuallyMoved = false;
 const ALLOWED = new Set(['show','hide','toggle','gesture','intensity','duration','corner','size','mode','comments','test-comment','open-controls',
   'chat','listen','stop-speaking','ai-provider','speak-replies','read-comments','save-api-key','clear-api-key','realtime-activity','wake-enabled','wake-test','wake-sensitivity','live-voice','voice-style','bronco-voice-effect','jeffrey-voice-effect','web-enabled','browser-enabled',
-  'character','memory-enabled','memory-add','memory-remove','memory-clear','local-base-url','local-model','gemini-model','auto-paid-fallback','monthly-budget','block-paid-budget','pricing','save-provider-key','clear-provider-key','response-usage','pc-tools-enabled','pc-alerts-enabled','pc-status-test','comment-voice','comment-frequency','comment-audio-ended','selection-audio-ended','mouse-start','mouse-stop','mouse-exit','mouse-options','privacy-revoke']);
+  'character','memory-enabled','memory-add','memory-remove','memory-clear','local-base-url','local-model','gemini-model','auto-paid-fallback','monthly-budget','block-paid-budget','pricing','save-provider-key','clear-provider-key','response-usage','pc-tools-enabled','pc-alerts-enabled','pc-status-test','comment-voice','comment-frequency','comment-audio-ended','selection-audio-ended','ui-locale','conversation-language','mouse-start','mouse-stop','mouse-exit','mouse-options','privacy-revoke']);
 let talking = null, listening = null, chatBusy = false, voiceBusy = false, talkSerial = 0;
 let keyStore=null,costTracker=null,localProvider=null,geminiProvider=null,providerManager=null,geminiSession=null,geminiSessionId='',liveSessionId='';
 let rtConnectionInProgress = false, rtLastStart = 0, liveActive = false;
@@ -56,44 +63,71 @@ const lastPcAlert={cpu:0,memory:0};
 let lastChatAt = 0;
 let desktopVision=null,selectedText=null,windowsDesktop=null,lastDesktopRequest=null,activeDesktopRequest=null,desktopEpoch=0,desktopContext={};
 let selectionPlayback=null,selectionAudioId=0;
+const mouseRequests=new Map();let lastMouseSequence=0,lastExecutedMouseSequence=0;
 let mouseControl=null,gridListener=null,gridOverlay=null,windowsMouse=null,privacyConsent=null,lastMouseRequest=null,gridListenTimer=null;
-async function executeMouse(command){
+function mouseView(state=mouseControl.state()){return {...state,uiLocale:settings.uiLocale,inputMode:liveActive&&desktopProvider()==='openai'?'openai-live':'local'};}
+async function executeMouse(command,diagnosticId=0){
   if(!mouseControl){status('Maussteuerung noch nicht bereit.');return;}
-  try{if(command.action==='stop')stopTalking();const message=await mouseControl.dispatch(command);status(message);return message;}
-  catch(error){const message=String(error.message||'Maussteuerung nicht verfügbar.').slice(0,180);status(message);return message;}
+  try{if(command.action==='stop')stopTalking();const message=await mouseControl.dispatch({...command,diagnosticId});status(message);return message;}
+  catch(error){const message=I18n.catalog[error.message]?ui(error.message):uiMessage(String(error.message||'Maussteuerung nicht verfügbar.').slice(0,180));status(message);return message;}
 }
-async function handleMouseLive(event,text){
-  const request=lastMouseRequest,command=typeof text==='string'&&parseMouseCommand(text);
+async function handleMouseLive(event,payload){
+  const text=typeof payload==='string'?payload:payload?.text,id=typeof payload==='object'?payload?.requestId:undefined;
+  const request=id===undefined?lastMouseRequest:mouseRequests.get(id),command=typeof text==='string'&&parseMouseCommand(text);
   if(!controls||event.sender!==controls.webContents||!liveActive||settings.mode==='sleep'||
-    !command||!request||request.used||request.text!==text||Date.now()-request.at>30000)
+    (id!==undefined&&(!Number.isSafeInteger(id)||id<=lastExecutedMouseSequence))||!command||!request||request.used||request.text!==text||Date.now()-request.at>30000){
+    if(controls&&event.sender===controls.webContents)mouseDiagnostics.record('ipc-rejected',{id:id??0});
     throw Error('Kein aktueller ausdrücklicher Maussteuerbefehl.');
-  request.used=true;return executeMouse(command);
+  }
+  mouseDiagnostics.record('ipc-received',{id:id??0});
+  request.used=true;if(id!==undefined){lastExecutedMouseSequence=id;mouseRequests.delete(id);}return executeMouse(command,id??0);
+}
+function activateMouseMode(){
+  clearTimeout(gridListenTimer);gridListener?.stop();
+  if(liveActive&&desktopProvider()==='openai'){syncWakeListener();status(ui('mouse.shared'));return;}
+  stopTalking();if(listening){listening.stop();listening=null;voiceBusy=false;}
+  sendAction('realtime-stop');stopGemini('Koordinatenmodus');syncWakeListener();scheduleGridListener();
+  status(ui(liveActive?'speech.fallback':'mouse.local'));
 }
 function scheduleGridListener(){
   clearTimeout(gridListenTimer);
   if(!mouseControl?.active()||isQuitting)return;
-  // System.Speech and WebRTC must release their previous microphone owner first.
-  gridListenTimer=setTimeout(()=>{if(mouseControl?.active()&&!liveActive&&!voiceBusy&&settings.mode!=='sleep'){gridListener?.reset();gridListener?.start();}},650);
+  gridListenTimer=setTimeout(async()=>{
+    const released=await Promise.all([wakeListener?.stop(),gridListener?.stop()]);
+    if(released.includes(false)){status(ui('speech.busy'));return;}
+    if(mouseControl?.active()&&!liveActive&&!voiceBusy&&settings.mode!=='sleep'){gridListener?.reset();gridListener?.start();}
+  },650);
+}
+async function prepareLiveMicrophone(event){
+  if(!controls||event.sender!==controls.webContents||!liveActive||settings.mode==='sleep')throw Error('Microphone request is not active.');
+  const session=liveSessionId;
+  clearTimeout(gridListenTimer);
+  const released=await Promise.all([gridListener?.stop(),wakeListener?.stop()]);
+  if(released.includes(false)||!liveActive||settings.mode==='sleep'||session!==liveSessionId)throw Error(ui('speech.busy'));
+  return true;
+}
+function gridWakeWords(){
+  try{if(!settings.wakeEnabled||selectedRealtimeProvider()!=='openai')return [];}catch{return [];}
+  const greeting=({'de-DE':'Hallo','en-GB':'Hello','zh-CN':'你好','ja-JP':'こんにちは','es-ES':'Hola','pt-BR':'Olá'})[settings.uiLocale||'de-DE'];return [who(),greeting+' '+who()];
 }
 async function askPrivacyConsent(kind){
   const screenData=kind==='screen';
-  const result=await dialog.showMessageBox(controls,{type:'question',title:who()+' – Übertragung erlauben?',
-    message:screenData?'Bild des ausgewählten Monitors zur KI-Auswertung an OpenAI übertragen?':'Markierten Text zum Vorlesen, Erklären oder Zusammenfassen an OpenAI übertragen?',
-    detail:(screenData?'Bildschirminhalte können vertrauliche Daten enthalten. Pro ausdrücklichem Befehl wird genau eine Aufnahme übertragen.':'Markierte Texte können vertrauliche Daten enthalten. Vorlesen überträgt Text an OpenAI TTS; Erklären und Zusammenfassen an das vorhandene OpenAI-Textmodell.')+
-      ' API-Kosten können entstehen. In der App bleiben Bild, Text und Audio nur vorübergehend im Speicher, ohne Inhaltsprotokolle oder Gedächtnis. Für Verarbeitung und Aufbewahrung bei OpenAI gelten dessen Datenschutzregeln. Einmal erlauben gilt ausschließlich für diese Anfrage. Dauerhaft erlauben gilt auf diesem Gerät auch nach App-Neustart, getrennt für Bildschirm und Text, nur für OpenAI. Widerruf jederzeit in den Einstellungen. Weitere Aktionen erfolgen nur nach ausdrücklichem Befehl; keine Hintergrundüberwachung. Dies ist eine Zustimmung der App, keine Windows-Systemberechtigung.',
-    buttons:['Abbrechen','Einmal erlauben','Auf diesem Gerät dauerhaft erlauben'],defaultId:0,cancelId:0,noLink:true});
+  const result=await dialog.showMessageBox(controls,{type:'question',title:ui('consent.title',{name:who()}),
+    message:ui(screenData?'consent.screen':'consent.text'),detail:ui(screenData?'consent.screenData':'consent.textData')+' '+ui('consent.common'),
+    buttons:[ui('action.cancel'),ui('action.once'),ui('action.device')],defaultId:0,cancelId:0,noLink:true});
   return ['cancel','once','device'][result.response]||'cancel';
 }
 function desktopProvider(){return settings.aiProvider==='auto'?providerManager.activeProvider(liveSessionId)?.id||'auto':settings.aiProvider;}
 async function handleDesktopRequest(question,{isCurrent=()=>true}={}){
-  const context={...desktopContext,now:Date.now()},intent=parseDesktopIntent(question,context);
+  const context={...desktopContext,locale:settings.uiLocale,now:Date.now()},intent=parseDesktopIntent(question,context);
   if(!intent)throw new Error('Kein ausdrücklicher Desktop-Befehl.');
-  if(intent.action==='clarify')return {private:true,message:'Meinst du den markierten Text oder deinen Bildschirm? Bitte sage zum Beispiel „Lies den markierten Text“ oder „Schau auf meinen Bildschirm“. Keine Aufnahme gestartet.'};
+  if(intent.action==='clarify')return {private:true,message:ui('desktop.clarify')};
   if(intent.action==='screen'){
     const reply=await desktopVision.analyze(question,{isCurrent,context});
     if(isCurrent())desktopContext={kind:'screen',at:Date.now()};return reply;
   }
   const reply=await selectedText.execute(intent.action,{isCurrent});
+  if(reply?.private&&!reply.context)reply.message=I18n.message(reply.message,settings.uiLocale,{strict:true});
   if(isCurrent()&&reply.context==='selection')desktopContext={kind:'selection',at:Date.now()};return reply;
 }
 function playSelectionChunk(audio,isCurrent){
@@ -201,7 +235,7 @@ function commentUsage() {let r={day:'',count:0,lastAt:0};try {r=JSON.parse(fs.re
 function countPaidComment(usage) {fs.writeFileSync(usageFile(),JSON.stringify({...usage,count:usage.count+1,lastAt:Date.now()}));}
 function errorNotice(message) {sendAction('voice-error', String(message).slice(0,320));}
 function stopTalking(cancelDesktop=true,clearContext=true) {
-  if(cancelDesktop){mouseControl?.stop();lastMouseRequest=null;desktopEpoch++;lastDesktopRequest=null;if(clearContext)desktopContext={};sendAction('desktop-cancel');}
+  if(cancelDesktop){mouseControl?.stop();lastMouseRequest=null;mouseRequests.clear();desktopEpoch++;lastDesktopRequest=null;if(clearContext)desktopContext={};sendAction('desktop-cancel');}
   selectionPlayback?.finish(false);sendAction('selection-audio-stop');
   talkSerial++;
   if (talking) { talking.stop(); talking = null; }
@@ -237,13 +271,13 @@ async function doChat(text) {
       const epoch=desktopEpoch;
       try{reply=await handleDesktopRequest(prompt,{isCurrent:()=>epoch===desktopEpoch&&settings.mode!=='sleep'});}catch(error){
         if(settings.mode==='sleep'||epoch!==desktopEpoch)return;
-        reply=String(error.message||'Bildanalyse nicht verfügbar.').slice(0,320);errorNotice(reply);
+        reply=I18n.message(String(error.message||'Bildanalyse nicht verfügbar.').slice(0,320),settings.uiLocale,{strict:true});errorNotice(reply);
       }
       if(settings.mode==='sleep'||epoch!==desktopEpoch)return;
       const spoken=reply?.spoken,privateReply=reply?.private;
       reply=privateReply?reply.message:reply;
       if(!privateReply)sendAction('chat-line',{role:'assistant',text:reply});
-      sendAction('comment',{gesture:'talk',text:spoken?'Markierter Text wurde vorgelesen.':reply});
+      sendAction('comment',{gesture:'talk',text:spoken?ui('selection.readDone'):reply});
       if(!spoken&&settings.speakReplies)await say(reply);
       if(settings.mode!=='sleep'){clearHideTimer();hideTimer=setTimeout(hideRobot,10000);}
       return;
@@ -304,15 +338,18 @@ async function doChat(text) {
   } finally {chatBusy=false;sendAction('chat-busy',false);}
 }
 async function doListen() {
-  if(mouseControl?.active()){status('Koordinatenmodus hört bereits lokal zu. Zum Gespräch zuerst Koordinatennetz beenden.');return;}
+  if(mouseControl?.active()){status(ui('speech.gridBusy'));return;}
   if (voiceBusy || chatBusy || liveActive || settings.mode === 'sleep') return;
-  voiceBusy=true;syncWakeListener();status('🎤 Ich höre zu … Sprich jetzt einen kurzen Satz.');
-  listening=listenOnce();
+  voiceBusy=true;syncWakeListener();
   try {
+    const released=await Promise.all([wakeListener?.stop(),gridListener?.stop()]);
+    if(released.includes(false))throw Error(ui('speech.busy'));
+    if(settings.mode==='sleep'||liveActive)return;
+    status(ui('speech.listening'));listening=listenOnce(settings.uiLocale);
     const heard = await listening.promise;
     if (settings.mode === 'sleep') return;
     if (!heard) {status('Nichts verstanden. Du kannst erneut aufs Mikrofon klicken.');return;}
-    status('Erkannt: '+heard.slice(0,180));
+    status(ui('speech.recognised'));
     await doChat(heard);
   } catch(e) {if (settings.mode !== 'sleep') {status('Mikrofon nicht verfügbar.');errorNotice(e.message+' – Alternativ ins Textfeld klicken und Win+H drücken.');}}
   finally {listening=null;voiceBusy=false;syncWakeListener();}
@@ -341,15 +378,15 @@ function sendAction(action, value) {
 function sendState(win) {
   if (win && !win.isDestroyed() && !win.webContents.isLoading())
     {
-      win.webContents.send('robot:state', settings);
+      win.webContents.send('robot:state', {...settings,mouseDiagnostics:mouseDiagnostics.enabled});
       win.webContents.send('robot:action',{action:'wake-status',value:wakeStatus});
-      if(win===controls&&mouseControl)win.webContents.send('robot:action',{action:'mouse-state',value:mouseControl.state()});
+      if(win===controls&&mouseControl)win.webContents.send('robot:action',{action:'mouse-state',value:mouseView()});
       if(win===controls && memoryFile) win.webContents.send('robot:action',{action:'memory-list',value:readNotes(memoryFile)});
     }
 }
 function syncState() {
   for (const win of [controls, overlay]) sendState(win);
-  if (tray) { tray.setToolTip(`${who()} – ${({active:'Aktiv', quiet:'Ruhe', sleep:'Schlafen'})[settings.mode]}${liveActive?' – LIVE-Mikrofon':''}`); updateMenu(); }
+  if (tray) { tray.setToolTip(ui('tray.tooltip',{name:who(),mode:ui('mode.'+settings.mode),live:liveActive?ui('tray.live'):''})); updateMenu(); }
 }
 // Fenster und Figur skalieren gemeinsam; die SVG-Zeichnung bleibt unverändert.
 function overlayDimensions() {
@@ -496,22 +533,23 @@ function setWakeStatus(message) {
 function syncWakeListener() {
   if (!wakeListener) return;
   const wanted=Boolean(settings.wakeEnabled && settings.mode!=='sleep' && !isQuitting && !liveActive && !voiceBusy && !mouseControl?.active());
-  if (wanted) wakeListener.start();
+  if (wanted) {void Promise.resolve(gridListener?.stop()).then(ok=>{if(ok===false){setWakeStatus(ui('speech.busy'));return;}if(!isQuitting&&settings.wakeEnabled&&settings.mode!=='sleep'&&!liveActive&&!voiceBusy&&!mouseControl?.active())wakeListener.start();});}
   else {
     wakeListener.stop();
-    if (!settings.wakeEnabled) setWakeStatus('Codewort ausgeschaltet. Hintergrundmikrofon aus.');
-    else if (settings.mode==='sleep') setWakeStatus('Schlafmodus: Codewort und Mikrofon aus.');
-    else if(mouseControl?.active())setWakeStatus('Koordinatenmodus: lokale Rasterbefehle aktiv; Codewort für Live pausiert.');
-    else if (liveActive) setWakeStatus('Live-Gespräch läuft. Codewort-Erkennung pausiert.');
+    if (!settings.wakeEnabled) setWakeStatus(ui('wake.off'));
+    else if (settings.mode==='sleep') setWakeStatus(ui('wake.sleep'));
+    else if(mouseControl?.active())setWakeStatus(ui('wake.grid'));
+    else if (liveActive) setWakeStatus(ui('wake.live'));
   }
 }
 function onWakeDetected() {
-  if (settings.mode==='sleep' || !settings.wakeEnabled || liveActive || mouseControl?.active()) return;
+  if (settings.mode==='sleep' || !settings.wakeEnabled || liveActive) return;
+  if(mouseControl?.active()){try{if(selectedRealtimeProvider()!=='openai')return;}catch{return;}void gridListener?.stop();}
   if (wakeTestUntil && Date.now() < wakeTestUntil) {
     wakeTestUntil=0; clearTimeout(wakeTestTimer);
     showRobot();
     sendAction('gesture','wave');
-    setWakeStatus('✅ Test bestanden! „'+who()+'“ wurde lokal erkannt. Keine API-Kosten.');
+    setWakeStatus(ui('wake.testPassed',{name:who()}));
     // Den alten Erkenner erst das Mikrofon freigeben lassen.
     setTimeout(()=>{if(!liveActive && settings.wakeEnabled && settings.mode!=='sleep') syncWakeListener();},1100);
     return;
@@ -552,20 +590,21 @@ function setWakeEnabled(enabled) {
     setWakeStatus('Codewort ausgeschaltet.');
   }
   storeSoon();syncState();syncWakeListener();
+  if(mouseControl?.active()&&!liveActive)scheduleGridListener();
 }
 function testWakeWord() {
-  if(!settings.wakeEnabled){setWakeStatus('Erst „Im Hintergrund auf '+who()+' warten“ aktivieren.');return;}
+  if(!settings.wakeEnabled){setWakeStatus(ui('wake.enableFirst',{name:who()}));return;}
   if(settings.mode==='sleep'){setWakeStatus('Im Schlafmodus ist das Mikrofon ausgeschaltet.');return;}
   if(mouseControl?.active()){setWakeStatus('Erst Koordinatennetz beenden, dann Codewort testen.');return;}
   if(liveActive){setWakeStatus('Erst Live-Gespräch beenden, dann Codewort testen.');return;}
   if(!wakeListener || wakeListener.failed){setWakeStatus('Erkenner nicht bereit. Den Codewort-Schalter aus- und wieder einschalten; danach Fehlermeldung prüfen.');return;}
   wakeTestUntil=Date.now()+15000;
   clearTimeout(wakeTestTimer);
-  setWakeStatus('🔎 Kostenloser Test: Sage innerhalb von 15 Sekunden deutlich „'+who()+'“.');
+  setWakeStatus(ui('wake.testPrompt',{name:who()}));
   wakeTestTimer=setTimeout(()=>{
     if(!wakeTestUntil)return;
     wakeTestUntil=0;
-    setWakeStatus('⚠️ „'+who()+'“ nicht erkannt. Mikrofon/Windows-Spracherkenner prüfen, alternativ „Hallo '+who()+'“ versuchen.');
+    setWakeStatus(ui('wake.testFailed',{name:who()}));
   },15000);
 }
 function showControls() {
@@ -594,12 +633,19 @@ function updateMenu() {
     {label:'Einstellungen öffnen', click:showControls},
     {label:'Beenden', click:() => { isQuitting = true; app.quit(); }}
   ];
-  tray.setContextMenu(Menu.buildFromTemplate(template));
+  tray.setContextMenu(Menu.buildFromTemplate(template.map(item=>item.label?{...item,label:uiMessage(item.label)}:item)));
 }
 function handleAction(event, payload) {
   if (!controls || event.sender !== controls.webContents ||
       !payload || !ALLOWED.has(payload.action)) return;
   const {action, value} = payload;
+  if(action==='ui-locale'||action==='conversation-language'){
+    const allowed=action==='ui-locale'?I18n.LOCALES:['auto',...I18n.LOCALES];if(!allowed.includes(value))return;
+    settings=normalizeSettings({...settings,[action==='ui-locale'?'uiLocale':'conversationLanguage']:value});
+    clearTimeout(gridListenTimer);gridListener?.stop();wakeListener?.stop();wakeListener?.reset();
+    stopTalking();if(liveActive){sendAction('realtime-stop');stopGemini('language change');}
+    storeSoon();syncState();controls.setTitle(ui('character.title',{name:who()}));mouseControl?.reconfigure();syncWakeListener();scheduleGridListener();status(ui('language.saved'));return;
+  }
   if(action==='mouse-stop'){void executeMouse({action:'stop'});return;}
   if(action==='mouse-start'){void executeMouse({action:'show',target:{kind:'auto'}});return;}
   if(action==='mouse-exit'){mouseControl?.exit();return;}
@@ -624,10 +670,11 @@ function handleAction(event, payload) {
     const kind = value.kind;
     if (kind === 'opened') {
       stopTalking();
-      if (settings.mode === 'sleep'||mouseControl?.active()) {sendAction('realtime-stop');scheduleGridListener();return;}
+      if (settings.mode === 'sleep') {sendAction('realtime-stop');return;}
+      clearTimeout(gridListenTimer);gridListener?.stop();
       if(!liveSessionId)liveSessionId='live-'+Date.now();
-      liveActive=true;webCalls=0;lastWebCall=0;browserCalls=0;lastBrowserCall=0;appLaunches=0;pcStatusCalls=0;lastAppRequest=null;lastSpokenAt=0;lastUserTranscript="";lastDesktopRequest=null;
-      syncWakeListener();updateMenu();
+      liveActive=true;lastMouseSequence=0;lastExecutedMouseSequence=0;mouseRequests.clear();webCalls=0;lastWebCall=0;browserCalls=0;lastBrowserCall=0;appLaunches=0;pcStatusCalls=0;lastAppRequest=null;lastSpokenAt=0;lastUserTranscript="";lastDesktopRequest=null;
+      syncWakeListener();updateMenu();if(mouseControl?.active())sendAction('mouse-state',mouseView());
       clearHideTimer();autoShowing=true;robotVisible=true;
       sendAction('show');updateMousePassThrough();
     } else if (kind === 'closed') {
@@ -636,7 +683,7 @@ function handleAction(event, payload) {
       if (tray) updateMenu();
       sendAction('speaking',false);
       if (autoShowing && robotVisible) hideRobot();
-      syncWakeListener();
+      syncWakeListener();if(mouseControl?.active())sendAction('mouse-state',mouseView());
     } else if (kind === 'dismiss') {
       hideRobot();
     } else if (settings.mode !== 'sleep') {
@@ -645,7 +692,13 @@ function handleAction(event, payload) {
         if (!phrase) return;
         if(kind==='user'){
           const mouseCommand=parseMouseCommand(phrase);
-          if(mouseCommand){lastMouseRequest={text:phrase,at:Date.now(),used:false};lastDesktopRequest=null;lastAppRequest=null;return;}
+          if(mouseCommand){
+            lastMouseRequest={text:phrase,at:Date.now(),used:false};
+            const id=value.mouseRequestId;if(Number.isSafeInteger(id)&&id>lastMouseSequence){
+              lastMouseSequence=id;mouseRequests.set(id,lastMouseRequest);if(mouseRequests.size>64)mouseRequests.delete(mouseRequests.keys().next().value);
+            }
+            lastDesktopRequest=null;lastAppRequest=null;return;
+          }
           lastMouseRequest=null;
           if(isStopCommand(phrase))stopTalking();
           else if(activeDesktopRequest)return;
@@ -692,8 +745,8 @@ function handleAction(event, payload) {
     stopTalking();messages=[];hideRobot();
     settings=switchCharacter(settings,value);
     storeSoon();syncState();syncWakeListener();
-    controls.setTitle(who()+' – Einstellungen');
-    status('Aktiv: '+who()+'. Stimme und Persönlichkeit gelten ab dem nächsten Gespräch.');
+    controls.setTitle(ui('character.title',{name:who()}));
+    status(ui('character.changed',{name:who()}));
     scheduleNextComment();
   }
   else if (action === 'show') showRobot();
@@ -705,12 +758,12 @@ function handleAction(event, payload) {
   else if (action === 'test-comment') spontaneousComment();
   else if (action === 'comment-voice' && COMMENT_VOICES.includes(value)) {settings.commentVoice=value;storeSoon();syncState();}
   else if (action === 'comment-frequency' && COMMENT_FREQUENCIES.includes(value)) {settings.commentFrequency=value;storeSoon();syncState();scheduleNextComment();}
-  else if (action === 'memory-enabled' && typeof value==='boolean') {settings.memoryEnabled=value;storeSoon();syncState();status('Gedächtnis '+(value?'aktiviert':'deaktiviert')+' – gilt ab nächstem Live-Gespräch.');}
+  else if (action === 'memory-enabled' && typeof value==='boolean') {settings.memoryEnabled=value;storeSoon();syncState();status(ui('settings.changed',{feature:ui('feature.memory'),state:ui(value?'state.on':'state.off')}));}
   else if (action === 'memory-add') {try{addNote(memoryFile,value);sendMemory();status('Merksatz lokal gespeichert. Gilt für das nächste KI-Gespräch.');}catch(e){errorNotice(e.message);}}
   else if (action === 'memory-remove') {try{removeNote(memoryFile,value);sendMemory();status('Merksatz gelöscht.');}catch(e){errorNotice(e.message);}}
   else if (action === 'memory-clear') {clearNotes(memoryFile);sendMemory();status('Alle Merksätze gelöscht.');}
-  else if(action==='pc-tools-enabled' && typeof value==='boolean'){settings.pcToolsEnabled=value;storeSoon();syncState();status('PC-Assistent '+(value?'aktiviert':'deaktiviert')+' – gilt ab dem nächsten Live-Gespräch.');}
-  else if(action==='pc-alerts-enabled' && typeof value==='boolean'){settings.pcAlertsEnabled=value;pcHighCount=0;storeSoon();syncState();status('PC-Warnungen '+(value?'eingeschaltet':'ausgeschaltet')+'.');}
+  else if(action==='pc-tools-enabled' && typeof value==='boolean'){settings.pcToolsEnabled=value;storeSoon();syncState();status(ui('settings.changed',{feature:ui('feature.pc'),state:ui(value?'state.on':'state.off')}));}
+  else if(action==='pc-alerts-enabled' && typeof value==='boolean'){settings.pcAlertsEnabled=value;pcHighCount=0;storeSoon();syncState();status(ui('settings.changed',{feature:ui('feature.alerts'),state:ui(value?'state.on':'state.off')}));}
   else if(action==='pc-status-test'){
     if(!settings.pcToolsEnabled){status('PC-Funktionen sind ausgeschaltet.');return;}
     void systemSnapshot().then(s=>sendAction('pc-status-result',formatStatus(s))).catch(e=>errorNotice('PC-Status: '+e.message));
@@ -746,15 +799,15 @@ function handleAction(event, payload) {
   } else if (action === 'live-voice' && LIVE_VOICES.includes(value)) {
     settings.liveVoice=value;settings.characterProfiles[settings.character].voice=value;storeSoon();syncState();status('Neue Live-Stimme gilt ab dem nächsten Gespräch.');
   } else if (action === 'bronco-voice-effect' && BRONCO_VOICE_EFFECTS.includes(value)) {
-    settings.broncoVoiceEffect=value;storeSoon();syncState();status('Bronco-Stimme ab nächstem Gespräch: '+value);
+    settings.broncoVoiceEffect=value;storeSoon();syncState();status(ui('filter.next',{name:'Bronco',value}));
   } else if (action === 'jeffrey-voice-effect' && JEFFREY_VOICE_EFFECTS.includes(value)) {
-    settings.jeffreyVoiceEffect=value;storeSoon();syncState();status('Jeffrey-Computerstimme ab nächstem Gespräch: '+value);
+    settings.jeffreyVoiceEffect=value;storeSoon();syncState();status(ui('filter.next',{name:'Jeffrey',value}));
   } else if (action === 'voice-style' && VOICE_STYLES.includes(value)) {
     settings.voiceStyle=value;settings.characterProfiles[settings.character].style=value;storeSoon();syncState();status('Neuer Sprechstil gilt ab dem nächsten Gespräch.');
   } else if (action === 'browser-enabled' && typeof value === 'boolean') {
-    settings.browserEnabled=value;storeSoon();syncState();status('Webseiten in Chrome öffnen '+(value?'aktiviert':'deaktiviert')+' – gilt ab nächstem Live-Gespräch.');
+    settings.browserEnabled=value;storeSoon();syncState();status(ui('settings.changed',{feature:ui('feature.browser'),state:ui(value?'state.on':'state.off')}));
   } else if (action === 'web-enabled' && typeof value === 'boolean') {
-    settings.webEnabled=value;storeSoon();syncState();status('Websuche '+(value?'aktiviert':'deaktiviert')+' – gilt ab dem nächsten Live-Gespräch.');
+    settings.webEnabled=value;storeSoon();syncState();status(ui('settings.changed',{feature:ui('feature.web'),state:ui(value?'state.on':'state.off')}));
   } else if (action === 'speak-replies' || action === 'read-comments') {
     settings[action === 'speak-replies'?'speakReplies':'readComments']=Boolean(value);
     storeSoon();syncState();
@@ -807,33 +860,33 @@ else {
     overlay.once('ready-to-show', () => { positionOverlay(); overlay.showInactive(); });
     hitCheckTimer = setInterval(updateMousePassThrough, 70);
     controls = makeWindow({width:385, height:825, minWidth:355, minHeight:570,
-      title:who()+' – Einstellungen', backgroundColor:'#142027', show:true}, 'controls');
+      title:ui('character.title',{name:who()}), backgroundColor:'#142027', show:true}, 'controls');
     controls.on('close', event => { if (!isQuitting) { event.preventDefault(); controls.hide(); } });
     windowsDesktop=createWindowsDesktop();windowsDesktop.start();
     privacyConsent=createPrivacyConsent({getSaved:()=>settings.privacyConsents,ask:askPrivacyConsent,
       save:consents=>{const next=normalizeSettings({...settings,privacyConsents:consents});try{fs.writeFileSync(file,JSON.stringify(next,null,2),'utf8');}catch{throw Error('Datenschutzentscheidung konnte nicht gespeichert werden. Bitte das lokale App-Profil prüfen.');}settings=next;syncState();}});
     gridOverlay=createGridOverlay({BrowserWindow,screen});
-    windowsMouse=createWindowsMouse({onStatus:message=>sendAction('mouse-status',message)});
-    gridListener=createGridListener({onCommand:command=>{if(mouseControl?.active()&&settings.mode!=='sleep')void executeMouse(command);},onStatus:message=>{
+    windowsMouse=createWindowsMouse({onTrace:(code,id)=>mouseDiagnostics.record(code,{id}),onStatus:message=>sendAction('mouse-status',message)});
+    gridListener=createGridListener({getLocale:()=>settings.uiLocale,getWakeWords:gridWakeWords,onWake:()=>{if(settings.wakeEnabled&&mouseControl?.active())onWakeDetected();},onCommand:command=>{if(mouseControl?.active()&&settings.mode!=='sleep')void executeMouse(command);},onStatus:(message,info)=>{
       // Loss of local voice recognition also stops motion; the large UI stop remains available.
-      if(!message.startsWith('Lokale Rasterbefehle bereit.'))mouseControl?.stop();sendAction('mouse-status',message);
+      if(info?.kind!=='ready')mouseControl?.stop();sendAction('mouse-status',message);
     }});
-    mouseControl=createMouseControl({getSnapshot:()=>windowsDesktop.snapshot(),
-      getOptions:()=>({opacity:settings.mouseGridOpacity,speed:settings.mouseSpeed,maxDepth:settings.mouseGridMaxDepth}),
+    mouseControl=createMouseControl({onTrace:(code,id)=>mouseDiagnostics.record(code,{id}),getSnapshot:()=>windowsDesktop.snapshot(),
+      getOptions:()=>({locale:settings.uiLocale,opacity:settings.mouseGridOpacity,speed:settings.mouseSpeed,maxDepth:settings.mouseGridMaxDepth}),
       setOpacity:value=>{settings.mouseGridOpacity=value;storeSoon();syncState();},mouse:windowsMouse,isAllowed:()=>settings.mode!=='sleep'&&!isQuitting,
-      onChange:state=>{sendAction('mouse-state',state);gridOverlay.publish(state);},
-      onActivate:()=>{stopTalking();if(listening){listening.stop();listening=null;voiceBusy=false;}sendAction('realtime-stop');stopGemini('Koordinatenmodus');syncWakeListener();scheduleGridListener();},
+      onChange:state=>{const view=mouseView(state);sendAction('mouse-state',view);gridOverlay.publish(view);},
+      onActivate:activateMouseMode,
       onDeactivate:()=>{clearTimeout(gridListenTimer);gridListener.stop();windowsMouse.close();syncWakeListener();}
     });
     desktopVision=createDesktopVision({
-      getSnapshot:()=>windowsDesktop.snapshot(),getProvider:desktopProvider,
+      getSnapshot:()=>windowsDesktop.snapshot(),getProvider:desktopProvider,getLanguage:()=>settings.conversationLanguage,
       getKey:readAPIKey,isAllowed:()=>settings.mode!=='sleep',checkBudget:requirePaidBudget,
       requestConsent:()=>privacyConsent.authorize('screen',desktopProvider()),
-      onStatus:message=>{status(message);sendAction('desktop-status',message);sendAction('comment',{gesture:'think',text:message});},
+      onStatus:message=>{status(message);sendAction('desktop-status',message);sendAction('comment',{gesture:'think',text:uiMessage(message)});},
       onUsage:usage=>{costTracker.record({sessionId:liveSessionId||'desktop-'+Date.now(),...usage});sendProviderStatus();}
     });
     selectedText=createSelectedText({
-      getProvider:desktopProvider,getKey:readAPIKey,isAllowed:()=>settings.mode!=='sleep',checkBudget:requirePaidBudget,
+      getLanguage:()=>settings.conversationLanguage,getProvider:desktopProvider,getKey:readAPIKey,isAllowed:()=>settings.mode!=='sleep',checkBudget:requirePaidBudget,
       readSelection:()=>windowsDesktop.readSelection(),readAloud:readSelectedAloud,
       localReply:async({instruction,input})=>{
         const result=await localProvider.reply({baseUrl:settings.localBaseUrl,model:settings.localModel,instruction,input,history:[]});
@@ -855,7 +908,9 @@ else {
       wc === controls.webContents && permission === 'media' && settings.mode !== 'sleep');
     ipcMain.on('robot:action', handleAction);
     ipcMain.handle('robot:inspect-desktop',analyzeLiveDesktop);
+    ipcMain.handle('robot:prepare-microphone',prepareLiveMicrophone);
     ipcMain.handle('robot:mouse-command',handleMouseLive);
+    ipcMain.on('robot:mouse-trace',(event,payload)=>{if(event.sender===controls?.webContents&&payload&&typeof payload==='object')mouseDiagnostics.record(payload.code,{id:payload.id,at:payload.at});});
     ipcMain.handle('robot:provider-status',event=>{if(event.sender!==controls.webContents)throw new Error('Nicht zugelassene Anfrage.');return providerStatus();});
     ipcMain.handle('robot:local-models',async(event,baseUrl)=>{if(event.sender!==controls.webContents)throw new Error('Nicht zugelassene Anfrage.');return localProvider.listModels(baseUrl);});
     ipcMain.handle('robot:gemini-start',async(event)=>{
@@ -882,7 +937,7 @@ else {
     });
     ipcMain.handle('robot:gemini-stop',(event,sessionId)=>{if(event.sender!==controls.webContents)throw new Error('Nicht zugelassene Anfrage.');if(sessionId===geminiSessionId)stopGemini('Nutzerstopp');return true;});
     ipcMain.handle('robot:realtime-connect', async (event, offerSDP) => {
-      if (event.sender !== controls.webContents || settings.mode === 'sleep' || mouseControl?.active())
+      if (event.sender !== controls.webContents || settings.mode === 'sleep')
         throw new Error('Live-Gespräch nur im aktiven Einstellungsfenster möglich.');
       // Die Stimme darf auch bei verstecktem Einstellungsfenster gestartet werden (Codewort).
       if(selectedRealtimeProvider()!=='openai')throw new Error('OpenAI ist nicht als aktueller Audioanbieter ausgewählt.');
@@ -946,12 +1001,8 @@ else {
         if(now-lastSpokenAt>30000)throw new Error('Kein aktueller Sprachwunsch erkannt. Bitte erneut fragen.');
         const shown=(lastUserTranscript||'Kein vollständiges Transkript verfügbar').slice(0,180);
         const choice=await dialog.showMessageBox({
-          type:'question',title:who()+' – Programmstart freigeben?',
-          message:`Soll ${who()} ${APPS[id].title} öffnen?`,
-          detail:`Die Spracherkennung war nicht eindeutig. Zuletzt verstanden: „${shown}“.
-
-Nur dieses Programm wird geöffnet.`,
-          buttons:['Abbrechen','Einmal öffnen'],defaultId:0,cancelId:0,noLink:true
+          type:'question',title:ui('app.launch.title',{name:who()}),message:ui('app.launch.question',{name:who(),app:uiMessage(APPS[id].title)}),
+          detail:ui('app.launch.detail'),buttons:[ui('action.cancel'),ui('action.openOnce')],defaultId:0,cancelId:0,noLink:true
         });
         if(choice.response!==1)throw new Error('Programmstart nicht freigegeben.');
       }
@@ -987,7 +1038,7 @@ Nur dieses Programm wird geöffnet.`,
     screen.on('display-metrics-changed', positionOverlay);
     screen.on('display-removed', positionOverlay);
     for(const event of ['display-added','display-removed','display-metrics-changed'])screen.on(event,()=>mouseControl?.topologyChanged());
-    wakeListener=new LocalWakeListener(onWakeDetected,setWakeStatus,()=>settings.wakeSensitivity,()=>settings.character);
+    wakeListener=new LocalWakeListener(onWakeDetected,setWakeStatus,()=>settings.wakeSensitivity,()=>settings.character,()=>settings.uiLocale);
     syncWakeListener();
     scheduleNextComment();
     pcMonitor=setInterval(()=>{void checkPcAlerts();},60000);

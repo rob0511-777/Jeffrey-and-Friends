@@ -2,16 +2,19 @@ param(
     [ValidateRange(0.30,0.90)]
     [double]$MinConfidence = 0.42,
     [ValidateSet('Jeffrey','Kelly','Krak','Bronco','James')]
-    [string]$WakeName = 'Jeffrey'
+    [string]$WakeName = 'Jeffrey',
+    [ValidateSet('de-DE','en-GB','zh-CN','ja-JP','es-ES','pt-BR')]
+    [string]$RecognitionCulture='de-DE',
+    [string]$Greeting='Hallo'
 )
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 try {
     Add-Type -AssemblyName System.Speech
     $available = [System.Speech.Recognition.SpeechRecognitionEngine]::InstalledRecognizers()
-    $selected = $available | Where-Object { $_.Culture.Name -eq 'de-DE' } | Select-Object -First 1
+    $selected = $available | Where-Object { $_.Culture.Name -eq $RecognitionCulture } | Select-Object -First 1
     if ($null -eq $selected) {
-        [Console]::Out.WriteLine('ERROR|Kein deutscher Windows-Desktop-Spracherkenner (System.Speech) installiert. Unter Windows Sprache > Deutsch > Sprachfunktionen pruefen.')
+        [Console]::Out.WriteLine('ERROR|speech-language-unavailable|'+$RecognitionCulture)
         exit 2
     }
     $engine = New-Object System.Speech.Recognition.SpeechRecognitionEngine -ArgumentList $selected
@@ -30,6 +33,7 @@ try {
         } else {
             $words = @('Jeffrey','Jeffry','Jeffri','Jeffray','Jeffrei','Dscheffri','Dscheffrey','Tscheffri','Hallo Jeffrey','Hey Jeffrey','Hallo Jeffry','Hey Jeffry','Hallo Roboter','Hey Roboter')
         }
+        $words+=@($Greeting+' '+$WakeName)
         $choices.Add([string[]]$words)
         $builder = New-Object System.Speech.Recognition.GrammarBuilder
         $builder.Culture = $selected.Culture

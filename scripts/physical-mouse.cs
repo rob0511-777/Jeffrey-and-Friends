@@ -11,7 +11,7 @@ public struct MouseBounds { public int X,Y,Width,Height; public bool Contains(Mo
 public sealed class MouseMotionEngine {
  readonly object gate=new object();long generation;
  readonly Func<MousePoint> read;readonly Action<MousePoint> write;readonly Func<MouseBounds,MousePoint,bool> valid;
- public event Action<long> Done;public event Action Failed;
+ public event Action<long> Started;public event Action<long> Done;public event Action Failed;
  public MouseMotionEngine(Func<MousePoint> read,Action<MousePoint> write,Func<MouseBounds,MousePoint,bool> valid){this.read=read;this.write=write;this.valid=valid;}
  public static MousePoint Interpolate(MousePoint from,MousePoint to,double fraction){
   double t=Math.Max(0,Math.Min(1,fraction));double smooth=t*t*(3-2*t);
@@ -25,9 +25,9 @@ public sealed class MouseMotionEngine {
   double duration=Math.Max(80,Math.Min(60000,distance*1000/speed));
   ThreadPool.QueueUserWorkItem(delegate{
    try{
-    Stopwatch clock=Stopwatch.StartNew();
+    Stopwatch clock=Stopwatch.StartNew();bool firstFrame=true;
     while(true){double elapsed=clock.Elapsed.TotalMilliseconds;
-     lock(gate){if(token!=generation)return;if(!valid(bounds,target)){throw new InvalidOperationException();}write(Interpolate(from,target,elapsed/duration));}
+     lock(gate){if(token!=generation)return;if(!valid(bounds,target)){throw new InvalidOperationException();}write(Interpolate(from,target,elapsed/duration));if(firstFrame){firstFrame=false;if(Started!=null)Started(id);}}
      if(elapsed>=duration)break;Thread.Sleep(8);
     }
     lock(gate){if(token!=generation)return;MousePoint arrived=read();if(arrived.X!=target.X||arrived.Y!=target.Y)throw new InvalidOperationException();if(Done!=null)Done(id);}
@@ -55,6 +55,7 @@ public static class PhysicalMouse {
   MouseMotionEngine engine=new MouseMotionEngine(
    delegate{MousePoint p;if(!GetPhysicalCursorPos(out p))throw new InvalidOperationException();return p;},
    delegate(MousePoint p){if(!SetPhysicalCursorPos(p.X,p.Y))throw new InvalidOperationException();},Valid);
+  if(Environment.GetEnvironmentVariable("JEFFREY_MOUSE_DIAGNOSTICS")=="1")engine.Started+=delegate(long id){Emit("START|"+id.ToString(CultureInfo.InvariantCulture));};
   engine.Done+=delegate(long id){Emit("DONE|"+id.ToString(CultureInfo.InvariantCulture));};engine.Failed+=delegate{Emit("ERROR|movement");};
   Emit("READY");
   try{string line;while((line=Console.ReadLine())!=null){

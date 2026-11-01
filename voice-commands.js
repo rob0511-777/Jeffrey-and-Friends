@@ -28,7 +28,9 @@
   }
   // Whole utterances only. Quotes must be rejected before punctuation normalization.
   function parseDesktopIntent(utterance, context={}) {
-    if(typeof utterance!=='string'||utterance.length>300||/["'„“”‚‘’«»`]|[;:]/.test(utterance))return null;
+    if(typeof utterance!=='string'||utterance.length>300||/["'„“”‚‘’«»`「」『』]|[;:]/.test(utterance))return null;
+    const intl=typeof module==='object'&&module.exports?require('./mouse-locales.js'):window.RobotMouseLocales;
+    const translated=intl?.parseDesktop(utterance,context.locale);if(translated)return translated;
     let text=normalize(utterance);
     text=text.replace(/^(?:(?:hey|hallo) )?(?:jeffrey|jeffry|jeffri|jeffray|jeffrei|dscheffri|dscheffrey|roboter|robot|kelly|kelli|kelley|keli|kellie|krak|krack|krakk|krag|crack|crag|kraak|krakks|krark|bronco|bronko|broncho|branko|broncko|james|jaymes|dscheims|dschemes|dschejms) /,'');
     text=text.replace(/^(?:kannst|konntest|wurdest) du /,'').replace(/\b(?:bitte|mal)\b/g,'').replace(/\s+/g,' ').trim();
@@ -52,11 +54,11 @@
     if(/^(?:erklar(?:e)? mir (?:das|das verstandlich|diesen abschnitt|den markierten text)|mir das (?:verstandlich )?erklaren|was bedeutet (?:dieser abschnitt|der markierte text))$/.test(text))return result('explain');
     if(/^(?:fass(?:e)? (?:das|den markierten text) zusammen|gib mir eine kurze zusammenfassung|worum geht es in dem markierten text)$/.test(text))return result('summarize');
     if(/^(?:schau(?:e)?|guck(?:e)?) auf (?:meinen|den) (?:bildschirm|desktop)$/.test(text)||/^(?:schau(?:e)?|guck(?:e)?)(?: (?:dir (?:das|meinen bildschirm|den bildschirm|meinen desktop|den desktop) an|hier))?$/.test(text)||
-      /^(?:was siehst du(?: gerade)?|was steht auf meinem bildschirm|was ist (?:das fur ein fenster|in diesem fenster)|was habe ich hier geoffnet|(?:die fehlermeldung erkennen)|lies mir diese fehlermeldung vor|was bedeutet diese fehlermeldung|erklar(?:e)? mir (?:diese fehlermeldung|was auf meinem bildschirm passiert))$/.test(text))return result('screen');
+      /^(?:was siehst du(?: gerade)?|was steht auf meinem bildschirm|was ist (?:das fur ein fenster|in diesem fenster)|was habe ich hier geoffnet|(?:die fehlermeldung erkennen)|lies mir diese fehlermeldung vor|was bedeutet diese fehlermeldung|erklar(?:e)? mir (?:diese fehlermeldung|was auf meinem bildschirm passiert|was auf (?:diesem|meinem|dem) bildschirm steht))$/.test(text))return result('screen');
     return null;
   }
   function isStopCommand(utterance){
-    if(typeof utterance!=='string'||utterance.length>140||/["'„“”‚‘’«»`]|[;:]/.test(utterance))return false;
+    if(typeof utterance!=='string'||utterance.length>140||/["'„“”‚‘’«»`「」『』]|[;:]/.test(utterance))return false;
     let text=normalize(utterance).replace(/^(?:jeffrey|jeffry|jeffri|bronco|bronko|kelly|kelli|krak|krack|james|dscheims) /,'').replace(/\bbitte\b/g,'').replace(/\s+/g,' ').trim();
     return /^(?:stopp?|stoppen|hor auf|abbrechen|brich ab|vorlesen stoppen)$/.test(text);
   }

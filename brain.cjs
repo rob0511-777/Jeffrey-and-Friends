@@ -1,4 +1,5 @@
 'use strict';
+const {responseLanguage}=require('./i18n.js');
 const {memoryContext}=require('./memory.cjs');
 const {characterPrompt,displayName}=require('./characters.cjs');
 const {createLocalProvider}=require('./providers/local-provider.cjs');
@@ -35,7 +36,7 @@ async function fetchJSON(url, options) {
   } finally { clearTimeout(timer); }
 }
 async function remoteReply(input, history, settings, getKey, notes=[], dependencies={}) {
-  const instruction=characterPrompt(settings.character)+(settings.memoryEnabled?memoryContext(notes):'');
+  const instruction=characterPrompt(settings.character)+responseLanguage(settings.conversationLanguage)+(settings.memoryEnabled?memoryContext(notes):'');
   if (settings.aiProvider === 'offline') return localReply(input,settings.character);
   const recent = history.slice(-6).filter(m => ['user','assistant'].includes(m.role)).map(m => ({role:m.role, content:String(m.content).slice(0,800)}));
   const onUsage=typeof dependencies.onUsage==='function'?dependencies.onUsage:()=>{};

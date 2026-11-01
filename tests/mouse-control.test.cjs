@@ -7,3 +7,17 @@ test('Stopp und Monitoränderung beenden Bewegung ohne automatischen Neustart',a
 test('Stopp während Monitorauswahl verhindert verspätete Rasteraktivierung',async()=>{let done;const f=fixture({getSnapshot:()=>new Promise(resolve=>{done=resolve;})});const pending=f.controller.dispatch({action:'show',target:{kind:'auto'}});f.controller.stop();done(snapshot);await pending;assert.equal(f.controller.active(),false);});
 test('Feldbefehle außerhalb eines aktiven Modus erteilen keine Bewegungserlaubnis',async()=>{const f=fixture();await assert.rejects(f.controller.dispatch({action:'select',cell:'B4'}),/Koordinatennetz/);assert.equal(f.moves.length,0);});
 test('Monitorwechsel während ausstehender Initialisierung verhindert ein Raster mit veralteten Grenzen',async()=>{let done;const f=fixture({getSnapshot:()=>new Promise(resolve=>{done=resolve;})});const pending=f.controller.dispatch({action:'show',target:{kind:'auto'}});f.controller.topologyChanged();done(snapshot);await pending;assert.equal(f.controller.active(),false);assert.equal(f.moves.length,0);});
+test('Schnelle Feldwahl wartet geordnet auf die laufende Rasterinitialisierung',async()=>{
+ let done;const f=fixture({getSnapshot:()=>new Promise(r=>done=r)});
+ const start=f.controller.dispatch({action:'show',target:{kind:'auto'}});
+ const select=f.controller.dispatch({action:'select',cell:'D4'});
+ const results=Promise.allSettled([start,select]);done(snapshot);
+ assert.ok((await results).every(r=>r.status==='fulfilled'));assert.equal(f.moves.length,1);assert.equal(f.controller.state().selected,'D4');
+});
+test('Stopp verwirft auch Feldbefehle hinter einer noch laufenden Rasterinitialisierung',async()=>{
+ let done;const f=fixture({getSnapshot:()=>new Promise(r=>done=r)});
+ const jobs=[f.controller.dispatch({action:'show',target:{kind:'auto'}}),f.controller.dispatch({action:'select',cell:'B3'})];
+ const results=Promise.allSettled(jobs);await f.controller.dispatch({action:'stop'});done(snapshot);await results;
+ assert.equal(f.moves.length,0);assert.equal(f.controller.active(),false);
+});
+test('Diagnose meldet invalidierten Rasterstart als Abbruch und nicht als Erfolg',async()=>{let done;const rows=[],f=fixture({getSnapshot:()=>new Promise(r=>done=r),onTrace:(code,id)=>rows.push({code,id})});const pending=f.controller.dispatch({action:'show',target:{kind:'auto'},diagnosticId:9});f.controller.stop();done(snapshot);await pending;assert.ok(rows.some(r=>r.id===9&&r.code==='command-cancelled'));assert.ok(!rows.some(r=>r.id===9&&r.code==='command-ok'));});

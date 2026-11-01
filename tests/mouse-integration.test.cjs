@@ -21,7 +21,7 @@ test('Live-Renderer fängt Mausbefehle ab, bricht automatische Antworten ab und 
  const event={type:'conversation.item.input_audio_transcription.completed',item_id:'cell',transcript:'  Berta 3  '};api.handleEvent(event,c);api.handleEvent({...event,type:'conversation.item.input_audio_transcription.done'},c);
  await new Promise(r=>setImmediate(r));assert.equal(nativeCalls.filter(x=>x.mouse).length,1);assert.equal(nativeCalls.find(x=>x.mouse).mouse,'Berta 3');assert.ok(wire.some(x=>x.type==='response.cancel'));assert.equal(wire.some(x=>x.type==='response.create'),false);assert.equal(c.toolsInFlight,0);
  api.handleEvent({type:'response.created',response:{id:'late'}},c);assert.ok(wire.some(x=>x.response_id==='late'&&x.type==='response.cancel'));
- onAction({action:'mouse-state',value:{active:true}});assert.ok(c.stopped);assert.ok(nativeCalls.some(x=>x.value?.kind==='closed'));
+ onAction({action:'mouse-state',value:{active:true}});assert.notEqual(c.stopped,true);assert.equal(nativeCalls.some(x=>x.value?.kind==='closed'),false);
 });
 
 test('Schlafmodus verlässt Koordinatenmodus; Spracherkennungsereignis stoppt ihn nicht',()=>{
@@ -30,3 +30,13 @@ test('Schlafmodus verlässt Koordinatenmodus; Spracherkennungsereignis stoppt ih
 });
 
 test('Charakterwechsel beendet Mausmodus und laufende Bewegung',()=>{const h=harness();h.api.handleAction({sender:h.sender},{action:'character',value:'bronco'});assert.ok(h.stopped>0);});
+test('Zwei bestätigte Live-Befehle behalten getrennte einmalige Freigaben trotz neuer Sprachereignisse',async()=>{
+ const h=harness(),event={sender:h.sender};
+ for(const [requestId,text]of [[1,'B3'],[2,'D4']])h.api.handleAction(event,{action:'realtime-activity',value:{kind:'user',text,mouseRequestId:requestId}});
+ h.api.handleAction(event,{action:'realtime-activity',value:{kind:'user-speaking'}});
+ await h.api.handleMouseLive(event,{text:'B3',requestId:1});await h.api.handleMouseLive(event,{text:'D4',requestId:2});
+ assert.deepEqual(h.commands.map(c=>c.cell),['B3','D4']);await assert.rejects(h.api.handleMouseLive(event,{text:'B3',requestId:1}));
+});
+
+test('Verbrauchte moderne Kennung lässt sich nicht erneut freigeben; Stopp verwirft ausstehende Kennungen',async()=>{const h=harness(),e={sender:h.sender},send=(id,text)=>h.api.handleAction(e,{action:'realtime-activity',value:{kind:'user',text,mouseRequestId:id}});send(1,'B3');await h.api.handleMouseLive(e,{text:'B3',requestId:1});send(1,'B3');await assert.rejects(h.api.handleMouseLive(e,{text:'B3',requestId:1}));send(2,'D4');h.api.handleAction(e,{action:'stop-speaking'});await assert.rejects(h.api.handleMouseLive(e,{text:'D4',requestId:2}));assert.equal(h.commands.length,1);});
+test('Verspäteter älterer IPC-Aufruf nach bereits übergebenem neuerem Befehl wird nicht ausgeführt',async()=>{const h=harness(),e={sender:h.sender};for(const [requestId,text]of [[1,'B3'],[2,'D4']])h.api.handleAction(e,{action:'realtime-activity',value:{kind:'user',text,mouseRequestId:requestId}});await h.api.handleMouseLive(e,{text:'D4',requestId:2});await assert.rejects(h.api.handleMouseLive(e,{text:'B3',requestId:1}));assert.deepEqual(h.commands.map(c=>c.cell),['D4']);});

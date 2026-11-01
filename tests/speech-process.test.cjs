@@ -1,0 +1,5 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),{EventEmitter}=require('node:events');let stop;try{stop=require('../speech-process.cjs').stopSpeechProcess;}catch(e){if(e.code!=='MODULE_NOT_FOUND')throw e;}
+test('Mikrofonfreigabe wartet auf tatsächliches Prozessende, nicht nur kill-Aufruf',async()=>{assert.equal(typeof stop,'function');const c=new EventEmitter();let killed=false,ready=false;c.kill=()=>{killed=true;};const p=stop(c).then(ok=>{ready=ok;});await Promise.resolve();assert.equal(killed,true);assert.equal(ready,false);c.emit('close');await p;assert.equal(ready,true);});
+test('Nicht bestätigte Freigabe erlaubt keinen zweiten Mikrofonzugriff',async()=>{assert.equal(typeof stop,'function');const c=new EventEmitter();c.kill=()=>{};const hold=setTimeout(()=>{},100);try{assert.equal(await stop(c,{timeoutMs:5}),false);}finally{clearTimeout(hold);}});
+test('Kill-Fehler eines laufenden Prozesses ist keine bestätigte Mikrofonfreigabe',async()=>{const c=new EventEmitter();c.pid=123;c.kill=()=>{c.emit('error',Error('kill failed'));};assert.equal(await stop(c),false);});
