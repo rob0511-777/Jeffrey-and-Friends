@@ -28,6 +28,7 @@ const {createWindowsDesktop}=require('./windows-desktop.cjs');
 const {createSelectedText}=require('./selected-text.cjs');
 const {parseMouseCommand:parseMouse}=require('./mouse-commands.js');
 const I18n=require('./i18n.js');
+const mouseDiagnostics=require('./mouse-diagnostics.cjs').createMouseDiagnostics();
 function parseMouseCommand(text){return parseMouse(text,settings?.uiLocale||'de-DE');}
 const ui=(key,params)=>I18n.t(key,settings?.uiLocale,params);
 const uiMessage=text=>I18n.message(text,settings?.uiLocale);
@@ -62,19 +63,24 @@ const lastPcAlert={cpu:0,memory:0};
 let lastChatAt = 0;
 let desktopVision=null,selectedText=null,windowsDesktop=null,lastDesktopRequest=null,activeDesktopRequest=null,desktopEpoch=0,desktopContext={};
 let selectionPlayback=null,selectionAudioId=0;
+const mouseRequests=new Map();let lastMouseSequence=0,lastExecutedMouseSequence=0;
 let mouseControl=null,gridListener=null,gridOverlay=null,windowsMouse=null,privacyConsent=null,lastMouseRequest=null,gridListenTimer=null;
 function mouseView(state=mouseControl.state()){return {...state,uiLocale:settings.uiLocale,inputMode:liveActive&&desktopProvider()==='openai'?'openai-live':'local'};}
-async function executeMouse(command){
+async function executeMouse(command,diagnosticId=0){
   if(!mouseControl){status('Maussteuerung noch nicht bereit.');return;}
-  try{if(command.action==='stop')stopTalking();const message=await mouseControl.dispatch(command);status(message);return message;}
-  catch(error){const message=String(error.message||'Maussteuerung nicht verfügbar.').slice(0,180);status(message);return message;}
+  try{if(command.action==='stop')stopTalking();const message=await mouseControl.dispatch({...command,diagnosticId});status(message);return message;}
+  catch(error){const message=I18n.catalog[error.message]?ui(error.message):uiMessage(String(error.message||'Maussteuerung nicht verfügbar.').slice(0,180));status(message);return message;}
 }
-async function handleMouseLive(event,text){
-  const request=lastMouseRequest,command=typeof text==='string'&&parseMouseCommand(text);
+async function handleMouseLive(event,payload){
+  const text=typeof payload==='string'?payload:payload?.text,id=typeof payload==='object'?payload?.requestId:undefined;
+  const request=id===undefined?lastMouseRequest:mouseRequests.get(id),command=typeof text==='string'&&parseMouseCommand(text);
   if(!controls||event.sender!==controls.webContents||!liveActive||settings.mode==='sleep'||
-    !command||!request||request.used||request.text!==text||Date.now()-request.at>30000)
+    (id!==undefined&&(!Number.isSafeInteger(id)||id<=lastExecutedMouseSequence))||!command||!request||request.used||request.text!==text||Date.now()-request.at>30000){
+    if(controls&&event.sender===controls.webContents)mouseDiagnostics.record('ipc-rejected',{id:id??0});
     throw Error('Kein aktueller ausdrücklicher Maussteuerbefehl.');
-  request.used=true;return executeMouse(command);
+  }
+  mouseDiagnostics.record('ipc-received',{id:id??0});
+  request.used=true;if(id!==undefined){lastExecutedMouseSequence=id;mouseRequests.delete(id);}return executeMouse(command,id??0);
 }
 function activateMouseMode(){
   clearTimeout(gridListenTimer);gridListener?.stop();
@@ -229,7 +235,7 @@ function commentUsage() {let r={day:'',count:0,lastAt:0};try {r=JSON.parse(fs.re
 function countPaidComment(usage) {fs.writeFileSync(usageFile(),JSON.stringify({...usage,count:usage.count+1,lastAt:Date.now()}));}
 function errorNotice(message) {sendAction('voice-error', String(message).slice(0,320));}
 function stopTalking(cancelDesktop=true,clearContext=true) {
-  if(cancelDesktop){mouseControl?.stop();lastMouseRequest=null;desktopEpoch++;lastDesktopRequest=null;if(clearContext)desktopContext={};sendAction('desktop-cancel');}
+  if(cancelDesktop){mouseControl?.stop();lastMouseRequest=null;mouseRequests.clear();desktopEpoch++;lastDesktopRequest=null;if(clearContext)desktopContext={};sendAction('desktop-cancel');}
   selectionPlayback?.finish(false);sendAction('selection-audio-stop');
   talkSerial++;
   if (talking) { talking.stop(); talking = null; }
@@ -372,7 +378,7 @@ function sendAction(action, value) {
 function sendState(win) {
   if (win && !win.isDestroyed() && !win.webContents.isLoading())
     {
-      win.webContents.send('robot:state', settings);
+      win.webContents.send('robot:state', {...settings,mouseDiagnostics:mouseDiagnostics.enabled});
       win.webContents.send('robot:action',{action:'wake-status',value:wakeStatus});
       if(win===controls&&mouseControl)win.webContents.send('robot:action',{action:'mouse-state',value:mouseView()});
       if(win===controls && memoryFile) win.webContents.send('robot:action',{action:'memory-list',value:readNotes(memoryFile)});
@@ -667,7 +673,7 @@ function handleAction(event, payload) {
       if (settings.mode === 'sleep') {sendAction('realtime-stop');return;}
       clearTimeout(gridListenTimer);gridListener?.stop();
       if(!liveSessionId)liveSessionId='live-'+Date.now();
-      liveActive=true;webCalls=0;lastWebCall=0;browserCalls=0;lastBrowserCall=0;appLaunches=0;pcStatusCalls=0;lastAppRequest=null;lastSpokenAt=0;lastUserTranscript="";lastDesktopRequest=null;
+      liveActive=true;lastMouseSequence=0;lastExecutedMouseSequence=0;mouseRequests.clear();webCalls=0;lastWebCall=0;browserCalls=0;lastBrowserCall=0;appLaunches=0;pcStatusCalls=0;lastAppRequest=null;lastSpokenAt=0;lastUserTranscript="";lastDesktopRequest=null;
       syncWakeListener();updateMenu();if(mouseControl?.active())sendAction('mouse-state',mouseView());
       clearHideTimer();autoShowing=true;robotVisible=true;
       sendAction('show');updateMousePassThrough();
@@ -686,7 +692,13 @@ function handleAction(event, payload) {
         if (!phrase) return;
         if(kind==='user'){
           const mouseCommand=parseMouseCommand(phrase);
-          if(mouseCommand){lastMouseRequest={text:phrase,at:Date.now(),used:false};lastDesktopRequest=null;lastAppRequest=null;return;}
+          if(mouseCommand){
+            lastMouseRequest={text:phrase,at:Date.now(),used:false};
+            const id=value.mouseRequestId;if(Number.isSafeInteger(id)&&id>lastMouseSequence){
+              lastMouseSequence=id;mouseRequests.set(id,lastMouseRequest);if(mouseRequests.size>64)mouseRequests.delete(mouseRequests.keys().next().value);
+            }
+            lastDesktopRequest=null;lastAppRequest=null;return;
+          }
           lastMouseRequest=null;
           if(isStopCommand(phrase))stopTalking();
           else if(activeDesktopRequest)return;
@@ -854,12 +866,12 @@ else {
     privacyConsent=createPrivacyConsent({getSaved:()=>settings.privacyConsents,ask:askPrivacyConsent,
       save:consents=>{const next=normalizeSettings({...settings,privacyConsents:consents});try{fs.writeFileSync(file,JSON.stringify(next,null,2),'utf8');}catch{throw Error('Datenschutzentscheidung konnte nicht gespeichert werden. Bitte das lokale App-Profil prüfen.');}settings=next;syncState();}});
     gridOverlay=createGridOverlay({BrowserWindow,screen});
-    windowsMouse=createWindowsMouse({onStatus:message=>sendAction('mouse-status',message)});
+    windowsMouse=createWindowsMouse({onTrace:(code,id)=>mouseDiagnostics.record(code,{id}),onStatus:message=>sendAction('mouse-status',message)});
     gridListener=createGridListener({getLocale:()=>settings.uiLocale,getWakeWords:gridWakeWords,onWake:()=>{if(settings.wakeEnabled&&mouseControl?.active())onWakeDetected();},onCommand:command=>{if(mouseControl?.active()&&settings.mode!=='sleep')void executeMouse(command);},onStatus:(message,info)=>{
       // Loss of local voice recognition also stops motion; the large UI stop remains available.
       if(info?.kind!=='ready')mouseControl?.stop();sendAction('mouse-status',message);
     }});
-    mouseControl=createMouseControl({getSnapshot:()=>windowsDesktop.snapshot(),
+    mouseControl=createMouseControl({onTrace:(code,id)=>mouseDiagnostics.record(code,{id}),getSnapshot:()=>windowsDesktop.snapshot(),
       getOptions:()=>({locale:settings.uiLocale,opacity:settings.mouseGridOpacity,speed:settings.mouseSpeed,maxDepth:settings.mouseGridMaxDepth}),
       setOpacity:value=>{settings.mouseGridOpacity=value;storeSoon();syncState();},mouse:windowsMouse,isAllowed:()=>settings.mode!=='sleep'&&!isQuitting,
       onChange:state=>{const view=mouseView(state);sendAction('mouse-state',view);gridOverlay.publish(view);},
@@ -898,6 +910,7 @@ else {
     ipcMain.handle('robot:inspect-desktop',analyzeLiveDesktop);
     ipcMain.handle('robot:prepare-microphone',prepareLiveMicrophone);
     ipcMain.handle('robot:mouse-command',handleMouseLive);
+    ipcMain.on('robot:mouse-trace',(event,payload)=>{if(event.sender===controls?.webContents&&payload&&typeof payload==='object')mouseDiagnostics.record(payload.code,{id:payload.id,at:payload.at});});
     ipcMain.handle('robot:provider-status',event=>{if(event.sender!==controls.webContents)throw new Error('Nicht zugelassene Anfrage.');return providerStatus();});
     ipcMain.handle('robot:local-models',async(event,baseUrl)=>{if(event.sender!==controls.webContents)throw new Error('Nicht zugelassene Anfrage.');return localProvider.listModels(baseUrl);});
     ipcMain.handle('robot:gemini-start',async(event)=>{

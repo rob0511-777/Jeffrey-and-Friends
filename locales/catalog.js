@@ -3601,6 +3601,126 @@
    "ja-JP": "ローカルグリッド認識終了。マウス停止ボタンは利用可能。",
    "es-ES": "Reconocimiento local terminado. El botón de parada sigue disponible.",
    "pt-BR": "Reconhecimento local encerrado. O botão de parada continua disponível."
+  },
+  "mouse.cancelled": {
+   "de-DE": "Mausbefehl abgebrochen.",
+   "en-GB": "Mouse command cancelled.",
+   "zh-CN": "鼠标命令已取消。",
+   "ja-JP": "マウスコマンドを中止しました。",
+   "es-ES": "Comando de ratón cancelado.",
+   "pt-BR": "Comando do mouse cancelado."
+  },
+  "mouse.busy": {
+   "de-DE": "Zu viele wartende Mausbefehle. Bitte warten oder Stopp verwenden.",
+   "en-GB": "Too many pending mouse commands. Wait or use Stop.",
+   "zh-CN": "待处理的鼠标命令过多。请等待或停止。",
+   "ja-JP": "待機中のマウスコマンドが多すぎます。待つか停止してください。",
+   "es-ES": "Demasiados comandos pendientes. Espera o usa Detener.",
+   "pt-BR": "Muitos comandos pendentes. Aguarde ou use Parar."
+  },
+  "mouse.quadOnly": {
+   "de-DE": "Viereransicht: Bitte links oben, rechts oben, links unten oder rechts unten wählen. A1–D5 gilt hier nicht.",
+   "en-GB": "Four-cell view: choose top left, top right, bottom left or bottom right. A1–D5 is unavailable here.",
+   "zh-CN": "四格视图：请选择左上、右上、左下或右下。此处不能使用 A1–D5。",
+   "ja-JP": "4分割表示：左上・右上・左下・右下を選択してください。A1–D5は使用できません。",
+   "es-ES": "Vista de cuatro: elige arriba izquierda, arriba derecha, abajo izquierda o abajo derecha. A1–D5 no está disponible.",
+   "pt-BR": "Vista de quatro: escolha superior esquerdo, superior direito, inferior esquerdo ou inferior direito. A1–D5 não está disponível."
+  },
+  "mouse.subdividedQuad": {
+   "de-DE": "Zielbereich in vier Richtungsfelder unterteilt.",
+   "en-GB": "Target divided into four directional cells.",
+   "zh-CN": "目标区域已细分为四个方向格。",
+   "ja-JP": "対象範囲を4つの方向セルに分割しました。",
+   "es-ES": "Área dividida en cuatro campos direccionales.",
+   "pt-BR": "Área dividida em quatro campos direcionais."
+  },
+  "mouse.subdividedMatrix": {
+   "de-DE": "Zielbereich erneut in A1–D5 unterteilt.",
+   "en-GB": "Target divided into A1–D5 again.",
+   "zh-CN": "目标区域再次细分为 A1–D5。",
+   "ja-JP": "対象範囲を再びA1–D5に分割しました。",
+   "es-ES": "Área subdividida de nuevo en A1–D5.",
+   "pt-BR": "Área subdividida novamente em A1–D5."
+  },
+  "mouse.backStep": {
+   "de-DE": "Einen Auswahl- oder Unterteilungsschritt zurück.",
+   "en-GB": "One selection or subdivision step back.",
+   "zh-CN": "已返回一个选择或细分步骤。",
+   "ja-JP": "選択または分割を1段階戻しました。",
+   "es-ES": "Un paso de selección o subdivisión atrás.",
+   "pt-BR": "Um passo de seleção ou subdivisão atrás."
+  },
+  "mouse.helpQuad": {
+   "de-DE": "Ebene {depth} · Links oben / rechts oben / links unten / rechts unten · Stopp · Zurück",
+   "en-GB": "Level {depth} · Top left / top right / bottom left / bottom right · Stop · Back",
+   "zh-CN": "第 {depth} 层 · 左上 / 右上 / 左下 / 右下 · 停止 · 返回",
+   "ja-JP": "深度 {depth} · 左上 / 右上 / 左下 / 右下 · 停止 · 戻る",
+   "es-ES": "Nivel {depth} · Arriba izquierda / derecha / abajo izquierda / derecha · Detener · Atrás",
+   "pt-BR": "Nível {depth} · Superior esquerdo / direito / inferior esquerdo / direito · Parar · Voltar"
+  },
+  "mouse.quad.left-top": {
+   "de-DE": "Links oben",
+   "en-GB": "Top left",
+   "zh-CN": "左上",
+   "ja-JP": "左上",
+   "es-ES": "Arriba izquierda",
+   "pt-BR": "Superior esquerdo"
+  },
+  "mouse.quad.right-top": {
+   "de-DE": "Rechts oben",
+   "en-GB": "Top right",
+   "zh-CN": "右上",
+   "ja-JP": "右上",
+   "es-ES": "Arriba derecha",
+   "pt-BR": "Superior direito"
+  },
+  "mouse.quad.left-bottom": {
+   "de-DE": "Links unten",
+   "en-GB": "Bottom left",
+   "zh-CN": "左下",
+   "ja-JP": "左下",
+   "es-ES": "Abajo izquierda",
+   "pt-BR": "Inferior esquerdo"
+  },
+  "mouse.quad.right-bottom": {
+   "de-DE": "Rechts unten",
+   "en-GB": "Bottom right",
+   "zh-CN": "右下",
+   "ja-JP": "右下",
+   "es-ES": "Abajo derecha",
+   "pt-BR": "Inferior direito"
+  },
+  "mouse.quadShort.left-top": {
+   "de-DE": "LO",
+   "en-GB": "TL",
+   "zh-CN": "左上",
+   "ja-JP": "左上",
+   "es-ES": "AI",
+   "pt-BR": "SE"
+  },
+  "mouse.quadShort.right-top": {
+   "de-DE": "RO",
+   "en-GB": "TR",
+   "zh-CN": "右上",
+   "ja-JP": "右上",
+   "es-ES": "AD",
+   "pt-BR": "SD"
+  },
+  "mouse.quadShort.left-bottom": {
+   "de-DE": "LU",
+   "en-GB": "BL",
+   "zh-CN": "左下",
+   "ja-JP": "左下",
+   "es-ES": "BI",
+   "pt-BR": "IE"
+  },
+  "mouse.quadShort.right-bottom": {
+   "de-DE": "RU",
+   "en-GB": "BR",
+   "zh-CN": "右下",
+   "ja-JP": "右下",
+   "es-ES": "BD",
+   "pt-BR": "ID"
   }
  },
  "sources": {
@@ -4051,6 +4171,21 @@
   "Lokale Raster-Spracherkennung konnte nicht gestartet werden.": "legacy.m097",
   "Lokale Raster-Spracherkennung lieferte ungültige Daten.": "legacy.m098",
   "Lokale Raster-Spracherkennung nicht verfügbar. Deutsche Windows-Sprachfunktionen und Mikrofon prüfen.": "legacy.m099",
-  "Lokale Raster-Spracherkennung beendet. Maus-Stopp im Steuerungsfenster bleibt verfügbar.": "legacy.m100"
+  "Lokale Raster-Spracherkennung beendet. Maus-Stopp im Steuerungsfenster bleibt verfügbar.": "legacy.m100",
+  "Mausbefehl abgebrochen.": "mouse.cancelled",
+  "Zu viele wartende Mausbefehle. Bitte warten oder Stopp verwenden.": "mouse.busy",
+  "Viereransicht: Bitte links oben, rechts oben, links unten oder rechts unten wählen. A1–D5 gilt hier nicht.": "mouse.quadOnly",
+  "Zielbereich in vier Richtungsfelder unterteilt.": "mouse.subdividedQuad",
+  "Zielbereich erneut in A1–D5 unterteilt.": "mouse.subdividedMatrix",
+  "Einen Auswahl- oder Unterteilungsschritt zurück.": "mouse.backStep",
+  "Ebene {depth} · Links oben / rechts oben / links unten / rechts unten · Stopp · Zurück": "mouse.helpQuad",
+  "Links oben": "mouse.quad.left-top",
+  "Rechts oben": "mouse.quad.right-top",
+  "Links unten": "mouse.quad.left-bottom",
+  "Rechts unten": "mouse.quad.right-bottom",
+  "LO": "mouse.quadShort.left-top",
+  "RO": "mouse.quadShort.right-top",
+  "LU": "mouse.quadShort.left-bottom",
+  "RU": "mouse.quadShort.right-bottom"
  }
 };if(typeof module==='object'&&module.exports)module.exports=data;if(typeof window!=='undefined')window.RobotCatalog=data;})();

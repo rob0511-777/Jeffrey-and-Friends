@@ -11,9 +11,20 @@
   if (!startButton || !stopButton) return;
 
   let current = null;
-  let isSleeping = false,mouseActive=false,uiLocale='de-DE',conversationLanguage='auto';
+  let isSleeping = false,mouseActive=false,uiLocale='de-DE',conversationLanguage='auto',mouseDiagnostics=false;
   const localMessage=text=>window.RobotI18n?.message(String(text),uiLocale,{strict:true})||text;
   const isStop=text=>window.RobotVoiceCommands?.isStopCommand(text)||window.RobotMouseCommands?.parseMouseCommand(text,uiLocale)?.action==='stop';
+  let mouseTraceSequence=0;
+  const traceMouse=(code,id,at=Date.now())=>{if(mouseDiagnostics)native.mouseTrace?.({code,id,at});};
+  function mouseTurn(c,event,fresh=false){
+    const turns=c.mouseTurns||(c.mouseTurns=new Map()),key=event.item_id;
+    if(key&&turns.has(key))return turns.get(key);
+    let turn=!fresh&&(!key||!c.activeMouseTurn?.key)&&!c.activeMouseTurn?.final?c.activeMouseTurn:null;
+    if(!turn)turn={id:++mouseTraceSequence,key};
+    if(key){turns.set(key,turn);if(turns.size>256)turns.delete(turns.keys().next().value);}
+    if(fresh||!c.activeMouseTurn)c.activeMouseTurn=turn;
+    return turn;
+  }
   let activeCharacter='jeffrey';
   let activeProvider='openai';
   let broncoVoiceEffect='hard';
@@ -24,8 +35,8 @@
 
   function status(text) {statusBox.textContent = localMessage(text);}
   function fail(text) {errorBox.textContent = String(localMessage(text)).slice(0,320);errorBox.hidden=false;}
-  function signal(kind, text) {
-    if (native && mode === 'controls') native.send('realtime-activity', {kind, text});
+  function signal(kind, text, mouseRequestId) {
+    if (native && mode === 'controls') native.send('realtime-activity', {kind,text,...(mouseRequestId===undefined?{}:{mouseRequestId})});
   }
   function setButtons() {
     const active=Boolean(current);
@@ -216,11 +227,13 @@
     if (event.type === 'response.function_call_arguments.done') {
       void performWebSearch(event,c);
     } else if (event.type === 'input_audio_buffer.speech_started') {
+      traceMouse('speech-start',mouseTurn(c,event,true).id);
       if(desktopInFlight(c))return;
       stopSelectionAudio();c.desktopGeneration=(c.desktopGeneration||0)+1;
       c.desktopBlocked=false;c.desktopReply='';c.desktopTranscript='';
       c.mouseTranscript='';c.userSpeaking=true;c.appTranscriptSeen=false;extendConversation(c);signal('user-speaking');
     } else if (event.type === 'input_audio_buffer.speech_stopped') {
+      traceMouse('speech-stop',mouseTurn(c,event).id);
       c.userSpeaking=false;extendConversation(c);
     } else if (event.type === 'response.created') {
       const pendingNormal=c.normalRequestPending&&event.response?.metadata?.desktop!=='readout'&&(!c.responseId||event.response?.metadata?.client_normal===c.normalRequestPending);
@@ -244,28 +257,31 @@
       if (typeof event.transcript==='string' && event.transcript.trim()) {
         const itemId=event.item_id;
         const seen=c.transcribedItems||(c.transcribedItems=new Set());
-        if(itemId&&seen.has(itemId))return;
+        if(itemId&&seen.has(itemId)){traceMouse('duplicate',mouseTurn(c,event).id);return;}
         if(itemId){seen.add(itemId);if(seen.size>256)seen.delete(seen.values().next().value);}
+        const turn=mouseTurn(c,event);turn.final=true;traceMouse('transcript-final',turn.id);
         if (window.RobotVoiceCommands?.isDismissCommand(event.transcript,activeCharacter)) {
           signal('dismiss');
           cleanup('Sprachbefehl erkannt: Ich verschwinde. Mikrofon aus.');
           return;
         }
         if(isStop(event.transcript)){
+          traceMouse('stop',turn.id);
           signal('user',event.transcript);native.send('stop-speaking');cancelDesktop(c,true);return;
         }
         // Speech detection, duplicate commands and incidental transcripts are not
         // a cancellation request and cannot authorize tools during this turn.
-        if(desktopInFlight(c))return;
+        if(desktopInFlight(c)){traceMouse('turn-busy',turn.id);return;}
         if(window.RobotMouseCommands?.parseMouseCommand(event.transcript,uiLocale)){
           const text=event.transcript.trim();
-          if(!itemId&&c.mouseTranscript===text)return;
+          if(!itemId&&c.mouseTranscript===text){traceMouse('duplicate',turn.id);return;}
           c.mouseTranscript=text;
-          c.normalQueued=false;c.desktopBlocked=true;c.mousePending=true;c.toolsInFlight++;extendConversation(c);signal('user',event.transcript);
+          const requestId=turn.id;traceMouse('parser-accept',requestId);traceMouse('ipc-send',requestId);
+          c.normalQueued=false;c.desktopBlocked=true;c.mousePending=true;c.toolsInFlight++;extendConversation(c);signal('user',event.transcript,requestId);
           if(c.responseId){(c.desktopCancelled||(c.desktopCancelled=new Set())).add(c.responseId);c.dc?.send(JSON.stringify({type:'response.cancel',response_id:c.responseId}));}
-          void native.mouseCommand(event.transcript.trim()).then(message=>{if(current===c&&!c.stopped)status(message);}).catch(()=>{if(current===c&&!c.stopped)fail('Maussteuerbefehl nicht verfügbar.');}).finally(()=>{c.mousePending=false;c.toolsInFlight=Math.max(0,c.toolsInFlight-1);extendConversation(c);});return;
+          void native.mouseCommand(event.transcript.trim(),requestId).then(message=>{traceMouse('ipc-return',requestId);if(current===c&&!c.stopped)status(message);}).catch(()=>{traceMouse('ipc-return',requestId);if(current===c&&!c.stopped)fail('Maussteuerbefehl nicht verfügbar.');}).finally(()=>{c.mousePending=false;c.toolsInFlight=Math.max(0,c.toolsInFlight-1);extendConversation(c);});return;
         }
-        c.mouseTranscript='';c.desktopBlocked=false;
+        traceMouse('parser-reject',turn.id);c.mouseTranscript='';c.desktopBlocked=false;
         if(/(?:\bmerk(?:e)?\s+(?:dir\s+)?|\bspeicher(?:e)?\s+)/i.test(event.transcript))c.rememberTranscriptSeen=true;
         c.appTranscriptSeen=true;
         extendConversation(c); signal('user',event.transcript);
@@ -519,7 +535,7 @@
       if(action==='mode') {isSleeping=value==='sleep';if(isSleeping)cleanup('Schlafmodus. Mikrofon aus.');setButtons();}
     });
     native.onState(settings=>{
-      uiLocale=settings?.uiLocale||'de-DE';conversationLanguage=settings?.conversationLanguage||'auto';
+      mouseDiagnostics=settings?.mouseDiagnostics===true;uiLocale=settings?.uiLocale||'de-DE';conversationLanguage=settings?.conversationLanguage||'auto';
       activeCharacter=settings?.character||'jeffrey';
       activeProvider=settings?.aiProvider||'openai';
       broncoVoiceEffect=settings?.broncoVoiceEffect||'hard';

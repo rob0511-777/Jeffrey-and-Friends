@@ -7,9 +7,10 @@ contextBridge.exposeInMainWorld('desktopRobot', {
       'character','open-controls','chat','listen','stop-speaking','ai-provider','local-base-url','local-model','gemini-model','auto-paid-fallback','monthly-budget','block-paid-budget','pricing','speak-replies','read-comments','save-api-key','clear-api-key','save-provider-key','clear-provider-key','realtime-activity','response-usage','wake-enabled','wake-test','wake-sensitivity','live-voice','voice-style','bronco-voice-effect','jeffrey-voice-effect','web-enabled','browser-enabled','memory-enabled','memory-add','memory-remove','memory-clear','comment-voice','comment-frequency','comment-audio-ended','pc-tools-enabled','pc-alerts-enabled','pc-status-test','selection-audio-ended','ui-locale','conversation-language','mouse-start','mouse-stop','mouse-exit','mouse-options','privacy-revoke'];
     if (allowed.includes(action)) ipcRenderer.send('robot:action', {action, value});
   },
+  mouseTrace: payload => ipcRenderer.send('robot:mouse-trace',payload),
   prepareMicrophone: () => ipcRenderer.invoke('robot:prepare-microphone'),
   connectRealtime: sdp => ipcRenderer.invoke('robot:realtime-connect', sdp),
-  mouseCommand: text => ipcRenderer.invoke('robot:mouse-command',text),
+  mouseCommand: (text,requestId) => ipcRenderer.invoke('robot:mouse-command',requestId===undefined?text:{text,requestId}),
   inspectDesktop: question => ipcRenderer.invoke('robot:inspect-desktop', question),
   getProviderStatus: () => ipcRenderer.invoke('robot:provider-status'),
   listLocalModels: baseUrl => ipcRenderer.invoke('robot:local-models', baseUrl),

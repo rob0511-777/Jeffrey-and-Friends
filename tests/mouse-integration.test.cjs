@@ -30,3 +30,13 @@ test('Schlafmodus verlässt Koordinatenmodus; Spracherkennungsereignis stoppt ih
 });
 
 test('Charakterwechsel beendet Mausmodus und laufende Bewegung',()=>{const h=harness();h.api.handleAction({sender:h.sender},{action:'character',value:'bronco'});assert.ok(h.stopped>0);});
+test('Zwei bestätigte Live-Befehle behalten getrennte einmalige Freigaben trotz neuer Sprachereignisse',async()=>{
+ const h=harness(),event={sender:h.sender};
+ for(const [requestId,text]of [[1,'B3'],[2,'D4']])h.api.handleAction(event,{action:'realtime-activity',value:{kind:'user',text,mouseRequestId:requestId}});
+ h.api.handleAction(event,{action:'realtime-activity',value:{kind:'user-speaking'}});
+ await h.api.handleMouseLive(event,{text:'B3',requestId:1});await h.api.handleMouseLive(event,{text:'D4',requestId:2});
+ assert.deepEqual(h.commands.map(c=>c.cell),['B3','D4']);await assert.rejects(h.api.handleMouseLive(event,{text:'B3',requestId:1}));
+});
+
+test('Verbrauchte moderne Kennung lässt sich nicht erneut freigeben; Stopp verwirft ausstehende Kennungen',async()=>{const h=harness(),e={sender:h.sender},send=(id,text)=>h.api.handleAction(e,{action:'realtime-activity',value:{kind:'user',text,mouseRequestId:id}});send(1,'B3');await h.api.handleMouseLive(e,{text:'B3',requestId:1});send(1,'B3');await assert.rejects(h.api.handleMouseLive(e,{text:'B3',requestId:1}));send(2,'D4');h.api.handleAction(e,{action:'stop-speaking'});await assert.rejects(h.api.handleMouseLive(e,{text:'D4',requestId:2}));assert.equal(h.commands.length,1);});
+test('Verspäteter älterer IPC-Aufruf nach bereits übergebenem neuerem Befehl wird nicht ausgeführt',async()=>{const h=harness(),e={sender:h.sender};for(const [requestId,text]of [[1,'B3'],[2,'D4']])h.api.handleAction(e,{action:'realtime-activity',value:{kind:'user',text,mouseRequestId:requestId}});await h.api.handleMouseLive(e,{text:'D4',requestId:2});await assert.rejects(h.api.handleMouseLive(e,{text:'B3',requestId:1}));assert.deepEqual(h.commands.map(c=>c.cell),['D4']);});
