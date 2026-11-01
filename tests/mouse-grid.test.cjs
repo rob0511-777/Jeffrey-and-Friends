@@ -13,8 +13,8 @@ test('Feldmitte und Viertel verwenden tatsächliche ganzzahlige Pixel',()=>{
  const visible=g.state().grid;g.refine('left-top');assert.deepEqual(g.state().grid,visible);assert.equal(g.state().depth,2);
 });
 test('Unterteilen/Zurück/Neustart erhalten eindeutige Region und Ziel',()=>{
- const g=grid();g.select('A3');const region=g.state().region;g.subdivide();assert.deepEqual(g.state().grid,region);g.select('B4');g.subdivide();g.select('D2');assert.equal(g.state().depth,2);
- g.back();assert.equal(g.state().depth,1);g.reset();assert.deepEqual(g.state().grid,monitor().bounds);assert.equal(g.state().target,null);
+ const g=grid();g.select('A3');const region=g.state().region;g.subdivide();assert.deepEqual(g.state().grid,region);g.select('B4');g.subdivide();g.refine('right-bottom');assert.equal(g.state().depth,2);
+ g.back();assert.equal(g.state().depth,2);g.back();assert.equal(g.state().depth,1);g.reset();assert.deepEqual(g.state().grid,monitor().bounds);assert.equal(g.state().target,null);
 });
 test('Maximale Tiefe und sinnvoller Pixelbereich begrenzen jede Verfeinerung',()=>{
  const g=grid(monitor(),{maxDepth:1});g.select('A1');g.refine('left-top');assert.throws(()=>g.refine('left-top'),/tiefe/i);
