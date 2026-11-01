@@ -10,7 +10,7 @@ function createMouseGrid(monitor,{maxDepth=4}={}){
  const save=kind=>{history.push({kind,state:clone(s)});s.depth++;};
  const check=()=>{if(!s.region)throw Error('Bitte zuerst ein Feld auswählen.');if(s.depth>=limit)throw Error('Maximale Unterteilungstiefe erreicht.');};
  return Object.freeze({
-  state:()=>clone(s),
+  state:()=>clone({...s,ancestors:history.filter(h=>h.kind==='grid').map(h=>h.state.grid)}),
   cells:()=>Array.from({length:20},(_,i)=>({...partition(s.grid,Math.floor(i/5),i%5,4,5),label:'ABCD'[Math.floor(i/5)]+(i%5+1)})),
   select(cell){if(!/^[A-D][1-5]$/.test(cell))throw Error('Ungültiges Feld.');while(history.at(-1)?.kind==='fine'){s.depth=history.pop().state.depth;}s.selected=cell;s.region=partition(s.grid,'ABCD'.indexOf(cell[0]),Number(cell[1])-1,4,5);s.target=center(s.region);return clone(s.target);},
   refine(direction){if(!s.region)throw Error('Bitte zuerst ein Feld auswählen.');if(direction==='center'){s.target=center(s.region);return clone(s.target);}check();if(!['left-top','right-top','left-bottom','right-bottom'].includes(direction))throw Error('Ungültige Richtung.');if(s.region.width<4||s.region.height<4)throw Error('Zielbereich ist für weitere Pixel-Unterteilung zu klein.');save('fine');s.region=partition(s.region,direction.endsWith('bottom')?1:0,direction.startsWith('right')?1:0,2,2);s.target=center(s.region);return clone(s.target);},
