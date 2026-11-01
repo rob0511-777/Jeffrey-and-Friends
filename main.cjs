@@ -584,6 +584,7 @@ function setWakeEnabled(enabled) {
     setWakeStatus('Codewort ausgeschaltet.');
   }
   storeSoon();syncState();syncWakeListener();
+  if(mouseControl?.active()&&!liveActive)scheduleGridListener();
 }
 function testWakeWord() {
   if(!settings.wakeEnabled){setWakeStatus(ui('wake.enableFirst',{name:who()}));return;}
