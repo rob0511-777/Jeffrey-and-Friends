@@ -13,7 +13,7 @@
   if(suffix){const parsed=voice.parseDesktopIntent('schau auf '+suffix[2]);if(!parsed)return null;target=parsed.target;text=suffix[1];}
   if(/^(?:(?:zeig(?:e)?|zeige mir|zeig mir) (?:das )?(?:koordinatennetz|mausraster|raster)|(?:raster|koordinatennetz) anzeigen)$/.test(text)||suffix&&/^(?:raster|koordinatennetz)$/.test(text))return {action:'show',target};
   if(suffix)return null;
-  const commands={'feld unterteilen':'subdivide','unterteile das feld':'subdivide','nochmals unterteilen':'subdivide','zuruck':'back','raster neu starten':'reset','koordinatennetz zurucksetzen':'reset','raster ausblenden':'hide','koordinatennetz ausblenden':'hide','koordinatennetz beenden':'exit','raster beenden':'exit','maus hierhin':'move','maus stoppen':'stop','maus anhalten':'stop'};
+  const commands={'raster aus':'exit','feld unterteilen':'subdivide','unterteile das feld':'subdivide','nochmals unterteilen':'subdivide','zuruck':'back','raster neu starten':'reset','koordinatennetz zurucksetzen':'reset','raster ausblenden':'hide','koordinatennetz ausblenden':'hide','koordinatennetz beenden':'exit','raster beenden':'exit','maus hierhin':'move','maus stoppen':'stop','maus anhalten':'stop'};
   if(commands[text])return {action:commands[text]};
   let m=text.match(/^raster (\d{1,3}|null|zehn|zwanzig|dreissig|vierzig|funfzig|sechzig|siebzig|achtzig|neunzig|hundert|funfundzwanzig|funfundsiebzig) prozent$/);
   if(m){const n=/^\d+$/.test(m[1])?Number(m[1]):({null:0,zehn:10,zwanzig:20,dreissig:30,vierzig:40,funfzig:50,sechzig:60,siebzig:70,achtzig:80,neunzig:90,hundert:100,funfundzwanzig:25,funfundsiebzig:75})[m[1]];return Number.isInteger(n)&&n>=0&&n<=100?{action:'opacity',opacity:n}:null;}

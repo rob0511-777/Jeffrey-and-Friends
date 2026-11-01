@@ -27,7 +27,7 @@
   }
   function setButtons() {
     const active=Boolean(current);
-    startButton.disabled=active || isSleeping || mouseActive || !native || mode !== 'controls';
+    startButton.disabled=active || isSleeping || (mouseActive&&activeProvider!=='openai') || !native || mode !== 'controls';
     stopButton.disabled=!active;
   }
   let selectionAudio=null;
@@ -98,7 +98,7 @@
     }
   }
   function desktopInFlight(c){
-    return Boolean(c.mousePending||c.desktopPending||c.desktopReply||c.desktopReadoutEventId||c.desktopReadoutResponseId);
+    return Boolean(c.desktopPending||c.desktopReply||c.desktopReadoutEventId||c.desktopReadoutResponseId);
   }
   function cancelDesktop(c,force=false){
     if(!c||(!force&&!desktopInFlight(c)&&!c.desktopBlocked))return;
@@ -258,8 +258,9 @@
           const question=event.transcript.trim();
           if(c.desktopTranscript===question)return;
           c.desktopTranscript=question;
-          void inspectDesktop(question,c);
+          void inspectDesktop(question,c);return;
         }
+        try{c.dc?.send(JSON.stringify({type:'response.create'}));}catch{c.botSpeaking=false;signal('idle');extendConversation(c);fail('Sprachantwort konnte nicht angefordert werden. Bitte erneut fragen.');}
       }
     } else if (event.type === 'conversation.item.input_audio_transcription.failed') {
       c.appTranscriptSeen=true;
@@ -326,9 +327,10 @@
     }catch(error){if(current===c)cleanup(String(error?.message||error||'Gemini Live fehlgeschlagen.'),false);}
   }
   async function start(fromWake=false) {
-    if (!native || mode!=='controls' || current || isSleeping || mouseActive) return;
+    if (!native || mode!=='controls' || current || isSleeping) return;
     errorBox.hidden=true;
     try{const state=await native.getProviderStatus();activeProvider=state.activeProvider||'openai';}catch{activeProvider='openai';}
+    if(mouseActive&&activeProvider!=='openai'){fail('Für Gemini bitte den Rastermodus beenden. OpenAI kann Raster und Gespräch gemeinsam verwenden.');return;}
     if(activeProvider==='local'||activeProvider==='auto'){fail('Der lokale Modus bietet Text, aber kein vollständiges Realtime-Audio.');return;}
     if(activeProvider==='gemini'){await startGemini(fromWake);return;}
     const c={pc:null,stream:null,dc:null,audio:null,broncoEffect:null,broncoHealthTimer:null,jeffreyEffect:null,jeffreyHealthTimer:null,fromWake:Boolean(fromWake),timer:null,idleTimer:null,stopped:false,userSpeaking:false,botSpeaking:false,toolsInFlight:0,seenCalls:new Set(),rememberTranscriptSeen:false,appTranscriptSeen:false};
@@ -489,7 +491,7 @@
       else if(message.type==='closed'){const reason=String(message.reason||'').trim();cleanup('Gemini Live beendet (Code '+String(message.code||0)+')'+(reason?': '+reason:'')+'. Mikrofon aus.',false);}
     });
     native.onAction(({action,value})=>{
-      if(action==='mouse-state'){mouseActive=Boolean(value?.active);if(mouseActive)cleanup('Koordinatenmodus: Live geschlossen, lokale Rasterbefehle aktiv.');setButtons();}
+      if(action==='mouse-state'){mouseActive=Boolean(value?.active);if(mouseActive&&current?.provider==='gemini')cleanup('Gemini pausiert: lokale Rasterbefehle aktiv.');setButtons();}
       if(action==='desktop-cancel')cancelDesktop(current);
       if(action==='desktop-status'&&current?.desktopPending)status(value);
       if(action==='selection-audio')void playSelectionAudio(value);

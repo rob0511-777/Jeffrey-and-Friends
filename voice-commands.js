@@ -52,7 +52,7 @@
     if(/^(?:erklar(?:e)? mir (?:das|das verstandlich|diesen abschnitt|den markierten text)|mir das (?:verstandlich )?erklaren|was bedeutet (?:dieser abschnitt|der markierte text))$/.test(text))return result('explain');
     if(/^(?:fass(?:e)? (?:das|den markierten text) zusammen|gib mir eine kurze zusammenfassung|worum geht es in dem markierten text)$/.test(text))return result('summarize');
     if(/^(?:schau(?:e)?|guck(?:e)?) auf (?:meinen|den) (?:bildschirm|desktop)$/.test(text)||/^(?:schau(?:e)?|guck(?:e)?)(?: (?:dir (?:das|meinen bildschirm|den bildschirm|meinen desktop|den desktop) an|hier))?$/.test(text)||
-      /^(?:was siehst du(?: gerade)?|was steht auf meinem bildschirm|was ist (?:das fur ein fenster|in diesem fenster)|was habe ich hier geoffnet|(?:die fehlermeldung erkennen)|lies mir diese fehlermeldung vor|was bedeutet diese fehlermeldung|erklar(?:e)? mir (?:diese fehlermeldung|was auf meinem bildschirm passiert))$/.test(text))return result('screen');
+      /^(?:was siehst du(?: gerade)?|was steht auf meinem bildschirm|was ist (?:das fur ein fenster|in diesem fenster)|was habe ich hier geoffnet|(?:die fehlermeldung erkennen)|lies mir diese fehlermeldung vor|was bedeutet diese fehlermeldung|erklar(?:e)? mir (?:diese fehlermeldung|was auf meinem bildschirm passiert|was auf (?:diesem|meinem|dem) bildschirm steht))$/.test(text))return result('screen');
     return null;
   }
   function isStopCommand(utterance){

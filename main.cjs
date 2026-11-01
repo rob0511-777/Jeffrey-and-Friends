@@ -69,6 +69,13 @@ async function handleMouseLive(event,text){
     throw Error('Kein aktueller ausdrücklicher Maussteuerbefehl.');
   request.used=true;return executeMouse(command);
 }
+function activateMouseMode(){
+  clearTimeout(gridListenTimer);gridListener?.stop();
+  if(liveActive&&desktopProvider()==='openai'){syncWakeListener();status('Koordinatennetz und OpenAI-Gespräch aktiv. Ein gemeinsames Mikrofon.');return;}
+  stopTalking();if(listening){listening.stop();listening=null;voiceBusy=false;}
+  sendAction('realtime-stop');stopGemini('Koordinatenmodus');syncWakeListener();scheduleGridListener();
+  status('Lokaler Rastermodus: Gemini bietet hier keinen sicheren gemeinsamen Transkriptkanal. Gespräch wird pausiert.');
+}
 function scheduleGridListener(){
   clearTimeout(gridListenTimer);
   if(!mouseControl?.active()||isQuitting)return;
@@ -624,7 +631,8 @@ function handleAction(event, payload) {
     const kind = value.kind;
     if (kind === 'opened') {
       stopTalking();
-      if (settings.mode === 'sleep'||mouseControl?.active()) {sendAction('realtime-stop');scheduleGridListener();return;}
+      if (settings.mode === 'sleep') {sendAction('realtime-stop');return;}
+      clearTimeout(gridListenTimer);gridListener?.stop();
       if(!liveSessionId)liveSessionId='live-'+Date.now();
       liveActive=true;webCalls=0;lastWebCall=0;browserCalls=0;lastBrowserCall=0;appLaunches=0;pcStatusCalls=0;lastAppRequest=null;lastSpokenAt=0;lastUserTranscript="";lastDesktopRequest=null;
       syncWakeListener();updateMenu();
@@ -822,7 +830,7 @@ else {
       getOptions:()=>({opacity:settings.mouseGridOpacity,speed:settings.mouseSpeed,maxDepth:settings.mouseGridMaxDepth}),
       setOpacity:value=>{settings.mouseGridOpacity=value;storeSoon();syncState();},mouse:windowsMouse,isAllowed:()=>settings.mode!=='sleep'&&!isQuitting,
       onChange:state=>{sendAction('mouse-state',state);gridOverlay.publish(state);},
-      onActivate:()=>{stopTalking();if(listening){listening.stop();listening=null;voiceBusy=false;}sendAction('realtime-stop');stopGemini('Koordinatenmodus');syncWakeListener();scheduleGridListener();},
+      onActivate:activateMouseMode,
       onDeactivate:()=>{clearTimeout(gridListenTimer);gridListener.stop();windowsMouse.close();syncWakeListener();}
     });
     desktopVision=createDesktopVision({
@@ -882,7 +890,7 @@ else {
     });
     ipcMain.handle('robot:gemini-stop',(event,sessionId)=>{if(event.sender!==controls.webContents)throw new Error('Nicht zugelassene Anfrage.');if(sessionId===geminiSessionId)stopGemini('Nutzerstopp');return true;});
     ipcMain.handle('robot:realtime-connect', async (event, offerSDP) => {
-      if (event.sender !== controls.webContents || settings.mode === 'sleep' || mouseControl?.active())
+      if (event.sender !== controls.webContents || settings.mode === 'sleep')
         throw new Error('Live-Gespräch nur im aktiven Einstellungsfenster möglich.');
       // Die Stimme darf auch bei verstecktem Einstellungsfenster gestartet werden (Codewort).
       if(selectedRealtimeProvider()!=='openai')throw new Error('OpenAI ist nicht als aktueller Audioanbieter ausgewählt.');

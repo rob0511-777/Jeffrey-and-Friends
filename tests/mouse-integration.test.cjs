@@ -21,7 +21,7 @@ test('Live-Renderer fängt Mausbefehle ab, bricht automatische Antworten ab und 
  const event={type:'conversation.item.input_audio_transcription.completed',item_id:'cell',transcript:'  Berta 3  '};api.handleEvent(event,c);api.handleEvent({...event,type:'conversation.item.input_audio_transcription.done'},c);
  await new Promise(r=>setImmediate(r));assert.equal(nativeCalls.filter(x=>x.mouse).length,1);assert.equal(nativeCalls.find(x=>x.mouse).mouse,'Berta 3');assert.ok(wire.some(x=>x.type==='response.cancel'));assert.equal(wire.some(x=>x.type==='response.create'),false);assert.equal(c.toolsInFlight,0);
  api.handleEvent({type:'response.created',response:{id:'late'}},c);assert.ok(wire.some(x=>x.response_id==='late'&&x.type==='response.cancel'));
- onAction({action:'mouse-state',value:{active:true}});assert.ok(c.stopped);assert.ok(nativeCalls.some(x=>x.value?.kind==='closed'));
+ onAction({action:'mouse-state',value:{active:true}});assert.notEqual(c.stopped,true);assert.equal(nativeCalls.some(x=>x.value?.kind==='closed'),false);
 });
 
 test('Schlafmodus verlässt Koordinatenmodus; Spracherkennungsereignis stoppt ihn nicht',()=>{
