@@ -21,7 +21,7 @@ function createMouseControl({platform=process.platform,getSnapshot,getOptions,se
    if(command.action==='show'){
     if(platform!=='win32')throw Error('Koordinatennetz ist nur unter Windows verfügbar.');
     if(!grid||command.target?.kind!=='auto'){
-     halt();const version=epoch,snapshot=await getSnapshot();if(version!==epoch||!isAllowed())return 'Rasterstart abgebrochen.';
+     halt();const version=epoch,snapshot=await getSnapshot();if(version!==epoch||!isAllowed())return {cancelled:true};
      const monitor=selectMonitor(snapshot,command.target),next=createMouseGrid(monitor,{maxDepth:getOptions().maxDepth});mouse.start();grid=next;lastDepth=getOptions().maxDepth;onActivate();
     }
     if(getOptions().opacity===0)setOpacity(100);return notify(I18n.t('mouse.active',getOptions().locale));
@@ -42,7 +42,7 @@ function createMouseControl({platform=process.platform,getSnapshot,getOptions,se
  };
  function drain(){
   if(running||!queue.length)return;running=true;const job=queue.shift();
-  Promise.resolve(api.run(job.command)).then(value=>{onTrace('command-ok',job.command.diagnosticId||0);job.resolve(value);},error=>{onTrace('command-error',job.command.diagnosticId||0);cancelQueued();job.reject(error);}).finally(()=>{running=false;drain();});
+  Promise.resolve(api.run(job.command)).then(value=>{const cancelled=value?.cancelled===true;onTrace(cancelled?'command-cancelled':'command-ok',job.command.diagnosticId||0);job.resolve(cancelled?I18n.t('mouse.cancelled',getOptions().locale):value);},error=>{onTrace('command-error',job.command.diagnosticId||0);cancelQueued();job.reject(error);}).finally(()=>{running=false;drain();});
  }
  const {run,...publicApi}=api;
  return Object.freeze({...publicApi,dispatch(command){

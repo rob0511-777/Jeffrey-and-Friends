@@ -20,3 +20,4 @@ test('Stopp verwirft auch Feldbefehle hinter einer noch laufenden Rasterinitiali
  const results=Promise.allSettled(jobs);await f.controller.dispatch({action:'stop'});done(snapshot);await results;
  assert.equal(f.moves.length,0);assert.equal(f.controller.active(),false);
 });
+test('Diagnose meldet invalidierten Rasterstart als Abbruch und nicht als Erfolg',async()=>{let done;const rows=[],f=fixture({getSnapshot:()=>new Promise(r=>done=r),onTrace:(code,id)=>rows.push({code,id})});const pending=f.controller.dispatch({action:'show',target:{kind:'auto'},diagnosticId:9});f.controller.stop();done(snapshot);await pending;assert.ok(rows.some(r=>r.id===9&&r.code==='command-cancelled'));assert.ok(!rows.some(r=>r.id===9&&r.code==='command-ok'));});
