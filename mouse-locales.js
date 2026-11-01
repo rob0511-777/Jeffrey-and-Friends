@@ -41,7 +41,7 @@
   for(const side of ({'en-GB':['left','right','mouse'],'zh-CN':['左侧','右侧','鼠标'],'ja-JP':['左','右','マウス'],'es-ES':['izquierdo','derecho','ratón'],'pt-BR':['esquerdo','direito','mouse']})[locale])out.push(format(side));
   return out;
  }
- function speechOptions(locale){const s=specs[locale];return s?{please:s.please,blocked:s.blocked,stops:[...s.actions.stop,'Stop','Stopp']}:{please:'bitte',blocked:['nicht','bitte nicht','er sagte','wenn ich sage'],stops:['Stopp','Stop','Stoppen','Hör auf','Brich ab','Abbrechen','Maus stoppen','Maus anhalten']};}
+ function speechOptions(locale){const s=specs[locale];return s?{please:s.please,blocked:s.blocked,stops:[...s.actions.stop,'Stop','Stopp']}:{please:'bitte',blocked:['nicht','bitte nicht','er sagte','wenn ich sage'],stops:['Halte die Maus an','Stopp','Stop','Stoppen','Hör auf','Brich ab','Abbrechen','Maus stoppen','Maus anhalten']};}
  const desktopPhrases={
   'en-GB':{screen:['explain my screen','what is on my screen','explain what is on this screen'],read:['read selected text','read the selected text'],explain:['explain selected text','explain the selected text'],summarize:['summarize selected text','summarise selected text']},
   'zh-CN':{screen:['解释我的屏幕','屏幕上有什么'],read:['朗读选中文本','朗读选中的文本'],explain:['解释选中文本'],summarize:['总结选中文本']},

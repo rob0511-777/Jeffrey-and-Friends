@@ -1,0 +1,6 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict');
+const {parseMouseCommand:parse,mouseGrammar}=require('../mouse-commands.js');
+const examples=[['Fahr nach B3','select','B3'],['Fahr mal bitte nach B3','select','B3'],['Bewege die Maus zu B3','select','B3'],['Geh zu Feld Berta drei','select','B3'],['Unterteile dieses Feld','subdivide'],['Teil das Feld nochmal','subdivide'],['Mach das ausgewählte Feld kleiner','subdivide'],['Geh einen Schritt zurück','back'],['Zeig mir wieder das ganze Raster','reset'],['Halte die Maus an','stop']];
+for(const [text,action,cell]of examples)test(text,()=>{const c=parse(text);assert.equal(c?.action,action);if(cell)assert.equal(c.cell,cell);for(const name of ['Jeffrey','Kelly','Krak','Bronco','James'])assert.equal(parse(name+', '+text)?.action,action);assert.ok(mouseGrammar().some(s=>s.toLowerCase()===text.toLowerCase()),'native grammar includes phrase');});
+for(const text of ['Fahr nicht nach B3','Fahr nach B3 und klick dort','Er sagte Fahr nach B3','Zum Beispiel Fahr nach B3','Kannst du erklären, was Fahr nach B3 bedeutet?','„Fahr nach B3“','Wenn ich Fahr nach B3 sage','Bitte bewege etwas','Mach irgendwas kleiner','Halte die Maus nicht an','Unterteile dieses Feld und drücke Enter'])test('Keine Aktion: '+text,()=>assert.equal(parse(text),null));
