@@ -5,7 +5,7 @@
  const rows={a:'A',ah:'A',anton:'A',alpha:'A',b:'B',be:'B',bee:'B',berta:'B',bravo:'B',c:'C',ce:'C',ze:'C',zeh:'C',tse:'C',casar:'C',caesar:'C',charlie:'C',d:'D',de:'D',dee:'D',dora:'D',delta:'D'};
  const digits={ein:1,eins:1,zwei:2,zwo:2,drei:3,vier:4,funf:5};
  const direction=s=>s==='mitte'?'center':({'links oben':'left-top','rechts oben':'right-top','links unten':'left-bottom','rechts unten':'right-bottom'})[s];
- function parseMouseCommand(input){
+ function parseGerman(input){
   if(typeof input!=='string'||input.length>250||/["'„“”‚‘’«»`;:]/.test(input))return null;
   if(voice.isStopCommand(input))return {action:'stop'};
   let text=voice.normalize(input).replace(names,'').replace(/\bbitte\b/g,'').replace(/\s+/g,' ').trim();
@@ -22,7 +22,7 @@
   m=text.match(/^(?:nochmals )?(mitte|links oben|rechts oben|links unten|rechts unten)$/);
   return m?{action:'refine',direction:direction(m[1])}:null;
  }
- function mouseGrammar(){
+ function germanGrammar(){
   const result=['Zeige das Koordinatennetz','Zeig mir das Koordinatennetz','Koordinatennetz ausblenden','Nochmals unterteilen','Abbrechen','Stoppen','zeig das Koordinatennetz','Raster anzeigen','Raster ausblenden','Koordinatennetz beenden','Raster beenden','Feld unterteilen','Unterteile das Feld','Zurück','Raster neu starten','Koordinatennetz zurücksetzen','Maus hierhin','Stopp','Stop','Hör auf','Brich ab','Maus stoppen','Maus anhalten'];
   const dirs=['Mitte','links oben','rechts oben','links unten','rechts unten'];
   for(const d of dirs)result.push(d,'Nochmals '+d);
@@ -32,5 +32,11 @@
   for(const side of ['den linken Bildschirm','den rechten Monitor','den Bildschirm mit meiner Maus'])result.push('Raster auf '+side);
   return result;
  }
+ const intl=typeof module==='object'&&module.exports?require('./mouse-locales.js'):window.RobotMouseLocales;
+ function parseMouseCommand(input,locale='de-DE'){
+  if(typeof input!=='string'||input.length>250||/["'„“”‚‘’«»`「」『』;:]/.test(input))return null;
+  return locale==='de-DE'?parseGerman(input):intl?.parse(input,locale)||null;
+ }
+ function mouseGrammar(locale='de-DE'){return locale==='de-DE'?[...germanGrammar(),'Raster aus','Zeig das Raster']:intl?.grammar(locale)||[];}
  const api={parseMouseCommand,mouseGrammar};if(typeof module==='object'&&module.exports)module.exports=api;if(typeof window!=='undefined')window.RobotMouseCommands=api;
 })();

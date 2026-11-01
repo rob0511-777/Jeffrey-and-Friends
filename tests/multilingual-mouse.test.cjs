@@ -1,0 +1,10 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),{parseMouseCommand:parse,mouseGrammar}=require('../mouse-commands.js');
+const cases={
+ 'en-GB':['Jeffrey, show the grid','B three','top left','subdivide cell','back','reset grid','hide grid','grid off','stop','show grid on monitor two'],
+ 'zh-CN':['Jeffrey，显示网格','B三','左上','细分单元格','返回','重置网格','隐藏网格','关闭网格','停止','显示网格在显示器二'],
+ 'ja-JP':['Jeffrey、グリッドを表示','ビー三','左上','セルを分割','戻る','グリッドをリセット','グリッドを隠す','グリッドを終了','停止','グリッドを表示 モニター二'],
+ 'es-ES':['Jeffrey, mostrar la cuadrícula','be tres','arriba izquierda','subdividir celda','atrás','reiniciar cuadrícula','ocultar cuadrícula','cerrar cuadrícula','detener','mostrar cuadrícula en monitor dos'],
+ 'pt-BR':['Jeffrey, mostrar a grade','bê três','superior esquerdo','subdividir célula','voltar','reiniciar grade','ocultar grade','encerrar grade','parar','mostrar grade no monitor dois']};
+for(const [locale,phrases]of Object.entries(cases))test(`Gramática ${locale}: alle Rasteraktionen lokal`,()=>{const actions=['show','select','refine','subdivide','back','reset','hide','exit','stop','show'];for(let i=0;i<phrases.length;i++)assert.equal(parse(phrases[i],locale)?.action,actions[i],phrases[i]);assert.equal(parse(phrases[1],locale).cell,'B3');assert.equal(parse(phrases[9],locale).target.number,2);for(const phrase of mouseGrammar(locale))assert.ok(parse(phrase,locale),phrase);});
+test('Mehrsprachige Negationen, Zitate und angehängte Aktionen erlauben keine Bewegung',()=>{for(const [locale,text]of [['en-GB','do not B3'],['zh-CN','不要B3'],['ja-JP','B3しないで'],['es-ES','no B3'],['pt-BR','não B3'],['en-GB','B3 and click'],['ja-JP','「B3」']])assert.equal(parse(text,locale),null,text);});
