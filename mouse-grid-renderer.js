@@ -5,7 +5,7 @@
  function draw(node,state,labels=true){node.replaceChildren();for(let row=0;row<4;row++)for(let col=0;col<5;col++){
   const g=state.grid,x=g.x+Math.floor(col*g.width/5),y=g.y+Math.floor(row*g.height/4);
   const r={x,y,width:g.x+Math.floor((col+1)*g.width/5)-x,height:g.y+Math.floor((row+1)*g.height/4)-y};
-  const cell=document.createElement('div'),label=document.createElement('span'),name='ABCD'[row]+(col+1);cell.className='cell'+(state.selected===name?' selected':'');label.className='label';label.textContent=name;const w=r.width/state.monitor.bounds.width*innerWidth,h=r.height/state.monitor.bounds.height*innerHeight;label.hidden=!labels||w<18||h<16;label.style.fontSize=Math.max(10,Math.min(36,w*.32,h*.45))+'px';cell.append(label);rectangle(cell,r,g);node.append(cell);
+  const cell=document.createElement('div'),label=document.createElement('span'),name='ABCD'[row]+(col+1);cell.className='cell'+(state.selected===name?' selected':'');label.className='label';label.textContent=name;const w=r.width/state.monitor.bounds.width*innerWidth,h=r.height/state.monitor.bounds.height*innerHeight;cell.style.borderWidth=Math.min(labels?2:1,w/2,h/2)+'px';label.hidden=!labels||w<18||h<16;label.style.fontSize=Math.max(10,Math.min(36,w*.32,h*.45))+'px';label.style.padding='2px '+Math.min(9,w*.08)+'px';cell.append(label);rectangle(cell,r,g);node.append(cell);
  }}
  window.mouseGrid.onState(state=>{
   el('content').hidden=!state.active;if(!state.active)return;el('content').style.opacity=state.opacity/100;
@@ -13,8 +13,8 @@
   el('orientation').replaceChildren();
   for(const area of state.ancestors||[]){const layer=document.createElement('div');layer.className='ancestor-grid';rectangle(layer,area,b);draw(layer,{...state,grid:area,selected:null},false);el('orientation').append(layer);}
   rectangle(el('grid'),state.grid,b);draw(el('grid'),state);el('grid').hidden=false;
-  rectangle(el('region'),state.region||state.grid,b);el('region').hidden=!state.region&&!(state.ancestors||[]).length;
+  const region=state.region||state.grid;rectangle(el('region'),region,b);el('region').style.borderWidth=Math.min(3,region.width/b.width*innerWidth/2,region.height/b.height*innerHeight/2)+'px';el('region').hidden=!state.region&&!(state.ancestors||[]).length;
   el('target').hidden=!state.target;if(state.target){el('target').style.left=100*(state.target.x-b.x)/b.width+'%';el('target').style.top=100*(state.target.y-b.y)/b.height+'%';}
-  el('help').textContent='Ebene '+state.depth+' · A1–D5 · Stopp · Zurück · Koordinatennetz beenden';
+  el('help').textContent=window.RobotI18n?.t('mouse.help',state.uiLocale,{depth:state.depth})||'A1–D5';
  });
 })();

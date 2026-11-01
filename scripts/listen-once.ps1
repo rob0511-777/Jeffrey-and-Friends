@@ -1,11 +1,12 @@
+param([ValidateSet('de-DE','en-GB','zh-CN','ja-JP','es-ES','pt-BR')][string]$RecognitionCulture='de-DE')
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 try {
     Add-Type -AssemblyName System.Speech
     $available = [System.Speech.Recognition.SpeechRecognitionEngine]::InstalledRecognizers()
-    $selected = $available | Where-Object { $_.Culture.Name -eq 'de-DE' } | Select-Object -First 1
+    $selected = $available | Where-Object { $_.Culture.Name -eq $RecognitionCulture } | Select-Object -First 1
     if ($null -eq $selected) {
-        Write-Output 'ERROR|Kein deutscher Windows-Desktop-Spracherkenner gefunden. Bitte Spracheingabe in Windows installieren oder in das Textfeld klicken und Win+H fuer Windows-Diktat verwenden.'
+        Write-Output ('ERROR|speech-language-unavailable|'+$RecognitionCulture)
         exit 2
     }
     $engine = New-Object System.Speech.Recognition.SpeechRecognitionEngine -ArgumentList $selected

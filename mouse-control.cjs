@@ -1,9 +1,10 @@
 'use strict';
+const I18n=require('./i18n.js');
 const {createMouseGrid}=require('./mouse-grid.cjs');const {selectMonitor}=require('./desktop-vision.cjs');
 function createMouseControl({platform=process.platform,getSnapshot,getOptions,setOpacity,mouse,isAllowed=()=>true,onChange=()=>{},onActivate=()=>{},onDeactivate=()=>{}}){
  let grid=null,epoch=0,lastDepth;
  const state=()=>({active:!!grid,opacity:getOptions().opacity,...(grid?grid.state():{})});
- const notify=message=>{onChange({...state(),message});return message;};
+ const notify=value=>{const message=I18n.message(value,getOptions().locale);onChange({...state(),message});return message;};
  const stop=()=>{epoch++;mouse.stop();};
  const exit=message=>{stop();const was=!!grid;grid=null;if(was)onDeactivate();return notify(message||'Koordinatennetz beendet.');};
  const travel=()=>{const s=grid.state();if(!s.target)throw Error('Bitte zuerst ein Feld auswählen.');mouse.move(s.target,s.monitor.bounds,getOptions().speed);};
@@ -20,7 +21,7 @@ function createMouseControl({platform=process.platform,getSnapshot,getOptions,se
      stop();const version=epoch,snapshot=await getSnapshot();if(version!==epoch||!isAllowed())return 'Rasterstart abgebrochen.';
      const monitor=selectMonitor(snapshot,command.target),next=createMouseGrid(monitor,{maxDepth:getOptions().maxDepth});mouse.start();grid=next;lastDepth=getOptions().maxDepth;onActivate();
     }
-    if(getOptions().opacity===0)setOpacity(100);return notify('Koordinatennetz aktiv. Lokale Sprachsteuerung, keine Klicks.');
+    if(getOptions().opacity===0)setOpacity(100);return notify(I18n.t('mouse.active',getOptions().locale));
    }
    if(!grid)throw Error('Bitte zuerst das Koordinatennetz anzeigen.');
    try{

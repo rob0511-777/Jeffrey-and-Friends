@@ -19,3 +19,4 @@ test('Unterteilung bleibt am echten Ziel, Wurzel bleibt sichtbar; Zurück und Re
  g.reset();f.receive({active:true,opacity:100,...g.state()});assert.equal(f.elements.orientation.children.length,0);assert.equal(f.elements.grid.style.left,'0%');
  f.receive({active:false});assert.equal(f.elements.content.hidden,true);
 });
+test('Sehr kleine Zellen behalten ihre Pixelgrenzen auch mit Rahmen bei DPI-Skalierung',()=>{const f=setup(960,540),g=createMouseGrid({bounds:{x:-1920,y:0,width:1920,height:1080}},{maxDepth:8});for(let i=0;i<3;i++){g.select('A1');g.subdivide();}f.receive({active:true,opacity:100,...g.state()});const width=g.state().grid.width/5/1920*960;assert.ok(f.elements.grid.children.every(c=>parseFloat(c.style.borderWidth)*2<=width));});

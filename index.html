@@ -7,6 +7,10 @@
   <title>Jeffrey & Freunde · Desktop-Assistent</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="lip-sync.css">
+  <script src="locales/catalog.js" defer></script>
+  <script src="i18n.js" defer></script>
+  <script src="i18n-runtime.js" defer></script>
+  <script src="mouse-locales.js" defer></script>
   <script src="model.js" defer></script>
   <script src="lip-sync.js" defer></script>
   <script src="renderer.js" defer></script>
@@ -51,6 +55,17 @@
           <option value="local">Lokal · Offline-Text über eigenen Server</option>
           <option value="auto">Automatisch · Kosten optimieren</option>
         </select>
+      </div>
+      <div class="language-settings" aria-label="Spracheinstellungen">
+        <label class="voice-label" for="ui-locale" data-i18n="language.ui">Bediensprache</label>
+        <select id="ui-locale" class="voice-select">
+          <option value="de-DE">Deutsch</option><option value="en-GB">English</option><option value="zh-CN">简体中文</option><option value="ja-JP">日本語</option><option value="es-ES">Español</option><option value="pt-BR">Português (Brasil)</option>
+        </select>
+        <label class="voice-label" for="conversation-language" data-i18n="language.conversation">KI-Gesprächssprache</label>
+        <select id="conversation-language" class="voice-select">
+          <option value="auto" data-i18n="language.automatic">Automatisch</option><option value="de-DE">Deutsch</option><option value="en-GB">English</option><option value="zh-CN">简体中文</option><option value="ja-JP">日本語</option><option value="es-ES">Español</option><option value="pt-BR">Português (Brasil)</option>
+        </select>
+        <p class="voice-hint" data-i18n="language.notice"></p>
       </div>
       <section class="mouse-panel" aria-label="Lokale Mauspositionierung">
         <div class="section-title">KOORDINATENNETZ · WINDOWS</div>

@@ -267,12 +267,12 @@
    "pt-BR": "Profundidade máxima (1–8, limitada por pixels)"
   },
   "ui.s033": {
-   "de-DE": "„Berta 3“, „links oben“, „Feld unterteilen“, „zurück“, „Raster ausblenden“. Bei 0 % bleibt die lokale Sprachsteuerung aktiv. „Koordinatennetz beenden“ schaltet sie aus.",
-   "en-GB": "Select A1–D5, refine a corner, subdivide or go back. At 0% the grid is hidden, but commands remain active. Exit grid to stop its listener.",
-   "zh-CN": "选择 A1–D5、细分角落、细分单元格或返回。0% 时网格不可见，命令仍有效。关闭网格可停止监听。",
-   "ja-JP": "A1～D5を選び、隅を細分化、セルを分割、または戻る。0%でもコマンドは有効です。終了で専用認識を停止します。",
-   "es-ES": "Selecciona A1–D5, refina una esquina, subdivide o vuelve. Al 0% sigue activo; cierra la cuadrícula para detener su escucha.",
-   "pt-BR": "Selecione A1–D5, refine um canto, subdivida ou volte. A 0% os comandos continuam ativos; encerre a grade para parar a escuta."
+   "de-DE": "Beenden beendet nur die Koordinatensteuerung. Ein bestehendes OpenAI-Live-Gespräch läuft weiter.",
+   "en-GB": "Exit ends coordinate control. An existing OpenAI Live conversation continues.",
+   "zh-CN": "退出仅结束坐标控制，现有 OpenAI Live 对话继续。",
+   "ja-JP": "終了すると座標操作が終わります。既存のOpenAI Live会話は続きます。",
+   "es-ES": "Salir termina el control por coordenadas. Una conversación OpenAI Live existente continúa.",
+   "pt-BR": "Sair encerra o controle por coordenadas. Uma conversa OpenAI Live existente continua."
   },
   "ui.s034": {
    "de-DE": "ASSISTENT-MODUS",
@@ -547,7 +547,7 @@
    "pt-BR": "✨ CONVERSA LIVE NATURAL"
   },
   "ui.s068": {
-   "de-DE": "OpenAI Realtime Mini · Helle Comic-Stimme voreingestellt · Direkt sprechen und Antwort hören. Per Knopf oder Codewort starten. Sage „[Name], verschwinde“, um sofort Schluss zu machen. Bei 45 Sekunden Gesprächspause automatisch aus (Sicherheitslimit: 15 Minuten).",
+   "de-DE": "Live nutzt den gewählten Anbieter. Nach 45 Sekunden ohne Aktivität wird getrennt; maximal 15 Minuten je Sitzung. Gemeinsame Rasterbefehle benötigen einen zuverlässigen Transkriptkanal.",
    "en-GB": "Start Live with a button or wakeword. Idle disconnect after 45 seconds; safety limit 15 minutes. App-side voice commands depend on provider transcripts.",
    "zh-CN": "按钮或唤醒词启动实时会话。空闲 45 秒断开，安全上限 15 分钟。应用语音命令依赖提供商转录。",
    "ja-JP": "ボタンかウェイクワードで開始。無活動45秒で切断、安全上限15分。アプリの音声コマンドには提供元の文字起こしが必要です。",
@@ -923,7 +923,7 @@
    "pt-BR": "Os controles Live ficam no topo, abaixo dos personagens."
   },
   "ui.s115": {
-   "de-DE": "🔒 Dein API-Schlüssel bleibt im Windows-Hauptprozess. Bei Live-Gesprächen werden Mikrofondaten an OpenAI übertragen und nach Nutzung abgerechnet. Kopfhörer helfen gegen Echo. Die klassische Windows-Sprachfunktion bleibt unten als Alternative erhalten.",
+   "de-DE": "Live-Audio wird an den gewählten Cloud-Anbieter übertragen. Bildschirm und markierter Text benötigen eine separate Freigabe.",
    "en-GB": "API keys stay in the main process. Live audio goes to the selected provider and may be billed. Headphones help prevent echo. One-time Windows recognition is available below.",
    "zh-CN": "API 密钥保留在主进程。实时音频发送到所选提供商，可能收费。耳机可防回声。下方有 Windows 单次识别。",
    "ja-JP": "APIキーはメインプロセスに保持。ライブ音声は選択先に送信され、料金が発生する場合があります。ヘッドホン推奨。下にWindows単発認識があります。",
@@ -1873,6 +1873,1734 @@
    "ja-JP": "設定を開く",
    "es-ES": "Abrir ajustes",
    "pt-BR": "Abrir configurações"
+  },
+  "language.notice": {
+   "de-DE": "UI in sechs Sprachen. Sprache benötigt passende Erkennung; neue Sprachpfade noch nicht unter Windows getestet. OpenAI teilt Transkripte, Gemini nutzt einen sicheren lokalen Fallback.",
+   "en-GB": "UI in six languages. Voice needs matching recognition; new language paths not yet tested on Windows. OpenAI shares transcripts; Gemini uses a safe local fallback.",
+   "zh-CN": "六种界面语言。语音需要对应识别；新语言路径尚未在 Windows 实测。OpenAI 共用转录，Gemini 使用安全本地后备。",
+   "ja-JP": "UIは6言語。音声には対応認識が必要で、新言語経路はWindows未実測。OpenAIは文字起こし共用、Geminiは安全なローカル代替。",
+   "es-ES": "Interfaz en seis idiomas. Voz requiere reconocimiento compatible; rutas nuevas aún sin probar en Windows. OpenAI comparte transcripciones; Gemini usa alternativa local segura.",
+   "pt-BR": "Interface em seis idiomas. Voz exige reconhecimento compatível; novas rotas ainda não testadas no Windows. OpenAI compartilha transcrições; Gemini usa alternativa local segura."
+  },
+  "language.settings": {
+   "de-DE": "Spracheinstellungen",
+   "en-GB": "Language settings",
+   "zh-CN": "语言设置",
+   "ja-JP": "言語設定",
+   "es-ES": "Ajustes de idioma",
+   "pt-BR": "Configurações de idioma"
+  },
+  "chat.you": {
+   "de-DE": "Du: ",
+   "en-GB": "You: ",
+   "zh-CN": "你：",
+   "ja-JP": "あなた：",
+   "es-ES": "Tú: ",
+   "pt-BR": "Você: "
+  },
+  "aria.character": {
+   "de-DE": "Desktop-Charakter",
+   "en-GB": "Desktop character",
+   "zh-CN": "桌面角色",
+   "ja-JP": "デスクトップキャラクター",
+   "es-ES": "Personaje de escritorio",
+   "pt-BR": "Personagem de desktop"
+  },
+  "aria.live": {
+   "de-DE": "Schneller Gesprächsstart",
+   "en-GB": "Quick conversation start",
+   "zh-CN": "快速开始会话",
+   "ja-JP": "会話をすぐ開始",
+   "es-ES": "Inicio rápido de conversación",
+   "pt-BR": "Início rápido de conversa"
+  },
+  "aria.mouse": {
+   "de-DE": "Lokale Mauspositionierung",
+   "en-GB": "Local mouse positioning",
+   "zh-CN": "本地鼠标定位",
+   "ja-JP": "ローカルマウス位置指定",
+   "es-ES": "Posicionamiento local del ratón",
+   "pt-BR": "Posicionamento local do mouse"
+  },
+  "aria.mode": {
+   "de-DE": "Modus wählen",
+   "en-GB": "Choose mode",
+   "zh-CN": "选择模式",
+   "ja-JP": "モード選択",
+   "es-ES": "Elegir modo",
+   "pt-BR": "Escolher modo"
+  },
+  "aria.gesture": {
+   "de-DE": "Geste wählen",
+   "en-GB": "Choose gesture",
+   "zh-CN": "选择手势",
+   "ja-JP": "ジェスチャー選択",
+   "es-ES": "Elegir gesto",
+   "pt-BR": "Escolher gesto"
+  },
+  "aria.chat": {
+   "de-DE": "Letzte Unterhaltung",
+   "en-GB": "Recent conversation",
+   "zh-CN": "最近会话",
+   "ja-JP": "最近の会話",
+   "es-ES": "Conversación reciente",
+   "pt-BR": "Conversa recente"
+  },
+  "aria.cost": {
+   "de-DE": "Lokale Kostenschätzung",
+   "en-GB": "Local cost estimate",
+   "zh-CN": "本地费用估算",
+   "ja-JP": "ローカル費用推定",
+   "es-ES": "Estimación local de costes",
+   "pt-BR": "Estimativa local de custos"
+  },
+  "aria.preview": {
+   "de-DE": "Vorschau von Jeffrey, dem Desktop-Roboter",
+   "en-GB": "Desktop character preview",
+   "zh-CN": "桌面角色预览",
+   "ja-JP": "デスクトップキャラクターのプレビュー",
+   "es-ES": "Vista previa del personaje",
+   "pt-BR": "Prévia do personagem"
+  },
+  "aria.robot": {
+   "de-DE": "Freundlicher Roboterkopf mit schwebenden Händen",
+   "en-GB": "Robot head with floating hands",
+   "zh-CN": "机器人头与悬浮双手",
+   "ja-JP": "ロボットの頭と浮かぶ手",
+   "es-ES": "Cabeza robótica con manos flotantes",
+   "pt-BR": "Cabeça robótica com mãos flutuantes"
+  },
+  "placeholder.chat": {
+   "de-DE": "Moin! Erzähl mir einen Witz …",
+   "en-GB": "Hello! Tell me a joke…",
+   "zh-CN": "你好！讲个笑话吧……",
+   "ja-JP": "こんにちは！冗談を聞かせて…",
+   "es-ES": "¡Hola! Cuéntame un chiste…",
+   "pt-BR": "Olá! Conte uma piada…"
+  },
+  "placeholder.note": {
+   "de-DE": "Ich möchte, dass Jeffrey mich morgens kurz begrüßt.",
+   "en-GB": "I would like Jeffrey to greet me in the morning.",
+   "zh-CN": "我希望 Jeffrey 早晨问候我。",
+   "ja-JP": "朝にJeffreyに挨拶してほしい。",
+   "es-ES": "Quiero que Jeffrey me salude por la mañana.",
+   "pt-BR": "Quero que Jeffrey me cumprimente de manhã."
+  },
+  "placeholder.model": {
+   "de-DE": "z. B. llama3.2 oder qwen2.5",
+   "en-GB": "e.g. llama3.2 or qwen2.5",
+   "zh-CN": "例如 llama3.2 或 qwen2.5",
+   "ja-JP": "例：llama3.2、qwen2.5",
+   "es-ES": "p. ej. llama3.2 o qwen2.5",
+   "pt-BR": "ex.: llama3.2 ou qwen2.5"
+  },
+  "placeholder.gemini": {
+   "de-DE": "AQ.… oder AIza…",
+   "en-GB": "AQ.… or AIza…",
+   "zh-CN": "AQ.… 或 AIza…",
+   "ja-JP": "AQ.… または AIza…",
+   "es-ES": "AQ.… o AIza…",
+   "pt-BR": "AQ.… ou AIza…"
+  },
+  "menu.wake": {
+   "de-DE": "Codewort „{name}“",
+   "en-GB": "Wakeword “{name}”",
+   "zh-CN": "唤醒词“{name}”",
+   "ja-JP": "ウェイクワード「{name}」",
+   "es-ES": "Activación «{name}»",
+   "pt-BR": "Ativação “{name}”"
+  },
+  "mouse.active": {
+   "de-DE": "Koordinatennetz aktiv. Keine Klicks.",
+   "en-GB": "Grid active. No clicks.",
+   "zh-CN": "网格已启用，无点击。",
+   "ja-JP": "グリッド有効。クリックなし。",
+   "es-ES": "Cuadrícula activa. Sin clics.",
+   "pt-BR": "Grade ativa. Sem cliques."
+  },
+  "mouse.stopped": {
+   "de-DE": "Mausbewegung gestoppt.",
+   "en-GB": "Mouse movement stopped.",
+   "zh-CN": "鼠标移动已停止。",
+   "ja-JP": "マウス移動を停止。",
+   "es-ES": "Movimiento detenido.",
+   "pt-BR": "Movimento parado."
+  },
+  "mouse.hidden": {
+   "de-DE": "Raster unsichtbar. Koordinatensteuerung bleibt aktiv.",
+   "en-GB": "Grid hidden. Coordinate commands stay active.",
+   "zh-CN": "网格已隐藏，坐标控制仍有效。",
+   "ja-JP": "グリッド非表示。座標コマンドは有効。",
+   "es-ES": "Cuadrícula oculta. Control sigue activo.",
+   "pt-BR": "Grade oculta. Controle continua ativo."
+  },
+  "mouse.subdivided": {
+   "de-DE": "Aktuellen Zielbereich erneut in A1 bis D5 unterteilt.",
+   "en-GB": "Target region subdivided into A1–D5.",
+   "zh-CN": "目标区域已细分为 A1–D5。",
+   "ja-JP": "対象領域をA1～D5に分割。",
+   "es-ES": "Región subdividida en A1–D5.",
+   "pt-BR": "Região subdividida em A1–D5."
+  },
+  "mouse.refined": {
+   "de-DE": "Mausziel fein positioniert.",
+   "en-GB": "Mouse target refined.",
+   "zh-CN": "鼠标目标已细化。",
+   "ja-JP": "マウス目標を微調整。",
+   "es-ES": "Destino refinado.",
+   "pt-BR": "Destino refinado."
+  },
+  "mouse.moving": {
+   "de-DE": "Maus bewegt sich zum letzten Ziel.",
+   "en-GB": "Moving to the last target.",
+   "zh-CN": "正在移向上次目标。",
+   "ja-JP": "前回の目標へ移動中。",
+   "es-ES": "Moviendo al último destino.",
+   "pt-BR": "Movendo ao último destino."
+  },
+  "mouse.target": {
+   "de-DE": "Mausziel {cell} gewählt.",
+   "en-GB": "Target {cell} selected.",
+   "zh-CN": "已选择目标 {cell}。",
+   "ja-JP": "目標{cell}を選択。",
+   "es-ES": "Destino {cell} elegido.",
+   "pt-BR": "Destino {cell} selecionado."
+  },
+  "mouse.depthLimit": {
+   "de-DE": "Maximale Unterteilungstiefe erreicht.",
+   "en-GB": "Maximum refinement depth reached.",
+   "zh-CN": "已达到最大细分深度。",
+   "ja-JP": "最大深度に到達。",
+   "es-ES": "Profundidad máxima alcanzada.",
+   "pt-BR": "Profundidade máxima atingida."
+  },
+  "mouse.pixelLimit": {
+   "de-DE": "Zielbereich ist für weitere Pixel-Unterteilung zu klein.",
+   "en-GB": "Target region is too small for further refinement.",
+   "zh-CN": "目标区域过小，无法继续细分。",
+   "ja-JP": "対象が小さすぎて細分化できません。",
+   "es-ES": "Región demasiado pequeña para refinar.",
+   "pt-BR": "Região pequena demais para refinar."
+  },
+  "mouse.gridPixelLimit": {
+   "de-DE": "Zielbereich ist für ein weiteres Raster zu klein (Pixelgrenze).",
+   "en-GB": "Region is too small for another grid (pixel limit).",
+   "zh-CN": "区域过小，无法再建网格（像素限制）。",
+   "ja-JP": "ピクセル制限により追加グリッド不可。",
+   "es-ES": "Región muy pequeña para otra cuadrícula (límite de píxeles).",
+   "pt-BR": "Região pequena demais para outra grade (limite de pixels)."
+  },
+  "mouse.topLevel": {
+   "de-DE": "Bereits auf der obersten Ebene.",
+   "en-GB": "Already at the root level.",
+   "zh-CN": "已在最上层。",
+   "ja-JP": "最上位です。",
+   "es-ES": "Ya estás en el nivel inicial.",
+   "pt-BR": "Já está no nível inicial."
+  },
+  "mouse.notReady": {
+   "de-DE": "Maussteuerung noch nicht bereit.",
+   "en-GB": "Mouse control is not ready yet.",
+   "zh-CN": "鼠标控制尚未就绪。",
+   "ja-JP": "マウス制御は準備中。",
+   "es-ES": "Control del ratón aún no listo.",
+   "pt-BR": "Controle do mouse ainda não pronto."
+  },
+  "mode.active": {
+   "de-DE": "Aktiv",
+   "en-GB": "Active",
+   "zh-CN": "活跃",
+   "ja-JP": "アクティブ",
+   "es-ES": "Activo",
+   "pt-BR": "Ativo"
+  },
+  "mode.quiet": {
+   "de-DE": "Ruhe",
+   "en-GB": "Quiet",
+   "zh-CN": "安静",
+   "ja-JP": "静か",
+   "es-ES": "Silencioso",
+   "pt-BR": "Silencioso"
+  },
+  "mode.sleep": {
+   "de-DE": "Schlafen",
+   "en-GB": "Sleep",
+   "zh-CN": "睡眠",
+   "ja-JP": "スリープ",
+   "es-ES": "Reposo",
+   "pt-BR": "Dormir"
+  },
+  "mode.activeDescription": {
+   "de-DE": "Gelegentliche Kommentare sind erlaubt.",
+   "en-GB": "Occasional comments allowed.",
+   "zh-CN": "允许偶尔评论。",
+   "ja-JP": "時々のコメントを許可。",
+   "es-ES": "Se permiten comentarios ocasionales.",
+   "pt-BR": "Comentários ocasionais permitidos."
+  },
+  "mode.quietDescription": {
+   "de-DE": "Keine spontanen Kommentare. Auf Abruf bin ich da.",
+   "en-GB": "No spontaneous comments. Available on request.",
+   "zh-CN": "无主动评论，随叫随到。",
+   "ja-JP": "自発的コメントなし。要求時に応答。",
+   "es-ES": "Sin comentarios espontáneos. Disponible a petición.",
+   "pt-BR": "Sem comentários espontâneos. Disponível sob pedido."
+  },
+  "tray.tooltip": {
+   "de-DE": "{name} – {mode}{live}",
+   "en-GB": "{name} – {mode}{live}",
+   "zh-CN": "{name} – {mode}{live}",
+   "ja-JP": "{name} – {mode}{live}",
+   "es-ES": "{name} – {mode}{live}",
+   "pt-BR": "{name} – {mode}{live}"
+  },
+  "tray.live": {
+   "de-DE": " – LIVE-Mikrofon",
+   "en-GB": " – LIVE microphone",
+   "zh-CN": " – 实时麦克风",
+   "ja-JP": " – ライブマイク",
+   "es-ES": " – micrófono LIVE",
+   "pt-BR": " – microfone LIVE"
+  },
+  "menu.wakeTest": {
+   "de-DE": "Codewort kostenlos testen",
+   "en-GB": "Test wakeword locally",
+   "zh-CN": "本地测试唤醒词",
+   "ja-JP": "ウェイクワードをローカルでテスト",
+   "es-ES": "Probar activación local",
+   "pt-BR": "Testar ativação local"
+  },
+  "memory.empty": {
+   "de-DE": "Noch keine Merksätze gespeichert.",
+   "en-GB": "No notes saved yet.",
+   "zh-CN": "尚无笔记。",
+   "ja-JP": "保存メモなし。",
+   "es-ES": "Sin notas guardadas.",
+   "pt-BR": "Sem notas salvas."
+  },
+  "memory.deleteLabel": {
+   "de-DE": "Merksatz löschen: {note}",
+   "en-GB": "Delete note: {note}",
+   "zh-CN": "删除笔记：{note}",
+   "ja-JP": "メモを削除：{note}",
+   "es-ES": "Eliminar nota: {note}",
+   "pt-BR": "Excluir nota: {note}"
+  },
+  "speech.recognised": {
+   "de-DE": "Befehl erkannt; wird geprüft.",
+   "en-GB": "Request recognised; checking it.",
+   "zh-CN": "已识别请求，正在检查。",
+   "ja-JP": "要求を認識。確認中。",
+   "es-ES": "Petición reconocida; comprobando.",
+   "pt-BR": "Pedido reconhecido; verificando."
+  },
+  "speech.listening": {
+   "de-DE": "🎤 Ich höre zu … Sprich jetzt einen kurzen Satz.",
+   "en-GB": "🎤 Listening… say a short sentence.",
+   "zh-CN": "🎤 正在聆听，请说一句短句。",
+   "ja-JP": "🎤 聞き取り中…短い文を話してください。",
+   "es-ES": "🎤 Escuchando… di una frase breve.",
+   "pt-BR": "🎤 Ouvindo… diga uma frase curta."
+  },
+  "speech.empty": {
+   "de-DE": "Nichts verstanden. Du kannst erneut aufs Mikrofon klicken.",
+   "en-GB": "Nothing recognised. Try the microphone again.",
+   "zh-CN": "未识别，可再次点击麦克风。",
+   "ja-JP": "認識できませんでした。もう一度マイクを押してください。",
+   "es-ES": "No se reconoció nada. Prueba de nuevo.",
+   "pt-BR": "Nada reconhecido. Tente novamente."
+  },
+  "speech.noMic": {
+   "de-DE": "Mikrofon nicht verfügbar.",
+   "en-GB": "Microphone unavailable.",
+   "zh-CN": "麦克风不可用。",
+   "ja-JP": "マイクを利用できません。",
+   "es-ES": "Micrófono no disponible.",
+   "pt-BR": "Microfone indisponível."
+  },
+  "speech.sleep": {
+   "de-DE": "😴 Schlafmodus – keine Sprache, kein Mikrofon.",
+   "en-GB": "😴 Sleep mode – speech and microphone off.",
+   "zh-CN": "😴 睡眠模式：语音和麦克风关闭。",
+   "ja-JP": "😴 スリープ：音声・マイク停止。",
+   "es-ES": "😴 Reposo: voz y micrófono apagados.",
+   "pt-BR": "😴 Dormir: voz e microfone desligados."
+  },
+  "speech.sleepRequest": {
+   "de-DE": "Der Roboter schläft. Zuerst Aktiv oder Ruhe auswählen.",
+   "en-GB": "Sleeping. Select Active or Quiet first.",
+   "zh-CN": "正在睡眠。请先选活跃或安静。",
+   "ja-JP": "スリープ中。先にアクティブか静かを選択。",
+   "es-ES": "En reposo. Elige Activo o Silencioso.",
+   "pt-BR": "Dormindo. Escolha Ativo ou Silencioso."
+  },
+  "speech.gridBusy": {
+   "de-DE": "Lokale Rastererkennung ist aktiv. OpenAI Live kann sie übernehmen; für einmaliges Zuhören oder andere Anbieter das Raster beenden.",
+   "en-GB": "Local grid listener is active. Start OpenAI Live to share it, or exit the grid for another provider.",
+   "zh-CN": "本地网格监听已启用。启动 OpenAI Live 可共用，使用其他提供商请先关网格。",
+   "ja-JP": "ローカル認識が有効。OpenAI Liveなら共用可能。他提供元はグリッドを終了。",
+   "es-ES": "Escucha local activa. Inicia OpenAI Live para compartir, o cierra para otro proveedor.",
+   "pt-BR": "Escuta local ativa. Inicie OpenAI Live para compartilhar, ou encerre para outro provedor."
+  },
+  "consent.revoked": {
+   "de-DE": "Dauerhafte Zustimmung widerrufen. Künftige Cloud-Anfragen fragen wieder nach.",
+   "en-GB": "Durable approval revoked. Future cloud requests will ask again.",
+   "zh-CN": "持久授权已撤销。后续云请求将再次询问。",
+   "ja-JP": "永続許可を取り消しました。次回クラウド要求で再確認。",
+   "es-ES": "Permiso permanente revocado. Se volverá a preguntar.",
+   "pt-BR": "Permissão permanente revogada. Será perguntado novamente."
+  },
+  "consent.revokeFailed": {
+   "de-DE": "Widerruf gilt jetzt. Speichern fehlgeschlagen: Einstellungen-Datei prüfen, bevor die App neu gestartet wird.",
+   "en-GB": "Revoked for this run. Saving failed: fix the settings file before restarting.",
+   "zh-CN": "本次运行已撤销，但保存失败。重启前请修复设置文件。",
+   "ja-JP": "今回の実行では取消済み。保存失敗。再起動前に設定ファイルを修正。",
+   "es-ES": "Revocado en esta ejecución. Falló guardar: corrige ajustes antes de reiniciar.",
+   "pt-BR": "Revogado nesta execução. Falhou ao salvar: corrija configurações antes de reiniciar."
+  },
+  "key.saved": {
+   "de-DE": "{provider}-API-Schlüssel verschlüsselt im Windows-Benutzerprofil gespeichert.",
+   "en-GB": "{provider} API key encrypted in the Windows profile.",
+   "zh-CN": "{provider} API 密钥已加密保存在 Windows 配置中。",
+   "ja-JP": "{provider} APIキーをWindowsプロファイルに暗号化保存。",
+   "es-ES": "Clave API {provider} cifrada en el perfil Windows.",
+   "pt-BR": "Chave API {provider} criptografada no perfil Windows."
+  },
+  "key.deleted": {
+   "de-DE": "{provider}-API-Schlüssel gelöscht.",
+   "en-GB": "{provider} API key deleted.",
+   "zh-CN": "已删除 {provider} API 密钥。",
+   "ja-JP": "{provider} APIキーを削除。",
+   "es-ES": "Clave API {provider} eliminada.",
+   "pt-BR": "Chave API {provider} excluída."
+  },
+  "key.volatile": {
+   "de-DE": "Verschlüsselung nicht verfügbar: Schlüssel gilt nur bis zum Beenden.",
+   "en-GB": "Encryption unavailable: key is kept only until exit.",
+   "zh-CN": "加密不可用：密钥仅保留到退出。",
+   "ja-JP": "暗号化不可：キーは終了までのみ保持。",
+   "es-ES": "Cifrado no disponible: clave solo hasta salir.",
+   "pt-BR": "Criptografia indisponível: chave só até sair."
+  },
+  "settings.changed": {
+   "de-DE": "{feature}: {state}. Gilt ab dem nächsten Gespräch.",
+   "en-GB": "{feature}: {state}. Applies to the next conversation.",
+   "zh-CN": "{feature}：{state}。下次会话生效。",
+   "ja-JP": "{feature}：{state}。次の会話で適用。",
+   "es-ES": "{feature}: {state}. Próxima conversación.",
+   "pt-BR": "{feature}: {state}. Próxima conversa."
+  },
+  "feature.memory": {
+   "de-DE": "Gedächtnis",
+   "en-GB": "Memory",
+   "zh-CN": "记忆",
+   "ja-JP": "メモリー",
+   "es-ES": "Memoria",
+   "pt-BR": "Memória"
+  },
+  "feature.pc": {
+   "de-DE": "PC-Assistent",
+   "en-GB": "PC assistant",
+   "zh-CN": "电脑助手",
+   "ja-JP": "PCアシスタント",
+   "es-ES": "Asistente del PC",
+   "pt-BR": "Assistente do PC"
+  },
+  "feature.alerts": {
+   "de-DE": "PC-Warnungen",
+   "en-GB": "PC alerts",
+   "zh-CN": "电脑警告",
+   "ja-JP": "PC警告",
+   "es-ES": "Avisos del PC",
+   "pt-BR": "Avisos do PC"
+  },
+  "feature.web": {
+   "de-DE": "Websuche",
+   "en-GB": "Web search",
+   "zh-CN": "网页搜索",
+   "ja-JP": "ウェブ検索",
+   "es-ES": "Búsqueda web",
+   "pt-BR": "Busca web"
+  },
+  "feature.browser": {
+   "de-DE": "Webseiten in Chrome öffnen",
+   "en-GB": "Open websites in Chrome",
+   "zh-CN": "在 Chrome 打开网页",
+   "ja-JP": "Chromeでサイトを開く",
+   "es-ES": "Abrir sitios en Chrome",
+   "pt-BR": "Abrir sites no Chrome"
+  },
+  "state.on": {
+   "de-DE": "aktiviert",
+   "en-GB": "enabled",
+   "zh-CN": "启用",
+   "ja-JP": "有効",
+   "es-ES": "activado",
+   "pt-BR": "ativado"
+  },
+  "state.off": {
+   "de-DE": "deaktiviert",
+   "en-GB": "disabled",
+   "zh-CN": "关闭",
+   "ja-JP": "無効",
+   "es-ES": "desactivado",
+   "pt-BR": "desativado"
+  },
+  "voice.next": {
+   "de-DE": "Neue Live-Stimme gilt ab dem nächsten Gespräch.",
+   "en-GB": "New Live voice applies to the next conversation.",
+   "zh-CN": "新声音下次会话生效。",
+   "ja-JP": "新ライブ音声は次の会話で適用。",
+   "es-ES": "Nueva voz en la próxima conversación.",
+   "pt-BR": "Nova voz na próxima conversa."
+  },
+  "style.next": {
+   "de-DE": "Neuer Sprechstil gilt ab dem nächsten Gespräch.",
+   "en-GB": "New speaking style applies to the next conversation.",
+   "zh-CN": "新说话风格下次会话生效。",
+   "ja-JP": "新話し方は次の会話で適用。",
+   "es-ES": "Nuevo estilo en la próxima conversación.",
+   "pt-BR": "Novo estilo na próxima conversa."
+  },
+  "filter.next": {
+   "de-DE": "{name}-Stimmfilter ab nächstem Gespräch: {value}",
+   "en-GB": "{name} voice filter next conversation: {value}",
+   "zh-CN": "{name} 声音滤镜下次生效：{value}",
+   "ja-JP": "{name}音声フィルターは次の会話：{value}",
+   "es-ES": "Filtro de {name} en próxima conversación: {value}",
+   "pt-BR": "Filtro de {name} na próxima conversa: {value}"
+  },
+  "character.changed": {
+   "de-DE": "Aktiv: {name}. Stimme und Persönlichkeit gelten ab dem nächsten Gespräch.",
+   "en-GB": "Active: {name}. Voice and personality apply next conversation.",
+   "zh-CN": "当前：{name}。声音和个性下次会话生效。",
+   "ja-JP": "使用中：{name}。音声と個性は次の会話で適用。",
+   "es-ES": "Activo: {name}. Voz y personalidad en próxima conversación.",
+   "pt-BR": "Ativo: {name}. Voz e personalidade na próxima conversa."
+  },
+  "intro.kelly": {
+   "de-DE": "Kelly: Deine charmante virtuelle Assistentin. Freundlich, elegant und immer auf Abruf.",
+   "en-GB": "Kelly: your charming assistant, friendly, elegant and ready to help.",
+   "zh-CN": "Kelly：迷人的虚拟助手，友好、优雅，随时提供帮助。",
+   "ja-JP": "Kelly：親しみやすく優雅で、いつでも頼れるアシスタント。",
+   "es-ES": "Kelly: tu asistente encantadora, amable, elegante y disponible.",
+   "pt-BR": "Kelly: sua assistente encantadora, amigável, elegante e disponível."
+  },
+  "intro.james": {
+   "de-DE": "James: Ein kultivierter englischer Butler-Roboter. Diskret, charmant und stets zu Diensten.",
+   "en-GB": "James: a cultured British butler robot, discreet and always at your service.",
+   "zh-CN": "James：有教养的英式管家机器人，谨慎、迷人，随时服务。",
+   "ja-JP": "James：洗練された英国執事ロボット。控えめで、いつでもお役に。",
+   "es-ES": "James: mayordomo británico robótico, discreto y siempre a tu servicio.",
+   "pt-BR": "James: mordomo britânico robótico, discreto e sempre às ordens."
+  },
+  "budget.progress": {
+   "de-DE": "Monat {spent} von {limit} ({ratio} %).",
+   "en-GB": "Month {spent} of {limit} ({ratio}%).",
+   "zh-CN": "本月 {spent} / {limit}（{ratio}%）。",
+   "ja-JP": "今月 {spent} / {limit}（{ratio}%）。",
+   "es-ES": "Mes {spent} de {limit} ({ratio}%).",
+   "pt-BR": "Mês {spent} de {limit} ({ratio}%)."
+  },
+  "budget.warning": {
+   "de-DE": "Budgetwarnung: {values} % erreicht.",
+   "en-GB": "Budget warning: {values}% reached.",
+   "zh-CN": "预算警告：已达 {values}%。",
+   "ja-JP": "予算警告：{values}%に到達。",
+   "es-ES": "Aviso presupuesto: {values}% alcanzado.",
+   "pt-BR": "Aviso de orçamento: {values}% atingido."
+  },
+  "app.notepad": {
+   "de-DE": "Editor",
+   "en-GB": "Notepad",
+   "zh-CN": "记事本",
+   "ja-JP": "メモ帳",
+   "es-ES": "Bloc de notas",
+   "pt-BR": "Bloco de Notas"
+  },
+  "wake.off": {
+   "de-DE": "Codewort-Erkennung aus. Raster und Live-Gespräch steuern ihr Mikrofon separat.",
+   "en-GB": "Wakeword recognition off. Grid and Live microphone use is controlled separately.",
+   "zh-CN": "唤醒词识别已关闭。网格和 Live 麦克风分别控制。",
+   "ja-JP": "ウェイクワード認識は停止中。グリッドとLiveのマイクは別に制御されます。",
+   "es-ES": "Activación por nombre apagada. El micrófono de cuadrícula y Live se controla por separado.",
+   "pt-BR": "Ativação por nome desligada. O microfone de grade e Live é controlado separadamente."
+  },
+  "wake.sleep": {
+   "de-DE": "Schlafmodus: Codewort und Mikrofon aus.",
+   "en-GB": "Sleep: wakeword and microphone off.",
+   "zh-CN": "睡眠：唤醒词和麦克风关闭。",
+   "ja-JP": "スリープ：ウェイクワードとマイク停止。",
+   "es-ES": "Reposo: activación y micrófono apagados.",
+   "pt-BR": "Dormir: ativação e microfone desligados."
+  },
+  "wake.grid": {
+   "de-DE": "Koordinatenmodus: lokale Befehle aktiv; OpenAI-Codewort verfügbar, wenn eingeschaltet.",
+   "en-GB": "Coordinate mode: local commands active; OpenAI wakeup available if enabled.",
+   "zh-CN": "坐标模式：本地命令有效；启用后可唤醒 OpenAI。",
+   "ja-JP": "座標モード：ローカル命令有効。設定が有効ならOpenAIを呼び出せます。",
+   "es-ES": "Modo coordenadas: comandos locales; activación OpenAI si está habilitada.",
+   "pt-BR": "Modo coordenadas: comandos locais; ativação OpenAI se habilitada."
+  },
+  "wake.live": {
+   "de-DE": "Live-Gespräch läuft. Codewort-Erkennung pausiert.",
+   "en-GB": "Live conversation active. Local wakeword paused.",
+   "zh-CN": "实时会话进行中，本地唤醒暂停。",
+   "ja-JP": "ライブ会話中。ローカルウェイクワード停止。",
+   "es-ES": "Live activo. Activación local pausada.",
+   "pt-BR": "Live ativo. Ativação local pausada."
+  },
+  "wake.starting": {
+   "de-DE": "Starte lokale Codewort-Erkennung …",
+   "en-GB": "Starting local wakeword recognition…",
+   "zh-CN": "正在启动本地唤醒识别……",
+   "ja-JP": "ローカルウェイクワード認識を開始中…",
+   "es-ES": "Iniciando activación local…",
+   "pt-BR": "Iniciando ativação local…"
+  },
+  "wake.connecting": {
+   "de-DE": "Codewort erkannt – Live-Verbindung wird aufgebaut …",
+   "en-GB": "Wakeword detected; connecting Live…",
+   "zh-CN": "检测到唤醒词，正在连接实时会话……",
+   "ja-JP": "ウェイクワード検出。ライブ接続中…",
+   "es-ES": "Activación detectada; conectando Live…",
+   "pt-BR": "Ativação detectada; conectando Live…"
+  },
+  "wake.testPassed": {
+   "de-DE": "✅ Test bestanden! „{name}“ wurde lokal erkannt. Keine API-Kosten.",
+   "en-GB": "✅ Test passed: “{name}” recognised locally. No API charge.",
+   "zh-CN": "✅ 测试通过：本地识别“{name}”，无 API 费。",
+   "ja-JP": "✅ テスト成功：「{name}」をローカル認識。API料金なし。",
+   "es-ES": "✅ Prueba correcta: «{name}» reconocido localmente. Sin cargo API.",
+   "pt-BR": "✅ Teste passou: “{name}” reconhecido localmente. Sem custo de API."
+  },
+  "wake.testPrompt": {
+   "de-DE": "Sage innerhalb von 15 Sekunden „{name}“. Nur lokaler Test, keine API-Kosten.",
+   "en-GB": "Say “{name}” within 15 seconds. Local test, no API charges.",
+   "zh-CN": "15 秒内说“{name}”。仅本地测试，无 API 费。",
+   "ja-JP": "15秒以内に「{name}」。ローカルテスト、API料金なし。",
+   "es-ES": "Di «{name}» en 15 segundos. Prueba local sin coste API.",
+   "pt-BR": "Diga “{name}” em 15 segundos. Teste local sem custo de API."
+  },
+  "wake.testFailed": {
+   "de-DE": "„{name}“ nicht erkannt. Mikrofon, Erkennungssprache und Empfindlichkeit prüfen.",
+   "en-GB": "“{name}” not recognised. Check microphone, recognizer language and sensitivity.",
+   "zh-CN": "未识别“{name}”。检查麦克风、识别语言和灵敏度。",
+   "ja-JP": "「{name}」未認識。マイク・認識言語・感度を確認。",
+   "es-ES": "«{name}» no reconocido. Revisa micrófono, idioma y sensibilidad.",
+   "pt-BR": "“{name}” não reconhecido. Verifique microfone, idioma e sensibilidade."
+  },
+  "wake.enableFirst": {
+   "de-DE": "Erst das lokale Wakeword für {name} aktivieren.",
+   "en-GB": "Enable the local wakeword for {name} first.",
+   "zh-CN": "请先启用 {name} 的本地唤醒词。",
+   "ja-JP": "先に{name}のローカルウェイクワードを有効化。",
+   "es-ES": "Activa primero la palabra de {name}.",
+   "pt-BR": "Ative primeiro a palavra de {name}."
+  },
+  "wake.endGrid": {
+   "de-DE": "Erst Koordinatennetz beenden, dann Codewort testen.",
+   "en-GB": "Exit the grid before the wakeword test.",
+   "zh-CN": "唤醒测试前请先关网格。",
+   "ja-JP": "テスト前にグリッドを終了。",
+   "es-ES": "Cierra la cuadrícula antes de probar activación.",
+   "pt-BR": "Encerre a grade antes do teste de ativação."
+  },
+  "wake.endLive": {
+   "de-DE": "Erst Live-Gespräch beenden, dann Codewort testen.",
+   "en-GB": "End Live before testing the wakeword.",
+   "zh-CN": "唤醒测试前请先结束实时会话。",
+   "ja-JP": "テスト前にライブを終了。",
+   "es-ES": "Termina Live antes de probar activación.",
+   "pt-BR": "Encerre Live antes do teste de ativação."
+  },
+  "live.closed": {
+   "de-DE": "Beendet. Mikrofon aus.",
+   "en-GB": "Ended. Microphone off.",
+   "zh-CN": "已结束，麦克风关闭。",
+   "ja-JP": "終了。マイクオフ。",
+   "es-ES": "Terminado. Micrófono apagado.",
+   "pt-BR": "Encerrado. Microfone desligado."
+  },
+  "live.connected": {
+   "de-DE": "Verbunden – Mikrofon aktiv. Einfach sprechen.",
+   "en-GB": "Connected – microphone active. You can speak.",
+   "zh-CN": "已连接，麦克风启用，可以说话。",
+   "ja-JP": "接続済み。マイク有効。話しかけてください。",
+   "es-ES": "Conectado, micrófono activo. Puedes hablar.",
+   "pt-BR": "Conectado, microfone ativo. Pode falar."
+  },
+  "live.ready": {
+   "de-DE": "Bereit – du kannst erneut fragen.",
+   "en-GB": "Ready – you can ask again.",
+   "zh-CN": "就绪，可以继续提问。",
+   "ja-JP": "準備完了。続けて質問できます。",
+   "es-ES": "Listo, puedes preguntar otra vez.",
+   "pt-BR": "Pronto, pode perguntar novamente."
+  },
+  "live.geminiReady": {
+   "de-DE": "🟢 Gemini Live: Mikrofon aktiv. Stimme weicht von OpenAI ab.",
+   "en-GB": "🟢 Gemini Live: microphone active. Voice differs from OpenAI.",
+   "zh-CN": "🟢 Gemini 实时：麦克风已启用，声音与 OpenAI 不同。",
+   "ja-JP": "🟢 Gemini Live：マイク有効。OpenAIとは異なる音声。",
+   "es-ES": "🟢 Gemini Live: micrófono activo. Voz distinta de OpenAI.",
+   "pt-BR": "🟢 Gemini Live: microfone ativo. Voz diferente do OpenAI."
+  },
+  "live.geminiConnecting": {
+   "de-DE": "Gemini-Verbindung wird aufgebaut. Stimmen unterscheiden sich von OpenAI.",
+   "en-GB": "Connecting to Gemini. Voices differ from OpenAI.",
+   "zh-CN": "正在连接 Gemini，声音与 OpenAI 不同。",
+   "ja-JP": "Geminiに接続中。OpenAIとは音声が異なります。",
+   "es-ES": "Conectando a Gemini. Voces distintas de OpenAI.",
+   "pt-BR": "Conectando ao Gemini. Vozes diferentes do OpenAI."
+  },
+  "live.idle": {
+   "de-DE": "45 Sekunden Gesprächspause – Mikrofon aus. Sag „{name}“, um mich wieder zu rufen.",
+   "en-GB": "45 seconds idle – microphone off. Start Live again, or say “{name}” if wakewords are enabled.",
+   "zh-CN": "空闲 45 秒，麦克风关闭。可重启实时会话，或在启用唤醒时说“{name}”。",
+   "ja-JP": "無活動45秒でマイクオフ。ライブを再開するか、有効なら「{name}」で呼びかけ。",
+   "es-ES": "45 s inactivos, micrófono apagado. Reinicia Live o di «{name}» si activación está habilitada.",
+   "pt-BR": "45 s inativos, microfone desligado. Reinicie Live ou diga “{name}” se a ativação estiver habilitada."
+  },
+  "live.geminiEnd": {
+   "de-DE": "Gemini Live beendet (Code {code}){reason}. Mikrofon aus.",
+   "en-GB": "Gemini Live ended (code {code}){reason}. Microphone off.",
+   "zh-CN": "Gemini 实时结束（代码 {code}）{reason}。麦克风关闭。",
+   "ja-JP": "Gemini Live終了（コード{code}）{reason}。マイクオフ。",
+   "es-ES": "Gemini Live terminó (código {code}){reason}. Micrófono apagado.",
+   "pt-BR": "Gemini Live encerrou (código {code}){reason}. Microfone desligado."
+  },
+  "filter.jeffreyPaused": {
+   "de-DE": "Jeffrey: Computerfilter pausiert – Originalstimme aktiv.",
+   "en-GB": "Jeffrey: filter paused, original voice active.",
+   "zh-CN": "Jeffrey：滤镜已暂停，使用原声。",
+   "ja-JP": "Jeffrey：フィルター停止、原音有効。",
+   "es-ES": "Jeffrey: filtro pausado, voz original activa.",
+   "pt-BR": "Jeffrey: filtro pausado, voz original ativa."
+  },
+  "filter.jeffreyPitch": {
+   "de-DE": "Jeffrey: hellere, metallische Computerstimme aktiv.",
+   "en-GB": "Jeffrey: brighter metallic computer voice active.",
+   "zh-CN": "Jeffrey：明亮金属电脑声音已启用。",
+   "ja-JP": "Jeffrey：明るい金属的な音声が有効。",
+   "es-ES": "Jeffrey: voz metálica más aguda activa.",
+   "pt-BR": "Jeffrey: voz metálica mais aguda ativa."
+  },
+  "filter.jeffreyMetal": {
+   "de-DE": "Jeffrey: blecherner Klangfilter aktiv.",
+   "en-GB": "Jeffrey: metallic filter active.",
+   "zh-CN": "Jeffrey：金属滤镜已启用。",
+   "ja-JP": "Jeffrey：金属フィルター有効。",
+   "es-ES": "Jeffrey: filtro metálico activo.",
+   "pt-BR": "Jeffrey: filtro metálico ativo."
+  },
+  "filter.broncoPaused": {
+   "de-DE": "Bronco: Filter pausiert – Originalstimme aktiv.",
+   "en-GB": "Bronco: filter paused, original voice active.",
+   "zh-CN": "Bronco：滤镜已暂停，使用原声。",
+   "ja-JP": "Bronco：フィルター停止、原音有効。",
+   "es-ES": "Bronco: filtro pausado, voz original activa.",
+   "pt-BR": "Bronco: filtro pausado, voz original ativa."
+  },
+  "filter.broncoPitch": {
+   "de-DE": "Bronco: tiefe, raue Schrottplatz-Stimme aktiv.",
+   "en-GB": "Bronco: deep rough scrapyard voice active.",
+   "zh-CN": "Bronco：低沉粗糙的废料场声音已启用。",
+   "ja-JP": "Bronco：低く荒いスクラップ音声が有効。",
+   "es-ES": "Bronco: voz grave y áspera activa.",
+   "pt-BR": "Bronco: voz grave e áspera ativa."
+  },
+  "filter.broncoRough": {
+   "de-DE": "Bronco: rauer Filter aktiv.",
+   "en-GB": "Bronco: rough filter active.",
+   "zh-CN": "Bronco：粗糙滤镜已启用。",
+   "ja-JP": "Bronco：荒いフィルター有効。",
+   "es-ES": "Bronco: filtro áspero activo.",
+   "pt-BR": "Bronco: filtro áspero ativo."
+  },
+  "wake.ready": {
+   "de-DE": "🟢 Lokal bereit ({locale}): „{name}“. Reagiere auf einen einzelnen Ruf.",
+   "en-GB": "🟢 Local recognizer ready ({locale}): “{name}”.",
+   "zh-CN": "🟢 本地识别就绪（{locale}）：“{name}”。",
+   "ja-JP": "🟢 ローカル認識準備完了（{locale}）：「{name}」。",
+   "es-ES": "🟢 Reconocimiento local listo ({locale}): «{name}».",
+   "pt-BR": "🟢 Reconhecimento local pronto ({locale}): “{name}”."
+  },
+  "wake.low": {
+   "de-DE": "🟡 Namen eventuell gehört, aber nicht sicher genug ({confidence} %). Wähle bei Bedarf eine höhere Empfindlichkeit.",
+   "en-GB": "🟡 Possible name, confidence too low ({confidence}%). Try higher sensitivity.",
+   "zh-CN": "🟡 可能听到名字，但置信度过低（{confidence}%）。可提高灵敏度。",
+   "ja-JP": "🟡 名前の可能性、確信度不足（{confidence}%）。感度を上げてみてください。",
+   "es-ES": "🟡 Posible nombre, confianza baja ({confidence}%). Prueba mayor sensibilidad.",
+   "pt-BR": "🟡 Possível nome, confiança baixa ({confidence}%). Tente maior sensibilidade."
+  },
+  "pc.status": {
+   "de-DE": "CPU-Auslastung ungefähr {cpu} Prozent. Arbeitsspeicher {memory} Prozent belegt, {used} von {total} Gigabyte. Windows läuft seit ungefähr {hours} Stunden.",
+   "en-GB": "CPU about {cpu}%. RAM {memory}%, {used}/{total} GB. Windows uptime about {hours} hours.",
+   "zh-CN": "CPU 约 {cpu}%。内存 {memory}%，{used}/{total} GB。Windows 已运行约 {hours} 小时。",
+   "ja-JP": "CPU約{cpu}%。メモリー{memory}%、{used}/{total}GB。Windows稼働約{hours}時間。",
+   "es-ES": "CPU aprox. {cpu}%. RAM {memory}%, {used}/{total} GB. Windows lleva {hours} horas.",
+   "pt-BR": "CPU aprox. {cpu}%. RAM {memory}%, {used}/{total} GB. Windows ativo há {hours} horas."
+  },
+  "selection.error": {
+   "de-DE": "Technischer Fehler beim Auslesen der Windows-Textauswahl. {code}",
+   "en-GB": "Technical error reading Windows selection. {code}",
+   "zh-CN": "读取 Windows 文本选择时发生技术错误。{code}",
+   "ja-JP": "Windows選択テキストの読み取りエラー。{code}",
+   "es-ES": "Error técnico leyendo selección Windows. {code}",
+   "pt-BR": "Erro técnico ao ler seleção Windows. {code}"
+  },
+  "selection.unsupported": {
+   "de-DE": "Diese Anwendung stellt keine geeignete Textauswahl über Windows UI Automation bereit.",
+   "en-GB": "This app does not expose a suitable selection through Windows UI Automation.",
+   "zh-CN": "此应用未通过 Windows UI Automation 提供合适文本选择。",
+   "ja-JP": "このアプリはWindows UI Automationで適切な選択を公開していません。",
+   "es-ES": "La app no expone selección compatible por UI Automation.",
+   "pt-BR": "O app não expõe seleção compatível pela UI Automation."
+  },
+  "selection.empty": {
+   "de-DE": "Ich sehe gerade keinen markierten Text. Soll ich stattdessen deinen Bildschirm untersuchen?",
+   "en-GB": "No selected text found. Would you like a screen request instead?",
+   "zh-CN": "未找到选中文本。是否改为请求屏幕分析？",
+   "ja-JP": "選択テキストがありません。代わりに画面を確認しますか？",
+   "es-ES": "No hay texto seleccionado. ¿Prefieres solicitar análisis de pantalla?",
+   "pt-BR": "Nenhum texto selecionado. Prefere solicitar análise da tela?"
+  },
+  "selection.protected": {
+   "de-DE": "Die Textauswahl ist geschützt und wird nicht ausgelesen.",
+   "en-GB": "Selection is protected and will not be read.",
+   "zh-CN": "文本选择受保护，不会读取。",
+   "ja-JP": "保護された選択は読み取りません。",
+   "es-ES": "Selección protegida; no se leerá.",
+   "pt-BR": "Seleção protegida; não será lida."
+  },
+  "selection.ambiguous": {
+   "de-DE": "Die Anwendung meldet mehrere Textauswahlen. Bitte markiere den gewünschten Abschnitt erneut.",
+   "en-GB": "App reports multiple selections. Select the intended passage again.",
+   "zh-CN": "应用报告多个选择，请重新选定目标段落。",
+   "ja-JP": "複数の選択を検出。対象部分を再選択してください。",
+   "es-ES": "Hay varias selecciones. Selecciona otra vez el fragmento.",
+   "pt-BR": "Há várias seleções. Selecione novamente o trecho."
+  },
+  "selection.tooLong": {
+   "de-DE": "Die Textauswahl ist zu lang. Bitte markiere höchstens 24.000 Zeichen.",
+   "en-GB": "Selection too long. Select no more than 24,000 characters.",
+   "zh-CN": "选择过长，最多 24,000 字符。",
+   "ja-JP": "選択が長すぎます。24,000文字以内にしてください。",
+   "es-ES": "Selección larga. Máximo 24.000 caracteres.",
+   "pt-BR": "Seleção longa. Máximo 24.000 caracteres."
+  },
+  "selection.noWindow": {
+   "de-DE": "Ich finde kein geeignetes Windows-Fenster mit Textauswahl.",
+   "en-GB": "No suitable Windows window with selection found.",
+   "zh-CN": "未找到带文本选择的合适窗口。",
+   "ja-JP": "選択のある適切なウィンドウがありません。",
+   "es-ES": "No hay ventana Windows adecuada con selección.",
+   "pt-BR": "Nenhuma janela Windows adequada com seleção."
+  },
+  "selection.readDone": {
+   "de-DE": "Markierter Text wurde vorgelesen.",
+   "en-GB": "Selected text read aloud.",
+   "zh-CN": "已朗读选中文本。",
+   "ja-JP": "選択テキストを読み上げました。",
+   "es-ES": "Texto seleccionado leído.",
+   "pt-BR": "Texto selecionado lido."
+  },
+  "desktop.target": {
+   "de-DE": "Bildschirmaufnahme: Zielmonitor wird ermittelt.",
+   "en-GB": "Screenshot: finding the target monitor.",
+   "zh-CN": "截图：正在确定目标显示器。",
+   "ja-JP": "画面取得：対象モニターを確認中。",
+   "es-ES": "Captura: buscando monitor objetivo.",
+   "pt-BR": "Captura: localizando monitor alvo."
+  },
+  "desktop.permission": {
+   "de-DE": "Freigabe für diese Bildschirmübertragung wird geprüft.",
+   "en-GB": "Checking approval for this screen transfer.",
+   "zh-CN": "正在检查本次屏幕传输授权。",
+   "ja-JP": "今回の画面送信許可を確認中。",
+   "es-ES": "Comprobando permiso de esta transferencia.",
+   "pt-BR": "Verificando permissão desta transferência."
+  },
+  "desktop.capture": {
+   "de-DE": "Bildschirmaufnahme: Monitor DISPLAY{number} wird aufgenommen.",
+   "en-GB": "Screenshot: capturing monitor DISPLAY{number}.",
+   "zh-CN": "截图：正在获取 DISPLAY{number}。",
+   "ja-JP": "画面取得：DISPLAY{number}を取得中。",
+   "es-ES": "Captura: monitor DISPLAY{number}.",
+   "pt-BR": "Captura: monitor DISPLAY{number}."
+  },
+  "desktop.primary": {
+   "de-DE": "Bildschirmaufnahme: Der primäre Bildschirm wird aufgenommen.",
+   "en-GB": "Screenshot: capturing the primary screen.",
+   "zh-CN": "截图：正在获取主屏幕。",
+   "ja-JP": "画面取得：メイン画面を取得中。",
+   "es-ES": "Captura: pantalla principal.",
+   "pt-BR": "Captura: tela principal."
+  },
+  "desktop.sending": {
+   "de-DE": "Bildanalyse: Aufnahme erstellt. Übertragung an OpenAI wird gestartet.",
+   "en-GB": "Image captured. Starting transfer to OpenAI.",
+   "zh-CN": "图像已获取，正在发送到 OpenAI。",
+   "ja-JP": "画像取得完了。OpenAIへ送信中。",
+   "es-ES": "Imagen capturada. Enviando a OpenAI.",
+   "pt-BR": "Imagem capturada. Enviando ao OpenAI."
+  },
+  "desktop.response": {
+   "de-DE": "Bildanalyse: Antwort von OpenAI wird ausgewertet.",
+   "en-GB": "Evaluating OpenAI's image-analysis response.",
+   "zh-CN": "正在处理 OpenAI 图像分析回复。",
+   "ja-JP": "OpenAI画像分析の応答を処理中。",
+   "es-ES": "Procesando análisis de OpenAI.",
+   "pt-BR": "Processando análise do OpenAI."
+  },
+  "desktop.done": {
+   "de-DE": "Bildanalyse abgeschlossen. Antwort ist bereit.",
+   "en-GB": "Image analysis complete. Reply ready.",
+   "zh-CN": "图像分析完成，回复就绪。",
+   "ja-JP": "画像分析完了。返答の準備完了。",
+   "es-ES": "Análisis completo. Respuesta lista.",
+   "pt-BR": "Análise concluída. Resposta pronta."
+  },
+  "desktop.command": {
+   "de-DE": "Desktop-Befehl erkannt.",
+   "en-GB": "Desktop request recognised.",
+   "zh-CN": "已识别桌面请求。",
+   "ja-JP": "デスクトップ要求を認識。",
+   "es-ES": "Petición de escritorio reconocida.",
+   "pt-BR": "Pedido de desktop reconhecido."
+  },
+  "desktop.readout": {
+   "de-DE": "Desktop-Sprachantwort angefordert.",
+   "en-GB": "Desktop speech reply requested.",
+   "zh-CN": "已请求桌面语音回复。",
+   "ja-JP": "デスクトップ音声返答を要求。",
+   "es-ES": "Respuesta hablada solicitada.",
+   "pt-BR": "Resposta falada solicitada."
+  },
+  "privacy.status": {
+   "de-DE": "{kind}: {state}",
+   "en-GB": "{kind}: {state}",
+   "zh-CN": "{kind}：{state}",
+   "ja-JP": "{kind}：{state}",
+   "es-ES": "{kind}: {state}",
+   "pt-BR": "{kind}: {state}"
+  },
+  "privacy.screen": {
+   "de-DE": "Bildschirm",
+   "en-GB": "Screen",
+   "zh-CN": "屏幕",
+   "ja-JP": "画面",
+   "es-ES": "Pantalla",
+   "pt-BR": "Tela"
+  },
+  "privacy.text": {
+   "de-DE": "Markierter Text",
+   "en-GB": "Selected text",
+   "zh-CN": "选中文本",
+   "ja-JP": "選択テキスト",
+   "es-ES": "Texto seleccionado",
+   "pt-BR": "Texto selecionado"
+  },
+  "privacy.allowed": {
+   "de-DE": "Dauerhaft für OpenAI erlaubt.",
+   "en-GB": "Durably allowed for OpenAI.",
+   "zh-CN": "已持久授权 OpenAI。",
+   "ja-JP": "OpenAIへの永続許可あり。",
+   "es-ES": "Permiso permanente para OpenAI.",
+   "pt-BR": "Permissão permanente para OpenAI."
+  },
+  "privacy.none": {
+   "de-DE": "Keine dauerhafte Cloud-Freigabe.",
+   "en-GB": "No durable cloud approval.",
+   "zh-CN": "无持久云授权。",
+   "ja-JP": "永続クラウド許可なし。",
+   "es-ES": "Sin permiso cloud permanente.",
+   "pt-BR": "Sem permissão cloud permanente."
+  },
+  "local.modelsFound": {
+   "de-DE": "Gefunden: {models}",
+   "en-GB": "Found: {models}",
+   "zh-CN": "已找到：{models}",
+   "ja-JP": "検出：{models}",
+   "es-ES": "Encontrados: {models}",
+   "pt-BR": "Encontrados: {models}"
+  },
+  "local.modelsEmpty": {
+   "de-DE": "Keine Modelle gemeldet.",
+   "en-GB": "No models reported.",
+   "zh-CN": "未报告模型。",
+   "ja-JP": "モデルの報告なし。",
+   "es-ES": "Sin modelos informados.",
+   "pt-BR": "Nenhum modelo informado."
+  },
+  "model.unselected": {
+   "de-DE": "nicht gewählt",
+   "en-GB": "not selected",
+   "zh-CN": "未选择",
+   "ja-JP": "未選択",
+   "es-ES": "sin elegir",
+   "pt-BR": "não selecionado"
+  },
+  "keyboard.alternative": {
+   "de-DE": "Hinweis: Textfeld oder Win + H verwenden.",
+   "en-GB": "Use the text field or Windows dictation (Win + H).",
+   "zh-CN": "请使用文本框或 Windows 听写（Win + H）。",
+   "ja-JP": "入力欄かWindows音声入力（Win + H）を使用。",
+   "es-ES": "Usa texto o dictado Windows (Win + H).",
+   "pt-BR": "Use texto ou ditado Windows (Win + H)."
+  },
+  "memory.saved": {
+   "de-DE": "Merksatz lokal gespeichert. Gilt für das nächste KI-Gespräch.",
+   "en-GB": "Note saved locally. Applies to the next AI conversation.",
+   "zh-CN": "笔记已本地保存，下次 AI 会话生效。",
+   "ja-JP": "メモをローカル保存。次のAI会話で適用。",
+   "es-ES": "Nota local guardada. Próxima conversación IA.",
+   "pt-BR": "Nota local salva. Próxima conversa IA."
+  },
+  "memory.deleted": {
+   "de-DE": "Merksatz gelöscht.",
+   "en-GB": "Note deleted.",
+   "zh-CN": "笔记已删除。",
+   "ja-JP": "メモを削除。",
+   "es-ES": "Nota eliminada.",
+   "pt-BR": "Nota excluída."
+  },
+  "memory.cleared": {
+   "de-DE": "Alle Merksätze gelöscht.",
+   "en-GB": "All notes deleted.",
+   "zh-CN": "所有笔记已删除。",
+   "ja-JP": "全メモを削除。",
+   "es-ES": "Todas las notas eliminadas.",
+   "pt-BR": "Todas as notas excluídas."
+  },
+  "pc.disabled": {
+   "de-DE": "PC-Funktionen sind ausgeschaltet.",
+   "en-GB": "PC features are disabled.",
+   "zh-CN": "电脑功能已关闭。",
+   "ja-JP": "PC機能は無効。",
+   "es-ES": "Funciones PC desactivadas.",
+   "pt-BR": "Funções do PC desativadas."
+  },
+  "wake.offShort": {
+   "de-DE": "Codewort ausgeschaltet.",
+   "en-GB": "Wakeword disabled.",
+   "zh-CN": "唤醒词已关闭。",
+   "ja-JP": "ウェイクワード無効。",
+   "es-ES": "Activación desactivada.",
+   "pt-BR": "Ativação desligada."
+  },
+  "wake.sleepShort": {
+   "de-DE": "Im Schlafmodus ist das Mikrofon ausgeschaltet.",
+   "en-GB": "Microphone is off in Sleep mode.",
+   "zh-CN": "睡眠模式下麦克风关闭。",
+   "ja-JP": "スリープ中はマイクオフ。",
+   "es-ES": "Micrófono apagado en Reposo.",
+   "pt-BR": "Microfone desligado ao Dormir."
+  },
+  "wake.restart": {
+   "de-DE": "Erkenner nicht bereit. Den Codewort-Schalter aus- und wieder einschalten; danach Fehlermeldung prüfen.",
+   "en-GB": "Recognizer not ready. Toggle wakewords off/on and check the error.",
+   "zh-CN": "识别器未就绪。关闭并重新启用唤醒词，检查错误。",
+   "ja-JP": "認識器未準備。ウェイクワードを再設定しエラーを確認。",
+   "es-ES": "Reconocedor no listo. Desactiva/activa y revisa error.",
+   "pt-BR": "Reconhecedor não pronto. Desligue/ligue e confira erro."
+  },
+  "wake.miss": {
+   "de-DE": "Mikrofon hört Sprache, aber nicht sicher „{name}“. Erkennungssprache und Empfindlichkeit prüfen.",
+   "en-GB": "Speech heard, but “{name}” uncertain. Check language and sensitivity.",
+   "zh-CN": "听到语音，但不能确认“{name}”。检查语言和灵敏度。",
+   "ja-JP": "音声を検出しましたが「{name}」は不確か。言語と感度を確認。",
+   "es-ES": "Se oye voz, pero «{name}» no es seguro. Revisa idioma y sensibilidad.",
+   "pt-BR": "Há voz, mas “{name}” não é certo. Verifique idioma e sensibilidade."
+  },
+  "character.hidden": {
+   "de-DE": "Unsichtbar · {name} wartet auf seinen Auftritt",
+   "en-GB": "Hidden · {name} is ready to appear",
+   "zh-CN": "隐藏 · {name} 等待出场",
+   "ja-JP": "非表示 · {name}は登場待機",
+   "es-ES": "Oculto · {name} espera para aparecer",
+   "pt-BR": "Oculto · {name} aguarda para aparecer"
+  },
+  "provider.auto": {
+   "de-DE": "Automatisch: lokale Aufgaben zuerst; kein kostenpflichtiger Gemini-/OpenAI-Audioanbieter ohne deine Freigabe.",
+   "en-GB": "Automatic: local tasks first; no paid Gemini/OpenAI audio without permission.",
+   "zh-CN": "自动：优先本地；未授权不会启用付费 Gemini/OpenAI 音频。",
+   "ja-JP": "自動：ローカル優先。許可なしに有料Gemini/OpenAI音声を使いません。",
+   "es-ES": "Automático: primero local; sin audio Gemini/OpenAI de pago sin permiso.",
+   "pt-BR": "Automático: local primeiro; sem áudio Gemini/OpenAI pago sem permissão."
+  },
+  "desktop.clarify": {
+   "de-DE": "Meinst du markierten Text oder den Bildschirm? Bitte ausdrücklich auswählen. Keine Aufnahme gestartet.",
+   "en-GB": "Do you mean selected text or the screen? Please specify. No capture started.",
+   "zh-CN": "你指选中文本还是屏幕？请明确选择。未启动截图。",
+   "ja-JP": "選択テキストか画面ですか？明示してください。取得は未開始。",
+   "es-ES": "¿Texto seleccionado o pantalla? Especifica. No se inició captura.",
+   "pt-BR": "Texto selecionado ou tela? Especifique. Nenhuma captura iniciada."
+  },
+  "speech.busy": {
+   "de-DE": "Die Freigabe des bisherigen Mikrofonzugriffs wurde nicht bestätigt. Textfeld und Schaltflächen verwenden; bei Bedarf App neu starten.",
+   "en-GB": "The previous microphone release was not confirmed. Use text and buttons; restart the app if needed.",
+   "zh-CN": "无法确认原麦克风已释放。请使用文本和按钮，必要时重启应用。",
+   "ja-JP": "既存マイクの解放を確認できません。入力欄とボタンを使用し、必要ならアプリを再起動してください。",
+   "es-ES": "No se confirmó la liberación del micrófono anterior. Usa texto y botones; reinicia la app si hace falta.",
+   "pt-BR": "A liberação do microfone anterior não foi confirmada. Use texto e botões; reinicie o aplicativo se necessário."
+  },
+  "speech.failed": {
+   "de-DE": "Lokale Spracherkennung nicht verfügbar. Textfeld und Stopp-Schaltfläche bleiben verfügbar.",
+   "en-GB": "Local speech recognition is unavailable. Text input and the Stop button remain available.",
+   "zh-CN": "本地语音识别不可用。文本输入和停止按钮仍可用。",
+   "ja-JP": "ローカル音声認識を利用できません。入力欄と停止ボタンは使用可能です。",
+   "es-ES": "Reconocimiento local no disponible. El campo de texto y el botón Detener siguen disponibles.",
+   "pt-BR": "Reconhecimento local indisponível. O campo de texto e o botão Parar continuam disponíveis."
+  },
+  "legacy.m002": {
+   "de-DE": "OpenAI Qualität: bewährte Realtime-Stimmen und bestehende lokale Audiofilter.",
+   "en-GB": "OpenAI quality: established Realtime voices and local audio filters.",
+   "zh-CN": "OpenAI 品质：原有实时声音与本地音频滤镜。",
+   "ja-JP": "OpenAI品質：既存ライブ音声とローカルフィルター。",
+   "es-ES": "OpenAI calidad: voces Realtime y filtros locales.",
+   "pt-BR": "OpenAI qualidade: vozes Realtime e filtros locais."
+  },
+  "legacy.m003": {
+   "de-DE": "Gemini Sparmodus: Live-Audio mit anderen Stimmen; Verfügbarkeit, Datenschutz und Preise hängen von Region und Konto ab.",
+   "en-GB": "Gemini economy: different voices; availability, privacy and prices depend on account and region.",
+   "zh-CN": "Gemini 节省：不同声音；可用性、隐私和价格因账户、地区而异。",
+   "ja-JP": "Gemini節約：異なる音声。利用可否・プライバシー・価格は地域とアカウント次第。",
+   "es-ES": "Gemini ahorro: otras voces; disponibilidad, privacidad y precio según cuenta y región.",
+   "pt-BR": "Gemini economia: outras vozes; disponibilidade, privacidade e preço conforme conta e região."
+  },
+  "legacy.m004": {
+   "de-DE": "Lokale KI antwortet auf diesem Rechner; keine Cloud-Inferenz. Ein lokaler Modellserver muss verfügbar sein.",
+   "en-GB": "Local text inference on your server, no cloud inference or full Realtime audio.",
+   "zh-CN": "自己的服务器本地文本推理，无云推理或完整实时音频。",
+   "ja-JP": "自分のサーバーでローカルテキスト推論。クラウド推論・完全ライブ音声なし。",
+   "es-ES": "Texto local en tu servidor, sin inferencia cloud ni Realtime completo.",
+   "pt-BR": "Texto local no seu servidor, sem inferência cloud ou Realtime completo."
+  },
+  "legacy.m005": {
+   "de-DE": "OpenAI-Schlüssel gespeichert",
+   "en-GB": "OpenAI key saved",
+   "zh-CN": "OpenAI 密钥已保存",
+   "ja-JP": "OpenAIキー保存済み",
+   "es-ES": "Clave OpenAI guardada",
+   "pt-BR": "Chave OpenAI salva"
+  },
+  "legacy.m006": {
+   "de-DE": "Gemini-Schlüssel gespeichert",
+   "en-GB": "Gemini key saved",
+   "zh-CN": "Gemini 密钥已保存",
+   "ja-JP": "Geminiキー保存済み",
+   "es-ES": "Clave Gemini guardada",
+   "pt-BR": "Chave Gemini salva"
+  },
+  "legacy.m007": {
+   "de-DE": "Vom Anbieter gemeldete Nutzung; lokale Euro-Berechnung, keine Anbieterrechnung.",
+   "en-GB": "Provider-reported usage; locally calculated EUR, not an invoice.",
+   "zh-CN": "提供商报告用量；本地欧元计算，非账单。",
+   "ja-JP": "提供元報告の使用量。EURはローカル計算で請求書ではありません。",
+   "es-ES": "Uso informado; euros calculados localmente, no factura.",
+   "pt-BR": "Uso informado; euros calculados localmente, não fatura."
+  },
+  "legacy.m008": {
+   "de-DE": "Gemeldete und geschätzte Nutzung gemischt; keine Anbieterrechnung.",
+   "en-GB": "Mixed reported and estimated usage; not an invoice.",
+   "zh-CN": "报告与估算混合，非账单。",
+   "ja-JP": "報告値と推定値の混在。請求書ではありません。",
+   "es-ES": "Uso informado y estimado mezclado; no factura.",
+   "pt-BR": "Uso informado e estimado misturado; não fatura."
+  },
+  "legacy.m009": {
+   "de-DE": "Rechnerisch geschätzte Nutzung; keine Anbieterrechnung.",
+   "en-GB": "Estimated usage; not a provider invoice.",
+   "zh-CN": "估算用量，非提供商账单。",
+   "ja-JP": "推定使用量。提供元の請求書ではありません。",
+   "es-ES": "Uso estimado; no factura del proveedor.",
+   "pt-BR": "Uso estimado; não fatura do provedor."
+  },
+  "legacy.m010": {
+   "de-DE": "Noch keine Nutzungsdaten; keine Anbieterrechnung und kein offizieller Rechnungssaldo.",
+   "en-GB": "No usage data; not an invoice or official balance.",
+   "zh-CN": "无用量数据，非账单或官方余额。",
+   "ja-JP": "使用データなし。請求書・公式残高ではありません。",
+   "es-ES": "Sin datos de uso; no factura ni saldo oficial.",
+   "pt-BR": "Sem dados de uso; não fatura nem saldo oficial."
+  },
+  "legacy.m011": {
+   "de-DE": "Ich schlafe: keine Kommentare und keine Auftritte.",
+   "en-GB": "Sleeping: no comments or appearances.",
+   "zh-CN": "睡眠中：无评论或显示。",
+   "ja-JP": "スリープ中：コメント・登場なし。",
+   "es-ES": "En reposo: sin comentarios ni apariciones.",
+   "pt-BR": "Dormindo: sem comentários nem aparições."
+  },
+  "legacy.m013": {
+   "de-DE": "Krak: Ein schrulliger grüner Kobold. Ziemlich frech – und trotzdem hilfreich.",
+   "en-GB": "Krak: a mischievous green goblin, cheeky but helpful.",
+   "zh-CN": "Krak：调皮的绿色小精灵，顽皮但乐于助人。",
+   "ja-JP": "Krak：いたずら好きで頼りになる緑のゴブリン。",
+   "es-ES": "Krak: duende verde travieso, descarado pero útil.",
+   "pt-BR": "Krak: duende verde travesso, atrevido mas útil."
+  },
+  "legacy.m014": {
+   "de-DE": "Bronco: Ein rostiger Mecker-Roboter mit Zigarre. Schlecht gelaunt, aber nützlich.",
+   "en-GB": "Bronco: a rusty grumbling robot, moody but useful.",
+   "zh-CN": "Bronco：爱抱怨的生锈机器人，脾气差但有用。",
+   "ja-JP": "Bronco：さびた不機嫌ロボット。でも役に立ちます。",
+   "es-ES": "Bronco: robot oxidado y gruñón, malhumorado pero útil.",
+   "pt-BR": "Bronco: robô enferrujado e resmungão, mal-humorado mas útil."
+  },
+  "legacy.m015": {
+   "de-DE": "Ich höre zu",
+   "en-GB": "Listening",
+   "zh-CN": "正在聆听",
+   "ja-JP": "聞き取り中",
+   "es-ES": "Escuchando",
+   "pt-BR": "Ouvindo"
+  },
+  "legacy.m016": {
+   "de-DE": "Es ist ein Fehler aufgetreten.",
+   "en-GB": "An error occurred.",
+   "zh-CN": "发生错误。",
+   "ja-JP": "エラーが発生しました。",
+   "es-ES": "Se produjo un error.",
+   "pt-BR": "Ocorreu um erro."
+  },
+  "legacy.m017": {
+   "de-DE": "Dauerhaft für OpenAI erlaubt.",
+   "en-GB": "Durably allowed for OpenAI.",
+   "zh-CN": "已持久授权 OpenAI。",
+   "ja-JP": "OpenAIへの永続許可あり。",
+   "es-ES": "Permiso permanente para OpenAI.",
+   "pt-BR": "Permissão permanente para OpenAI."
+  },
+  "legacy.m018": {
+   "de-DE": "Noch keine Merksätze gespeichert.",
+   "en-GB": "No notes saved yet.",
+   "zh-CN": "尚未保存笔记。",
+   "ja-JP": "保存メモはありません。",
+   "es-ES": "Todavía sin notas guardadas.",
+   "pt-BR": "Ainda sem notas salvas."
+  },
+  "legacy.m019": {
+   "de-DE": "Merksatz löschen: ",
+   "en-GB": "Delete note: ",
+   "zh-CN": "删除笔记：",
+   "ja-JP": "メモを削除：",
+   "es-ES": "Eliminar nota: ",
+   "pt-BR": "Excluir nota: "
+  },
+  "legacy.m020": {
+   "de-DE": "Im Browser nur Vorschau: Die Sprachfunktionen laufen in der Windows-App.",
+   "en-GB": "Browser preview only: voice features run in the Windows app.",
+   "zh-CN": "仅浏览器预览；语音功能在 Windows 应用运行。",
+   "ja-JP": "ブラウザはプレビューのみ。音声はWindowsアプリで動作。",
+   "es-ES": "Solo vista previa: voz funciona en la app Windows.",
+   "pt-BR": "Só prévia: voz funciona no app Windows."
+  },
+  "legacy.m021": {
+   "de-DE": "Lokaler Server wird geprüft …",
+   "en-GB": "Checking local server…",
+   "zh-CN": "正在检查本地服务器……",
+   "ja-JP": "ローカルサーバー確認中…",
+   "es-ES": "Comprobando servidor local…",
+   "pt-BR": "Verificando servidor local…"
+  },
+  "legacy.m022": {
+   "de-DE": "Eine kleine Übertragung kommt an …",
+   "en-GB": "Connecting the hologram…",
+   "zh-CN": "全息角色连接中……",
+   "ja-JP": "ホログラム接続中…",
+   "es-ES": "Conectando holograma…",
+   "pt-BR": "Conectando holograma…"
+  },
+  "legacy.m023": {
+   "de-DE": "Da ist er · Kopf und Hände sind sichtbar",
+   "en-GB": "Visible · head and hands",
+   "zh-CN": "已显示 · 头和手",
+   "ja-JP": "表示中 · 頭と手",
+   "es-ES": "Visible · cabeza y manos",
+   "pt-BR": "Visível · cabeça e mãos"
+  },
+  "legacy.m024": {
+   "de-DE": "Bis gleich · löst sich im Rauschen auf …",
+   "en-GB": "See you · fading out…",
+   "zh-CN": "再见 · 淡出中……",
+   "ja-JP": "またね · 消えていきます…",
+   "es-ES": "Hasta luego · desapareciendo…",
+   "pt-BR": "Até logo · desaparecendo…"
+  },
+  "legacy.m026": {
+   "de-DE": "Desktop-Anfrage wird abgebrochen.",
+   "en-GB": "Cancelling desktop request.",
+   "zh-CN": "正在取消桌面请求。",
+   "ja-JP": "デスクトップ要求を取り消し中。",
+   "es-ES": "Cancelando solicitud de escritorio.",
+   "pt-BR": "Cancelando solicitação de desktop."
+  },
+  "legacy.m027": {
+   "de-DE": "Sprachausgabe gestoppt. Du kannst weiterfragen.",
+   "en-GB": "Speech stopped. You can ask another question.",
+   "zh-CN": "语音已停止。可以继续提问。",
+   "ja-JP": "音声停止。続けて質問できます。",
+   "es-ES": "Voz detenida. Puedes preguntar otra vez.",
+   "pt-BR": "Voz parada. Pode perguntar novamente."
+  },
+  "legacy.m029": {
+   "de-DE": "Die Desktop-Sprachantwort konnte nicht gesendet werden. Bitte erneut fragen.",
+   "en-GB": "Desktop readout could not be sent. Please try again.",
+   "zh-CN": "无法发送桌面朗读，请重试。",
+   "ja-JP": "デスクトップ読み上げを送信できません。再試行してください。",
+   "es-ES": "No se pudo enviar lectura del escritorio. Reintenta.",
+   "pt-BR": "Não foi possível enviar a leitura do desktop. Tente novamente."
+  },
+  "legacy.m030": {
+   "de-DE": "Bildanalyse nicht verfügbar.",
+   "en-GB": "Image analysis unavailable.",
+   "zh-CN": "图像分析不可用。",
+   "ja-JP": "画像分析は利用できません。",
+   "es-ES": "Análisis de imagen no disponible.",
+   "pt-BR": "Análise de imagem indisponível."
+  },
+  "legacy.m031": {
+   "de-DE": "Desktop-Anfrage abgebrochen. Du kannst weiterfragen.",
+   "en-GB": "Desktop request cancelled. You can ask again.",
+   "zh-CN": "桌面请求已取消。可以继续提问。",
+   "ja-JP": "デスクトップ要求を取消。続けて質問できます。",
+   "es-ES": "Solicitud cancelada. Puedes volver a preguntar.",
+   "pt-BR": "Solicitação cancelada. Pode perguntar novamente."
+  },
+  "legacy.m032": {
+   "de-DE": "💻 Ich prüfe den PC …",
+   "en-GB": "💻 Checking PC status…",
+   "zh-CN": "💻 正在检查电脑……",
+   "ja-JP": "💻 PC状態を確認中…",
+   "es-ES": "💻 Comprobando el PC…",
+   "pt-BR": "💻 Verificando o PC…"
+  },
+  "legacy.m033": {
+   "de-DE": "📂 Ich starte das Programm …",
+   "en-GB": "📂 Opening the application…",
+   "zh-CN": "📂 正在打开应用……",
+   "ja-JP": "📂 アプリを起動中…",
+   "es-ES": "📂 Abriendo aplicación…",
+   "pt-BR": "📂 Abrindo aplicativo…"
+  },
+  "legacy.m034": {
+   "de-DE": "🧠 Ich speichere deinen Merksatz …",
+   "en-GB": "🧠 Saving your note…",
+   "zh-CN": "🧠 正在保存笔记……",
+   "ja-JP": "🧠 メモを保存中…",
+   "es-ES": "🧠 Guardando nota…",
+   "pt-BR": "🧠 Salvando nota…"
+  },
+  "legacy.m035": {
+   "de-DE": "🛒 Ich suche bei Idealo …",
+   "en-GB": "🛒 Searching Idealo…",
+   "zh-CN": "🛒 正在搜索 Idealo……",
+   "ja-JP": "🛒 Idealoを検索中…",
+   "es-ES": "🛒 Buscando en Idealo…",
+   "pt-BR": "🛒 Pesquisando no Idealo…"
+  },
+  "legacy.m036": {
+   "de-DE": "🌐 Ich öffne Chrome …",
+   "en-GB": "🌐 Opening Chrome…",
+   "zh-CN": "🌐 正在打开 Chrome……",
+   "ja-JP": "🌐 Chromeを開いています…",
+   "es-ES": "🌐 Abriendo Chrome…",
+   "pt-BR": "🌐 Abrindo Chrome…"
+  },
+  "legacy.m037": {
+   "de-DE": "🌐 Ich suche im Internet …",
+   "en-GB": "🌐 Searching the web…",
+   "zh-CN": "🌐 正在搜索网页……",
+   "ja-JP": "🌐 ウェブを検索中…",
+   "es-ES": "🌐 Buscando en la web…",
+   "pt-BR": "🌐 Pesquisando na web…"
+  },
+  "legacy.m045": {
+   "de-DE": "🛒 Idealo-Suche geöffnet – Roboter antwortet …",
+   "en-GB": "🛒 Idealo results opened; preparing reply…",
+   "zh-CN": "🛒 已打开 Idealo，正在准备回复……",
+   "ja-JP": "🛒 Idealoを開き、返答を準備中…",
+   "es-ES": "🛒 Idealo abierto; preparando respuesta…",
+   "pt-BR": "🛒 Idealo aberto; preparando resposta…"
+  },
+  "legacy.m046": {
+   "de-DE": "🌐 Chrome-Aufruf erledigt – Roboter antwortet …",
+   "en-GB": "🌐 Chrome request completed; preparing reply…",
+   "zh-CN": "🌐 Chrome 请求完成，准备回复……",
+   "ja-JP": "🌐 Chrome操作完了、返答を準備中…",
+   "es-ES": "🌐 Chrome listo; preparando respuesta…",
+   "pt-BR": "🌐 Chrome concluído; preparando resposta…"
+  },
+  "legacy.m047": {
+   "de-DE": "🌐 Suchergebnis gefunden – Roboter antwortet …",
+   "en-GB": "🌐 Search results received; preparing reply…",
+   "zh-CN": "🌐 已收到搜索结果，准备回复……",
+   "ja-JP": "🌐 検索結果を受信、返答を準備中…",
+   "es-ES": "🌐 Resultados recibidos; preparando respuesta…",
+   "pt-BR": "🌐 Resultados recebidos; preparando resposta…"
+  },
+  "legacy.m048": {
+   "de-DE": "Suchantwort konnte nicht an den Roboter übermittelt werden.",
+   "en-GB": "Search result could not be returned to the assistant.",
+   "zh-CN": "无法将搜索结果返回助手。",
+   "ja-JP": "検索結果をアシスタントに返せません。",
+   "es-ES": "No se pudo devolver la búsqueda al asistente.",
+   "pt-BR": "Não foi possível devolver a busca ao assistente."
+  },
+  "legacy.m049": {
+   "de-DE": "Desktop-Sprachantwort wird erstellt.",
+   "en-GB": "Preparing desktop readout.",
+   "zh-CN": "正在准备桌面朗读。",
+   "ja-JP": "デスクトップ読み上げを準備中。",
+   "es-ES": "Preparando lectura del escritorio.",
+   "pt-BR": "Preparando leitura do desktop."
+  },
+  "legacy.m050": {
+   "de-DE": "Maussteuerbefehl nicht verfügbar.",
+   "en-GB": "Mouse command unavailable.",
+   "zh-CN": "鼠标命令不可用。",
+   "ja-JP": "マウスコマンドは利用不可。",
+   "es-ES": "Comando de ratón no disponible.",
+   "pt-BR": "Comando de mouse indisponível."
+  },
+  "legacy.m051": {
+   "de-DE": "Sprachantwort konnte nicht angefordert werden. Bitte erneut fragen.",
+   "en-GB": "Could not request speech. Please ask again.",
+   "zh-CN": "无法请求语音，请重试。",
+   "ja-JP": "音声を要求できません。再度質問してください。",
+   "es-ES": "No se pudo solicitar voz. Pregunta de nuevo.",
+   "pt-BR": "Não foi possível solicitar voz. Pergunte novamente."
+  },
+  "legacy.m052": {
+   "de-DE": "Desktop-Sprachausgabe beendet. Du kannst weiterfragen.",
+   "en-GB": "Desktop readout finished. You can ask again.",
+   "zh-CN": "桌面朗读完成。可以继续提问。",
+   "ja-JP": "読み上げ完了。続けて質問できます。",
+   "es-ES": "Lectura terminada. Puedes preguntar.",
+   "pt-BR": "Leitura concluída. Pode perguntar."
+  },
+  "legacy.m053": {
+   "de-DE": "Die Sprachantwort ist fehlgeschlagen. Prüfe API-Guthaben und Modellzugriff.",
+   "en-GB": "Speech reply failed. Check API credit and model access.",
+   "zh-CN": "语音回复失败。检查 API 余额和模型权限。",
+   "ja-JP": "音声返答失敗。API残高とモデルアクセスを確認。",
+   "es-ES": "Falló respuesta de voz. Revisa crédito y acceso al modelo.",
+   "pt-BR": "Resposta de voz falhou. Verifique saldo e acesso ao modelo."
+  },
+  "legacy.m054": {
+   "de-DE": "Sitzung von OpenAI beendet. Mikrofon aus.",
+   "en-GB": "OpenAI session ended. Microphone off.",
+   "zh-CN": "OpenAI 会话结束，麦克风关闭。",
+   "ja-JP": "OpenAI会話終了。マイクオフ。",
+   "es-ES": "Sesión OpenAI terminada. Micrófono apagado.",
+   "pt-BR": "Sessão OpenAI encerrada. Microfone desligado."
+  },
+  "legacy.m055": {
+   "de-DE": "15-Minuten-Sicherheitslimit erreicht. Mikrofon aus.",
+   "en-GB": "15-minute safety limit reached. Microphone off.",
+   "zh-CN": "达到 15 分钟安全上限，麦克风关闭。",
+   "ja-JP": "15分の安全上限。マイクオフ。",
+   "es-ES": "Límite de 15 minutos. Micrófono apagado.",
+   "pt-BR": "Limite de 15 minutos. Microfone desligado."
+  },
+  "legacy.m056": {
+   "de-DE": " Verbindung wird aufgebaut …",
+   "en-GB": "Connecting…",
+   "zh-CN": "正在连接……",
+   "ja-JP": "接続中…",
+   "es-ES": "Conectando…",
+   "pt-BR": "Conectando…"
+  },
+  "legacy.m057": {
+   "de-DE": "Gemini hat das Sitzungs-Setup nicht bestätigt. Prüfe Modell, API-Key-Typ und Gemini-Live-Zugriff.",
+   "en-GB": "Gemini setup was not confirmed. Check model, key type and Live access.",
+   "zh-CN": "Gemini 未确认设置。检查模型、密钥类型和实时权限。",
+   "ja-JP": "Geminiの設定確認なし。モデル・キー形式・Live権限を確認。",
+   "es-ES": "Gemini no confirmó setup. Revisa modelo, clave y acceso Live.",
+   "pt-BR": "Gemini não confirmou o setup. Confira modelo, chave e acesso Live."
+  },
+  "legacy.m058": {
+   "de-DE": "Für Gemini bitte den Rastermodus beenden. OpenAI kann Raster und Gespräch gemeinsam verwenden.",
+   "en-GB": "Exit the grid before Gemini Live. OpenAI can share grid and conversation.",
+   "zh-CN": "使用 Gemini Live 前请关闭网格。OpenAI 可共用网格与会话。",
+   "ja-JP": "Gemini Liveの前にグリッドを終了。OpenAIは共用可能。",
+   "es-ES": "Cierra la cuadrícula antes de Gemini Live. OpenAI permite compartir.",
+   "pt-BR": "Encerre a grade antes de Gemini Live. OpenAI permite compartilhar."
+  },
+  "legacy.m059": {
+   "de-DE": "Der lokale Modus bietet Text, aber kein vollständiges Realtime-Audio.",
+   "en-GB": "Local mode provides text, not full Realtime audio.",
+   "zh-CN": "本地模式提供文本，无完整实时音频。",
+   "ja-JP": "ローカルモードはテキストのみ、完全ライブ音声なし。",
+   "es-ES": "Modo local: texto, no Realtime completo.",
+   "pt-BR": "Modo local: texto, sem Realtime completo."
+  },
+  "legacy.m060": {
+   "de-DE": "Mikrofonberechtigung wird angefragt …",
+   "en-GB": "Requesting microphone access…",
+   "zh-CN": "正在请求麦克风权限……",
+   "ja-JP": "マイク許可を要求中…",
+   "es-ES": "Solicitando micrófono…",
+   "pt-BR": "Solicitando microfone…"
+  },
+  "legacy.m061": {
+   "de-DE": "Mikrofon im Browser nicht verfügbar. Windows-Mikrofonzugriff prüfen.",
+   "en-GB": "Browser microphone unavailable. Check Windows permissions.",
+   "zh-CN": "浏览器麦克风不可用，检查 Windows 权限。",
+   "ja-JP": "ブラウザマイク利用不可。Windows権限を確認。",
+   "es-ES": "Micrófono no disponible. Revisa permisos Windows.",
+   "pt-BR": "Microfone indisponível. Verifique permissões Windows."
+  },
+  "legacy.m062": {
+   "de-DE": "Verbindung mit OpenAI wird aufgebaut …",
+   "en-GB": "Connecting to OpenAI…",
+   "zh-CN": "正在连接 OpenAI……",
+   "ja-JP": "OpenAIに接続中…",
+   "es-ES": "Conectando a OpenAI…",
+   "pt-BR": "Conectando ao OpenAI…"
+  },
+  "legacy.m067": {
+   "de-DE": "🟢 Live: Sprich mit mir! Nach 45 Sekunden Gesprächspause schalte ich ab.",
+   "en-GB": "🟢 Live ready. Disconnects after 45 seconds of inactivity.",
+   "zh-CN": "🟢 实时会话就绪，空闲 45 秒后断开。",
+   "ja-JP": "🟢 ライブ準備完了。無活動45秒で切断。",
+   "es-ES": "🟢 Live listo. Desconecta tras 45 s de inactividad.",
+   "pt-BR": "🟢 Live pronto. Desconecta após 45 s de inatividade."
+  },
+  "legacy.m070": {
+   "de-DE": "Live-Gespräch beendet. Mikrofon aus.",
+   "en-GB": "Live ended. Microphone off.",
+   "zh-CN": "实时会话结束，麦克风关闭。",
+   "ja-JP": "ライブ終了。マイクオフ。",
+   "es-ES": "Live terminado. Micrófono apagado.",
+   "pt-BR": "Live encerrado. Microfone desligado."
+  },
+  "legacy.m071": {
+   "de-DE": "ICE-Zeitüberschreitung. Firewall/Netzwerk prüfen.",
+   "en-GB": "ICE timeout. Check firewall/network.",
+   "zh-CN": "ICE 超时，检查防火墙和网络。",
+   "ja-JP": "ICEタイムアウト。ネットワーク・ファイアウォールを確認。",
+   "es-ES": "Tiempo ICE agotado. Revisa red/cortafuegos.",
+   "pt-BR": "Tempo ICE esgotado. Verifique rede/firewall."
+  },
+  "legacy.m072": {
+   "de-DE": "Gemini Live: WebSocket geöffnet, Setup wird bestätigt …",
+   "en-GB": "Gemini WebSocket opened; confirming setup…",
+   "zh-CN": "Gemini WebSocket 已连接，正在确认设置……",
+   "ja-JP": "Gemini WebSocket接続、設定確認中…",
+   "es-ES": "Gemini WebSocket abierto; confirmando setup…",
+   "pt-BR": "Gemini WebSocket aberto; confirmando setup…"
+  },
+  "legacy.m074": {
+   "de-DE": "Sprachverbindung geschlossen. Mikrofon für Live aus.",
+   "en-GB": "Live connection closed. Live microphone off.",
+   "zh-CN": "实时连接已关闭，实时麦克风关闭。",
+   "ja-JP": "ライブ接続終了。ライブ用マイクオフ。",
+   "es-ES": "Conexión Live cerrada. Micrófono Live apagado.",
+   "pt-BR": "Conexão Live encerrada. Microfone Live desligado."
+  },
+  "legacy.m075": {
+   "de-DE": "Koordinatennetz beendet.",
+   "en-GB": "Grid exited.",
+   "zh-CN": "网格已关闭。",
+   "ja-JP": "グリッドを終了しました。",
+   "es-ES": "Cuadrícula cerrada.",
+   "pt-BR": "Grade encerrada."
+  },
+  "legacy.m076": {
+   "de-DE": "Bitte zuerst ein Feld auswählen.",
+   "en-GB": "Select a cell first.",
+   "zh-CN": "请先选择单元格。",
+   "ja-JP": "先にセルを選択してください。",
+   "es-ES": "Selecciona una celda primero.",
+   "pt-BR": "Selecione uma célula primeiro."
+  },
+  "legacy.m077": {
+   "de-DE": "Bildschirmkonfiguration geändert. Koordinatennetz bitte neu starten.",
+   "en-GB": "Display layout changed. Restart the grid.",
+   "zh-CN": "显示配置已更改，请重启网格。",
+   "ja-JP": "画面構成が変わりました。グリッドを再開してください。",
+   "es-ES": "Pantallas cambiadas. Reinicia la cuadrícula.",
+   "pt-BR": "Telas alteradas. Reinicie a grade."
+  },
+  "legacy.m078": {
+   "de-DE": "Mauseinstellungen übernommen.",
+   "en-GB": "Mouse settings applied.",
+   "zh-CN": "鼠标设置已应用。",
+   "ja-JP": "マウス設定を適用。",
+   "es-ES": "Ajustes del ratón aplicados.",
+   "pt-BR": "Configurações do mouse aplicadas."
+  },
+  "legacy.m079": {
+   "de-DE": "Maussteuerung ist im Schlafmodus nicht freigegeben.",
+   "en-GB": "Mouse control is disabled in Sleep mode.",
+   "zh-CN": "睡眠模式禁止鼠标控制。",
+   "ja-JP": "スリープ中はマウス制御できません。",
+   "es-ES": "Control del ratón desactivado en Reposo.",
+   "pt-BR": "Controle do mouse desativado ao Dormir."
+  },
+  "legacy.m080": {
+   "de-DE": "Koordinatennetz ist nur unter Windows verfügbar.",
+   "en-GB": "The grid requires Windows.",
+   "zh-CN": "网格需要 Windows。",
+   "ja-JP": "グリッドにはWindowsが必要です。",
+   "es-ES": "La cuadrícula requiere Windows.",
+   "pt-BR": "A grade requer Windows."
+  },
+  "legacy.m081": {
+   "de-DE": "Rasterstart abgebrochen.",
+   "en-GB": "Grid startup cancelled.",
+   "zh-CN": "网格启动已取消。",
+   "ja-JP": "グリッド開始を取消。",
+   "es-ES": "Inicio de cuadrícula cancelado.",
+   "pt-BR": "Início da grade cancelado."
+  },
+  "legacy.m082": {
+   "de-DE": "Koordinatennetz aktiv. Lokale Sprachsteuerung, keine Klicks.",
+   "en-GB": "Grid active. No clicks.",
+   "zh-CN": "网格已启用，无点击。",
+   "ja-JP": "グリッド有効。クリックなし。",
+   "es-ES": "Cuadrícula activa. Sin clics.",
+   "pt-BR": "Grade ativa. Sem cliques."
+  },
+  "legacy.m083": {
+   "de-DE": "Bitte zuerst das Koordinatennetz anzeigen.",
+   "en-GB": "Show the grid first.",
+   "zh-CN": "请先显示网格。",
+   "ja-JP": "先にグリッドを表示してください。",
+   "es-ES": "Muestra la cuadrícula primero.",
+   "pt-BR": "Mostre a grade primeiro."
+  },
+  "legacy.m084": {
+   "de-DE": "Ungültige Sichtbarkeit.",
+   "en-GB": "Invalid visibility value.",
+   "zh-CN": "可见度值无效。",
+   "ja-JP": "表示濃度が無効です。",
+   "es-ES": "Visibilidad no válida.",
+   "pt-BR": "Visibilidade inválida."
+  },
+  "legacy.m085": {
+   "de-DE": "Raster-Sichtbarkeit geändert.",
+   "en-GB": "Grid visibility changed.",
+   "zh-CN": "网格可见度已更改。",
+   "ja-JP": "グリッド濃度を変更。",
+   "es-ES": "Visibilidad cambiada.",
+   "pt-BR": "Visibilidade alterada."
+  },
+  "legacy.m086": {
+   "de-DE": "Raster auf den vollständigen Monitor zurückgesetzt.",
+   "en-GB": "Grid reset to the full monitor.",
+   "zh-CN": "网格已重置到整个显示器。",
+   "ja-JP": "画面全体にリセットしました。",
+   "es-ES": "Cuadrícula reiniciada a pantalla completa.",
+   "pt-BR": "Grade reiniciada para a tela inteira."
+  },
+  "legacy.m087": {
+   "de-DE": "Eine Unterteilung zurück.",
+   "en-GB": "Returned one refinement level.",
+   "zh-CN": "已返回一级。",
+   "ja-JP": "1段階戻りました。",
+   "es-ES": "Volviste un nivel.",
+   "pt-BR": "Voltou um nível."
+  },
+  "legacy.m089": {
+   "de-DE": "Maussteuerung ist nur unter Windows verfügbar.",
+   "en-GB": "Mouse control requires Windows.",
+   "zh-CN": "鼠标控制需要 Windows。",
+   "ja-JP": "マウス制御にはWindowsが必要。",
+   "es-ES": "Control del ratón requiere Windows.",
+   "pt-BR": "Controle do mouse requer Windows."
+  },
+  "legacy.m090": {
+   "de-DE": "Windows-Maussteuerung lieferte ungültige Daten.",
+   "en-GB": "Windows mouse helper returned invalid data.",
+   "zh-CN": "Windows 鼠标助手返回无效数据。",
+   "ja-JP": "Windowsマウス補助から無効データ。",
+   "es-ES": "El asistente de ratón devolvió datos no válidos.",
+   "pt-BR": "O auxiliar do mouse retornou dados inválidos."
+  },
+  "legacy.m091": {
+   "de-DE": "Mausziel erreicht.",
+   "en-GB": "Mouse target reached.",
+   "zh-CN": "已到达鼠标目标。",
+   "ja-JP": "マウスが目標に到達。",
+   "es-ES": "Ratón en el destino.",
+   "pt-BR": "Mouse no destino."
+  },
+  "legacy.m092": {
+   "de-DE": "Windows-Maussteuerung nicht verfügbar. Bitte die Desktop-Sitzung prüfen.",
+   "en-GB": "Windows mouse control unavailable. Check the desktop session.",
+   "zh-CN": "Windows 鼠标控制不可用，检查桌面会话。",
+   "ja-JP": "Windowsマウス制御不可。デスクトップセッションを確認。",
+   "es-ES": "Control Windows no disponible. Revisa sesión de escritorio.",
+   "pt-BR": "Controle Windows indisponível. Verifique sessão de desktop."
+  },
+  "legacy.m093": {
+   "de-DE": "Windows-Maussteuerung beendet.",
+   "en-GB": "Windows mouse control ended.",
+   "zh-CN": "Windows 鼠标控制已结束。",
+   "ja-JP": "Windowsマウス制御を終了。",
+   "es-ES": "Control Windows terminado.",
+   "pt-BR": "Controle Windows encerrado."
+  },
+  "legacy.m094": {
+   "de-DE": "Mausziel liegt außerhalb des gewählten Monitors.",
+   "en-GB": "Target is outside the selected monitor.",
+   "zh-CN": "目标在所选显示器之外。",
+   "ja-JP": "目標が選択画面の外です。",
+   "es-ES": "Destino fuera del monitor seleccionado.",
+   "pt-BR": "Destino fora do monitor selecionado."
+  },
+  "legacy.m095": {
+   "de-DE": "Ungültige Mausgeschwindigkeit.",
+   "en-GB": "Invalid mouse speed.",
+   "zh-CN": "鼠标速度无效。",
+   "ja-JP": "マウス速度が無効。",
+   "es-ES": "Velocidad no válida.",
+   "pt-BR": "Velocidade inválida."
+  },
+  "legacy.m096": {
+   "de-DE": "Lokale Raster-Spracherkennung benötigt Windows.",
+   "en-GB": "Local grid recognition requires Windows.",
+   "zh-CN": "本地网格识别需要 Windows。",
+   "ja-JP": "ローカルグリッド認識にはWindowsが必要。",
+   "es-ES": "Reconocimiento local requiere Windows.",
+   "pt-BR": "Reconhecimento local requer Windows."
+  },
+  "legacy.m097": {
+   "de-DE": "Lokale Raster-Spracherkennung konnte nicht gestartet werden.",
+   "en-GB": "Local grid recognition could not start.",
+   "zh-CN": "无法启动本地网格识别。",
+   "ja-JP": "ローカルグリッド認識を開始できません。",
+   "es-ES": "No se pudo iniciar reconocimiento local.",
+   "pt-BR": "Não foi possível iniciar reconhecimento local."
+  },
+  "legacy.m098": {
+   "de-DE": "Lokale Raster-Spracherkennung lieferte ungültige Daten.",
+   "en-GB": "Local recognition returned invalid data.",
+   "zh-CN": "本地识别返回无效数据。",
+   "ja-JP": "ローカル認識から無効データ。",
+   "es-ES": "Reconocimiento local devolvió datos no válidos.",
+   "pt-BR": "Reconhecimento local retornou dados inválidos."
+  },
+  "legacy.m099": {
+   "de-DE": "Lokale Raster-Spracherkennung nicht verfügbar. Deutsche Windows-Sprachfunktionen und Mikrofon prüfen.",
+   "en-GB": "Local recognition unavailable. Check the selected Windows speech components and microphone.",
+   "zh-CN": "本地识别不可用。检查所选 Windows 语音组件和麦克风。",
+   "ja-JP": "ローカル認識不可。選択言語のWindows音声機能とマイクを確認。",
+   "es-ES": "Reconocimiento local no disponible. Revisa idioma Windows y micrófono.",
+   "pt-BR": "Reconhecimento local indisponível. Verifique idioma Windows e microfone."
+  },
+  "legacy.m100": {
+   "de-DE": "Lokale Raster-Spracherkennung beendet. Maus-Stopp im Steuerungsfenster bleibt verfügbar.",
+   "en-GB": "Local grid recognition ended. The mouse-stop button is still available.",
+   "zh-CN": "本地网格识别已结束。鼠标停止按钮仍可用。",
+   "ja-JP": "ローカルグリッド認識終了。マウス停止ボタンは利用可能。",
+   "es-ES": "Reconocimiento local terminado. El botón de parada sigue disponible.",
+   "pt-BR": "Reconhecimento local encerrado. O botão de parada continua disponível."
   }
  },
  "sources": {
@@ -2109,6 +3837,220 @@
   "Lustigen Testkommentar zeigen": "menu.test",
   "Sprachausgabe stoppen": "menu.stop",
   "Position auf unten rechts zurücksetzen": "menu.position",
-  "Einstellungen öffnen": "menu.settings"
+  "Einstellungen öffnen": "menu.settings",
+  "UI in sechs Sprachen. Sprache benötigt passende Erkennung; neue Sprachpfade noch nicht unter Windows getestet. OpenAI teilt Transkripte, Gemini nutzt einen sicheren lokalen Fallback.": "language.notice",
+  "Spracheinstellungen": "language.settings",
+  "Du: ": "chat.you",
+  "Desktop-Charakter": "aria.character",
+  "Schneller Gesprächsstart": "aria.live",
+  "Lokale Mauspositionierung": "aria.mouse",
+  "Modus wählen": "aria.mode",
+  "Geste wählen": "aria.gesture",
+  "Letzte Unterhaltung": "aria.chat",
+  "Lokale Kostenschätzung": "aria.cost",
+  "Vorschau von Jeffrey, dem Desktop-Roboter": "aria.preview",
+  "Freundlicher Roboterkopf mit schwebenden Händen": "aria.robot",
+  "Moin! Erzähl mir einen Witz …": "placeholder.chat",
+  "Ich möchte, dass Jeffrey mich morgens kurz begrüßt.": "placeholder.note",
+  "z. B. llama3.2 oder qwen2.5": "placeholder.model",
+  "AQ.… oder AIza…": "placeholder.gemini",
+  "Codewort „{name}“": "menu.wake",
+  "Koordinatennetz aktiv. Keine Klicks.": "mouse.active",
+  "Mausbewegung gestoppt.": "mouse.stopped",
+  "Raster unsichtbar. Koordinatensteuerung bleibt aktiv.": "mouse.hidden",
+  "Aktuellen Zielbereich erneut in A1 bis D5 unterteilt.": "mouse.subdivided",
+  "Mausziel fein positioniert.": "mouse.refined",
+  "Maus bewegt sich zum letzten Ziel.": "mouse.moving",
+  "Mausziel {cell} gewählt.": "mouse.target",
+  "Maximale Unterteilungstiefe erreicht.": "mouse.depthLimit",
+  "Zielbereich ist für weitere Pixel-Unterteilung zu klein.": "mouse.pixelLimit",
+  "Zielbereich ist für ein weiteres Raster zu klein (Pixelgrenze).": "mouse.gridPixelLimit",
+  "Bereits auf der obersten Ebene.": "mouse.topLevel",
+  "Maussteuerung noch nicht bereit.": "mouse.notReady",
+  "Aktiv": "mode.active",
+  "Ruhe": "mode.quiet",
+  "Schlafen": "mode.sleep",
+  "Gelegentliche Kommentare sind erlaubt.": "mode.activeDescription",
+  "Keine spontanen Kommentare. Auf Abruf bin ich da.": "mode.quietDescription",
+  "{name} – {mode}{live}": "tray.tooltip",
+  " – LIVE-Mikrofon": "tray.live",
+  "Codewort kostenlos testen": "menu.wakeTest",
+  "Noch keine Merksätze gespeichert.": "legacy.m018",
+  "Merksatz löschen: {note}": "memory.deleteLabel",
+  "Befehl erkannt; wird geprüft.": "speech.recognised",
+  "🎤 Ich höre zu … Sprich jetzt einen kurzen Satz.": "speech.listening",
+  "Nichts verstanden. Du kannst erneut aufs Mikrofon klicken.": "speech.empty",
+  "Mikrofon nicht verfügbar.": "speech.noMic",
+  "😴 Schlafmodus – keine Sprache, kein Mikrofon.": "speech.sleep",
+  "Der Roboter schläft. Zuerst Aktiv oder Ruhe auswählen.": "speech.sleepRequest",
+  "Lokale Rastererkennung ist aktiv. OpenAI Live kann sie übernehmen; für einmaliges Zuhören oder andere Anbieter das Raster beenden.": "speech.gridBusy",
+  "Dauerhafte Zustimmung widerrufen. Künftige Cloud-Anfragen fragen wieder nach.": "consent.revoked",
+  "Widerruf gilt jetzt. Speichern fehlgeschlagen: Einstellungen-Datei prüfen, bevor die App neu gestartet wird.": "consent.revokeFailed",
+  "{provider}-API-Schlüssel verschlüsselt im Windows-Benutzerprofil gespeichert.": "key.saved",
+  "{provider}-API-Schlüssel gelöscht.": "key.deleted",
+  "Verschlüsselung nicht verfügbar: Schlüssel gilt nur bis zum Beenden.": "key.volatile",
+  "{feature}: {state}. Gilt ab dem nächsten Gespräch.": "settings.changed",
+  "Gedächtnis": "feature.memory",
+  "PC-Assistent": "feature.pc",
+  "PC-Warnungen": "feature.alerts",
+  "Websuche": "feature.web",
+  "Webseiten in Chrome öffnen": "feature.browser",
+  "aktiviert": "state.on",
+  "deaktiviert": "state.off",
+  "Neue Live-Stimme gilt ab dem nächsten Gespräch.": "voice.next",
+  "Neuer Sprechstil gilt ab dem nächsten Gespräch.": "style.next",
+  "{name}-Stimmfilter ab nächstem Gespräch: {value}": "filter.next",
+  "Aktiv: {name}. Stimme und Persönlichkeit gelten ab dem nächsten Gespräch.": "character.changed",
+  "Kelly: Deine charmante virtuelle Assistentin. Freundlich, elegant und immer auf Abruf.": "intro.kelly",
+  "James: Ein kultivierter englischer Butler-Roboter. Diskret, charmant und stets zu Diensten.": "intro.james",
+  "Monat {spent} von {limit} ({ratio} %).": "budget.progress",
+  "Budgetwarnung: {values} % erreicht.": "budget.warning",
+  "Editor": "app.notepad",
+  "Codewort-Erkennung aus. Raster und Live-Gespräch steuern ihr Mikrofon separat.": "wake.off",
+  "Schlafmodus: Codewort und Mikrofon aus.": "wake.sleep",
+  "Koordinatenmodus: lokale Befehle aktiv; OpenAI-Codewort verfügbar, wenn eingeschaltet.": "wake.grid",
+  "Live-Gespräch läuft. Codewort-Erkennung pausiert.": "wake.live",
+  "Starte lokale Codewort-Erkennung …": "wake.starting",
+  "Codewort erkannt – Live-Verbindung wird aufgebaut …": "wake.connecting",
+  "✅ Test bestanden! „{name}“ wurde lokal erkannt. Keine API-Kosten.": "wake.testPassed",
+  "Sage innerhalb von 15 Sekunden „{name}“. Nur lokaler Test, keine API-Kosten.": "wake.testPrompt",
+  "„{name}“ nicht erkannt. Mikrofon, Erkennungssprache und Empfindlichkeit prüfen.": "wake.testFailed",
+  "Erst das lokale Wakeword für {name} aktivieren.": "wake.enableFirst",
+  "Erst Koordinatennetz beenden, dann Codewort testen.": "wake.endGrid",
+  "Erst Live-Gespräch beenden, dann Codewort testen.": "wake.endLive",
+  "Beendet. Mikrofon aus.": "live.closed",
+  "Verbunden – Mikrofon aktiv. Einfach sprechen.": "live.connected",
+  "Bereit – du kannst erneut fragen.": "live.ready",
+  "🟢 Gemini Live: Mikrofon aktiv. Stimme weicht von OpenAI ab.": "live.geminiReady",
+  "Gemini-Verbindung wird aufgebaut. Stimmen unterscheiden sich von OpenAI.": "live.geminiConnecting",
+  "45 Sekunden Gesprächspause – Mikrofon aus. Sag „{name}“, um mich wieder zu rufen.": "live.idle",
+  "Gemini Live beendet (Code {code}){reason}. Mikrofon aus.": "live.geminiEnd",
+  "Jeffrey: Computerfilter pausiert – Originalstimme aktiv.": "filter.jeffreyPaused",
+  "Jeffrey: hellere, metallische Computerstimme aktiv.": "filter.jeffreyPitch",
+  "Jeffrey: blecherner Klangfilter aktiv.": "filter.jeffreyMetal",
+  "Bronco: Filter pausiert – Originalstimme aktiv.": "filter.broncoPaused",
+  "Bronco: tiefe, raue Schrottplatz-Stimme aktiv.": "filter.broncoPitch",
+  "Bronco: rauer Filter aktiv.": "filter.broncoRough",
+  "🟢 Lokal bereit ({locale}): „{name}“. Reagiere auf einen einzelnen Ruf.": "wake.ready",
+  "🟡 Namen eventuell gehört, aber nicht sicher genug ({confidence} %). Wähle bei Bedarf eine höhere Empfindlichkeit.": "wake.low",
+  "CPU-Auslastung ungefähr {cpu} Prozent. Arbeitsspeicher {memory} Prozent belegt, {used} von {total} Gigabyte. Windows läuft seit ungefähr {hours} Stunden.": "pc.status",
+  "Technischer Fehler beim Auslesen der Windows-Textauswahl. {code}": "selection.error",
+  "Diese Anwendung stellt keine geeignete Textauswahl über Windows UI Automation bereit.": "selection.unsupported",
+  "Ich sehe gerade keinen markierten Text. Soll ich stattdessen deinen Bildschirm untersuchen?": "selection.empty",
+  "Die Textauswahl ist geschützt und wird nicht ausgelesen.": "selection.protected",
+  "Die Anwendung meldet mehrere Textauswahlen. Bitte markiere den gewünschten Abschnitt erneut.": "selection.ambiguous",
+  "Die Textauswahl ist zu lang. Bitte markiere höchstens 24.000 Zeichen.": "selection.tooLong",
+  "Ich finde kein geeignetes Windows-Fenster mit Textauswahl.": "selection.noWindow",
+  "Markierter Text wurde vorgelesen.": "selection.readDone",
+  "Bildschirmaufnahme: Zielmonitor wird ermittelt.": "desktop.target",
+  "Freigabe für diese Bildschirmübertragung wird geprüft.": "desktop.permission",
+  "Bildschirmaufnahme: Monitor DISPLAY{number} wird aufgenommen.": "desktop.capture",
+  "Bildschirmaufnahme: Der primäre Bildschirm wird aufgenommen.": "desktop.primary",
+  "Bildanalyse: Aufnahme erstellt. Übertragung an OpenAI wird gestartet.": "desktop.sending",
+  "Bildanalyse: Antwort von OpenAI wird ausgewertet.": "desktop.response",
+  "Bildanalyse abgeschlossen. Antwort ist bereit.": "desktop.done",
+  "Desktop-Befehl erkannt.": "desktop.command",
+  "Desktop-Sprachantwort angefordert.": "desktop.readout",
+  "{kind}: {state}": "privacy.status",
+  "Bildschirm": "privacy.screen",
+  "Markierter Text": "privacy.text",
+  "Dauerhaft für OpenAI erlaubt.": "legacy.m017",
+  "Keine dauerhafte Cloud-Freigabe.": "privacy.none",
+  "Gefunden: {models}": "local.modelsFound",
+  "Keine Modelle gemeldet.": "local.modelsEmpty",
+  "nicht gewählt": "model.unselected",
+  "Hinweis: Textfeld oder Win + H verwenden.": "keyboard.alternative",
+  "Merksatz lokal gespeichert. Gilt für das nächste KI-Gespräch.": "memory.saved",
+  "Merksatz gelöscht.": "memory.deleted",
+  "Alle Merksätze gelöscht.": "memory.cleared",
+  "PC-Funktionen sind ausgeschaltet.": "pc.disabled",
+  "Codewort ausgeschaltet.": "wake.offShort",
+  "Im Schlafmodus ist das Mikrofon ausgeschaltet.": "wake.sleepShort",
+  "Erkenner nicht bereit. Den Codewort-Schalter aus- und wieder einschalten; danach Fehlermeldung prüfen.": "wake.restart",
+  "Mikrofon hört Sprache, aber nicht sicher „{name}“. Erkennungssprache und Empfindlichkeit prüfen.": "wake.miss",
+  "Unsichtbar · {name} wartet auf seinen Auftritt": "character.hidden",
+  "Automatisch: lokale Aufgaben zuerst; kein kostenpflichtiger Gemini-/OpenAI-Audioanbieter ohne deine Freigabe.": "provider.auto",
+  "Meinst du markierten Text oder den Bildschirm? Bitte ausdrücklich auswählen. Keine Aufnahme gestartet.": "desktop.clarify",
+  "Die Freigabe des bisherigen Mikrofonzugriffs wurde nicht bestätigt. Textfeld und Schaltflächen verwenden; bei Bedarf App neu starten.": "speech.busy",
+  "Lokale Spracherkennung nicht verfügbar. Textfeld und Stopp-Schaltfläche bleiben verfügbar.": "speech.failed",
+  "OpenAI Qualität: bewährte Realtime-Stimmen und bestehende lokale Audiofilter.": "legacy.m002",
+  "Gemini Sparmodus: Live-Audio mit anderen Stimmen; Verfügbarkeit, Datenschutz und Preise hängen von Region und Konto ab.": "legacy.m003",
+  "Lokal: kostenlose Cloud-Inferenz für Text über deinen eigenen Server; kein vollständiges Realtime-Audio.": "legacy.m004",
+  "OpenAI-Schlüssel gespeichert": "legacy.m005",
+  "Gemini-Schlüssel gespeichert": "legacy.m006",
+  "Vom Anbieter gemeldete Nutzung; lokale Euro-Berechnung, keine Anbieterrechnung.": "legacy.m007",
+  "Gemeldete und geschätzte Nutzung gemischt; keine Anbieterrechnung.": "legacy.m008",
+  "Rechnerisch geschätzte Nutzung; keine Anbieterrechnung.": "legacy.m009",
+  "Noch keine Nutzungsdaten; keine Anbieterrechnung und kein offizieller Rechnungssaldo.": "legacy.m010",
+  "Ich schlafe: keine Kommentare und keine Auftritte.": "legacy.m011",
+  "Krak: Ein schrulliger grüner Kobold. Ziemlich frech – und trotzdem hilfreich.": "legacy.m013",
+  "Bronco: Ein rostiger Mecker-Roboter mit Zigarre. Schlecht gelaunt, aber nützlich.": "legacy.m014",
+  "Ich höre zu": "legacy.m015",
+  "Es ist ein Fehler aufgetreten.": "legacy.m016",
+  "Merksatz löschen: ": "legacy.m019",
+  "Im Browser nur Vorschau: Die Sprachfunktionen laufen in der Windows-App.": "legacy.m020",
+  "Lokaler Server wird geprüft …": "legacy.m021",
+  "Eine kleine Übertragung kommt an …": "legacy.m022",
+  "Da ist er · Kopf und Hände sind sichtbar": "legacy.m023",
+  "Bis gleich · löst sich im Rauschen auf …": "legacy.m024",
+  "Desktop-Anfrage wird abgebrochen.": "legacy.m026",
+  "Sprachausgabe gestoppt. Du kannst weiterfragen.": "legacy.m027",
+  "Die Desktop-Sprachantwort konnte nicht gesendet werden. Bitte erneut fragen.": "legacy.m029",
+  "Bildanalyse nicht verfügbar.": "legacy.m030",
+  "Desktop-Anfrage abgebrochen. Du kannst weiterfragen.": "legacy.m031",
+  "💻 Ich prüfe den PC …": "legacy.m032",
+  "📂 Ich starte das Programm …": "legacy.m033",
+  "🧠 Ich speichere deinen Merksatz …": "legacy.m034",
+  "🛒 Ich suche bei Idealo …": "legacy.m035",
+  "🌐 Ich öffne Chrome …": "legacy.m036",
+  "🌐 Ich suche im Internet …": "legacy.m037",
+  "🛒 Idealo-Suche geöffnet – Roboter antwortet …": "legacy.m045",
+  "🌐 Chrome-Aufruf erledigt – Roboter antwortet …": "legacy.m046",
+  "🌐 Suchergebnis gefunden – Roboter antwortet …": "legacy.m047",
+  "Suchantwort konnte nicht an den Roboter übermittelt werden.": "legacy.m048",
+  "Desktop-Sprachantwort wird erstellt.": "legacy.m049",
+  "Maussteuerbefehl nicht verfügbar.": "legacy.m050",
+  "Sprachantwort konnte nicht angefordert werden. Bitte erneut fragen.": "legacy.m051",
+  "Desktop-Sprachausgabe beendet. Du kannst weiterfragen.": "legacy.m052",
+  "Die Sprachantwort ist fehlgeschlagen. Prüfe API-Guthaben und Modellzugriff.": "legacy.m053",
+  "Sitzung von OpenAI beendet. Mikrofon aus.": "legacy.m054",
+  "15-Minuten-Sicherheitslimit erreicht. Mikrofon aus.": "legacy.m055",
+  " Verbindung wird aufgebaut …": "legacy.m056",
+  "Gemini hat das Sitzungs-Setup nicht bestätigt. Prüfe Modell, API-Key-Typ und Gemini-Live-Zugriff.": "legacy.m057",
+  "Für Gemini bitte den Rastermodus beenden. OpenAI kann Raster und Gespräch gemeinsam verwenden.": "legacy.m058",
+  "Der lokale Modus bietet Text, aber kein vollständiges Realtime-Audio.": "legacy.m059",
+  "Mikrofonberechtigung wird angefragt …": "legacy.m060",
+  "Mikrofon im Browser nicht verfügbar. Windows-Mikrofonzugriff prüfen.": "legacy.m061",
+  "Verbindung mit OpenAI wird aufgebaut …": "legacy.m062",
+  "🟢 Live: Sprich mit mir! Nach 45 Sekunden Gesprächspause schalte ich ab.": "legacy.m067",
+  "Live-Gespräch beendet. Mikrofon aus.": "legacy.m070",
+  "ICE-Zeitüberschreitung. Firewall/Netzwerk prüfen.": "legacy.m071",
+  "Gemini Live: WebSocket geöffnet, Setup wird bestätigt …": "legacy.m072",
+  "Sprachverbindung geschlossen. Mikrofon für Live aus.": "legacy.m074",
+  "Koordinatennetz beendet.": "legacy.m075",
+  "Bitte zuerst ein Feld auswählen.": "legacy.m076",
+  "Bildschirmkonfiguration geändert. Koordinatennetz bitte neu starten.": "legacy.m077",
+  "Mauseinstellungen übernommen.": "legacy.m078",
+  "Maussteuerung ist im Schlafmodus nicht freigegeben.": "legacy.m079",
+  "Koordinatennetz ist nur unter Windows verfügbar.": "legacy.m080",
+  "Rasterstart abgebrochen.": "legacy.m081",
+  "Koordinatennetz aktiv. Lokale Sprachsteuerung, keine Klicks.": "legacy.m082",
+  "Bitte zuerst das Koordinatennetz anzeigen.": "legacy.m083",
+  "Ungültige Sichtbarkeit.": "legacy.m084",
+  "Raster-Sichtbarkeit geändert.": "legacy.m085",
+  "Raster auf den vollständigen Monitor zurückgesetzt.": "legacy.m086",
+  "Eine Unterteilung zurück.": "legacy.m087",
+  "Maussteuerung ist nur unter Windows verfügbar.": "legacy.m089",
+  "Windows-Maussteuerung lieferte ungültige Daten.": "legacy.m090",
+  "Mausziel erreicht.": "legacy.m091",
+  "Windows-Maussteuerung nicht verfügbar. Bitte die Desktop-Sitzung prüfen.": "legacy.m092",
+  "Windows-Maussteuerung beendet.": "legacy.m093",
+  "Mausziel liegt außerhalb des gewählten Monitors.": "legacy.m094",
+  "Ungültige Mausgeschwindigkeit.": "legacy.m095",
+  "Lokale Raster-Spracherkennung benötigt Windows.": "legacy.m096",
+  "Lokale Raster-Spracherkennung konnte nicht gestartet werden.": "legacy.m097",
+  "Lokale Raster-Spracherkennung lieferte ungültige Daten.": "legacy.m098",
+  "Lokale Raster-Spracherkennung nicht verfügbar. Deutsche Windows-Sprachfunktionen und Mikrofon prüfen.": "legacy.m099",
+  "Lokale Raster-Spracherkennung beendet. Maus-Stopp im Steuerungsfenster bleibt verfügbar.": "legacy.m100"
  }
 };if(typeof module==='object'&&module.exports)module.exports=data;if(typeof window!=='undefined')window.RobotCatalog=data;})();

@@ -13,7 +13,9 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let intensity = .35, hideAt = Infinity, lastNoiseAt = 0, lastPhase = null;
   let currentMode = 'active', commentsAllowed = true, chatBusy = false, voiceBusy = false;
-  let activeCharacter='jeffrey',mouseActive=false;
+  let activeCharacter='jeffrey',mouseActive=false,uiLocale='de-DE';
+  const tr=(key,params)=>window.RobotI18n?.t(key,uiLocale,params)||key;
+  const msg=(text,strict=false)=>window.RobotI18n?.message(String(text),uiLocale,{strict})||text;
   // Stufe 4.3: Das Audio-Viseme-Rig wird von lip-sync-runtime.js gesteuert.
   const activeName=()=>({jeffrey:'Jeffrey',kelly:'Kelly',krak:'Krak',bronco:'Bronco',james:'James'})[activeCharacter]||'Jeffrey';
   const phrases = {
@@ -42,7 +44,7 @@
   }
 
 
-  const euro=value=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',minimumFractionDigits:2,maximumFractionDigits:4}).format(Number(value)||0);
+  const euro=value=>new Intl.NumberFormat(uiLocale,{style:'currency',currency:'EUR',minimumFractionDigits:2,maximumFractionDigits:4}).format(Number(value)||0);
   function providerDescriptionText(provider,keys={}) {
     const base=({
       openai:'OpenAI Qualität: bewährte Realtime-Stimmen und bestehende lokale Audiofilter.',
@@ -51,7 +53,7 @@
       auto:'Automatisch: lokale Aufgaben zuerst; kein kostenpflichtiger Gemini-/OpenAI-Audioanbieter ohne deine Freigabe.'
     })[provider]||'';
     const saved=[];if(keys?.openai)saved.push('OpenAI-Schlüssel gespeichert');if(keys?.gemini)saved.push('Gemini-Schlüssel gespeichert');
-    return base+(saved.length?' '+saved.join(' · ')+'.':'');
+    return msg(base)+(saved.length?' '+saved.map(s=>msg(s)).join(' · ')+'.':'');
   }
   function refreshProviderBoxes(provider=document.getElementById('ai-provider')?.value||'openai') {
     const local=document.getElementById('local-provider-box'),gemini=document.getElementById('gemini-key-box'),openai=document.getElementById('key-box');
@@ -75,8 +77,8 @@
     document.getElementById('cost-gemini').textContent=euro(summary.byProvider?.gemini?.amountEur);
     document.getElementById('cost-local').textContent=euro(summary.byProvider?.local?.amountEur);
     document.getElementById('cost-quality').textContent=quality==='reported'?'Vom Anbieter gemeldete Nutzung; lokale Euro-Berechnung, keine Anbieterrechnung.':quality==='mixed'?'Gemeldete und geschätzte Nutzung gemischt; keine Anbieterrechnung.':quality==='estimated'?'Rechnerisch geschätzte Nutzung; keine Anbieterrechnung.':'Noch keine Nutzungsdaten; keine Anbieterrechnung und kein offizieller Rechnungssaldo.';
-    const budget=summary.budget||{},budgetText=budget.limitEur>0?`Monat ${euro(summary.month?.amountEur)} von ${euro(budget.limitEur)} (${Math.round((budget.ratio||0)*100)} %).`:'Kein lokales Monatsbudget gesetzt.';
-    document.getElementById('budget-status').textContent=(value.warning?value.warning+' ':'')+budgetText;
+    const budget=summary.budget||{},budgetText=budget.limitEur>0?tr('budget.progress',{spent:euro(summary.month?.amountEur),limit:euro(budget.limitEur),ratio:Math.round((budget.ratio||0)*100)}):'Kein lokales Monatsbudget gesetzt.';
+    document.getElementById('budget-status').textContent=(value.warning?msg(value.warning,true)+' ':'')+budgetText;
     const provider=document.getElementById('ai-provider')?.value||'openai';
     const description=document.getElementById('provider-description');
     if(description)description.textContent=providerDescriptionText(provider,value.keys);
@@ -113,7 +115,7 @@
     if(broncoVoiceRow)broncoVoiceRow.hidden=activeCharacter!=='bronco';
     document.querySelectorAll('[data-character-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.characterChoice===activeCharacter)));
     const name=activeName();
-    document.title=name+' – Desktop-Assistent';
+    document.title=tr('character.title',{name});
     document.querySelectorAll('.selected-name').forEach(e=>e.textContent=name);
     const wakeLabel=document.querySelector('label[for="wake-sensitivity"]');
     if(wakeLabel)wakeLabel.textContent='Wie empfindlich soll '+name+' auf den Namen reagieren?';
@@ -123,7 +125,7 @@
     document.getElementById('appear').firstChild.textContent=name+' rufen ';
     const intro=document.getElementById('character-intro');
     if(intro)intro.textContent=({jeffrey:'Jeffrey: ein Roboterkopf, zwei Hände. Und ein freundliches Hallo aus dem Rauschen.',kelly:'Kelly: Deine charmante virtuelle Assistentin. Freundlich, elegant und immer auf Abruf.',krak:'Krak: Ein schrulliger grüner Kobold. Ziemlich frech – und trotzdem hilfreich.',bronco:'Bronco: Ein rostiger Mecker-Roboter mit Zigarre. Schlecht gelaunt, aber nützlich.',james:'James: Ein kultivierter englischer Butler-Roboter. Diskret, charmant und stets zu Diensten.'})[activeCharacter];
-    document.getElementById('chat-log')?.querySelectorAll('strong').forEach(node=>{if(node.textContent!=='Du: ')node.textContent=name+': ';});
+    document.getElementById('chat-log')?.querySelectorAll('strong').forEach(node=>{node.textContent=node.dataset.role==='user'?tr('chat.you'):name+': ';});
   }
   function setGesture(value) {
     model.setGesture(value);
@@ -134,9 +136,9 @@
   function localAction(action, value) {
     const now = performance.now();
     if(action==='mouse-state'){
-      mouseActive=Boolean(value?.active);document.getElementById('mouse-status').textContent=value?.message||(mouseActive?'Koordinatenmodus aktiv · lokale Sprachsteuerung':'Koordinatenmodus aus.');refreshControls();return;
+      mouseActive=Boolean(value?.active);document.getElementById('mouse-status').textContent=mouseActive?tr(value?.inputMode==='openai-live'?'mouse.shared':'mouse.local')+(value?.message?' '+msg(value.message):''):msg(value?.message||tr('legacy.m075'));refreshControls();return;
     }
-    if(action==='mouse-status'){document.getElementById('mouse-status').textContent=String(value);return;}
+    if(action==='mouse-status'){document.getElementById('mouse-status').textContent=msg(value);return;}
     if(action==='comment-audio'){playCommentAudio(value);return;}
     if(action==='provider-status'){renderProviderStatus(value);return;}
     if(action==='character'){showCharacter(value);return;}
@@ -170,7 +172,7 @@
     } else if (action === 'duration') {
       model.duration = Math.max(600, Math.min(3000, Number(value) || 1500));
       document.getElementById('duration').value = model.duration;
-      document.getElementById('duration-value').textContent = `${(model.duration / 1000).toFixed(1).replace('.', ',')} s`;
+      document.getElementById('duration-value').textContent = new Intl.NumberFormat(uiLocale,{minimumFractionDigits:1,maximumFractionDigits:1}).format(model.duration/1000)+' s';
     } else if (action === 'speaking') {
       robot.dataset.speaking = String(Boolean(value));
       if (value) setGesture('talk');
@@ -183,7 +185,7 @@
       voiceBusy = String(value||'').includes('Ich höre zu'); refreshControls();
     } else if (action === 'voice-error') {
       const elem = document.getElementById('voice-error');
-      elem.hidden = false;elem.textContent = String(value||'Es ist ein Fehler aufgetreten.');
+      elem.hidden = false;elem.textContent = msg(value||'Es ist ein Fehler aufgetreten.',true);
       document.getElementById('voice-status').textContent = 'Hinweis: Textfeld oder Win + H verwenden.';
       voiceBusy = false;refreshControls();
     } else if (action === 'chat-busy') {
@@ -192,7 +194,7 @@
       if (value && (value.role === 'user' || value.role === 'assistant') && typeof value.text === 'string') {
         const log = document.getElementById('chat-log');
         const item=document.createElement('p');item.className='chat-message '+value.role;
-        const label=document.createElement('strong');label.textContent=value.role === 'user'?'Du: ':activeName()+': ';
+        const label=document.createElement('strong');label.dataset.role=value.role;label.textContent=value.role === 'user'?tr('chat.you'):activeName()+': ';
         item.append(label,document.createTextNode(value.text));log.appendChild(item);
         while(log.children.length > 12) log.firstElementChild.remove();
         log.scrollTop=log.scrollHeight;
@@ -212,9 +214,10 @@
   }
   function receiveState(settings) {
     if (!settings) return;
+    uiLocale=settings.uiLocale||'de-DE';window.RobotI18nRuntime?.setLocale(uiLocale);document.getElementById('ui-locale').value=uiLocale;document.getElementById('conversation-language').value=settings.conversationLanguage||'auto';
     document.getElementById('mouse-opacity').value=settings.mouseGridOpacity??100;document.getElementById('mouse-opacity-value').textContent=(settings.mouseGridOpacity??100)+' %';
     document.getElementById('mouse-speed').value=settings.mouseSpeed??900;document.getElementById('mouse-depth').value=settings.mouseGridMaxDepth??4;
-    for(const kind of ['screen','text'])document.getElementById('privacy-'+kind+'-status').textContent=(kind==='screen'?'Bildschirm':'Markierter Text')+': '+(settings.privacyConsents?.version===1&&settings.privacyConsents?.[kind]?.openai===true?'Dauerhaft für OpenAI erlaubt.':'Keine dauerhafte Cloud-Freigabe.');
+    for(const kind of ['screen','text'])document.getElementById('privacy-'+kind+'-status').textContent=tr('privacy.status',{kind:tr('privacy.'+kind),state:tr(settings.privacyConsents?.version===1&&settings.privacyConsents?.[kind]?.openai===true?'privacy.allowed':'privacy.none')});
     currentMode = settings.mode || 'active';
     showCharacter(settings.character||'jeffrey');
     commentsAllowed = Boolean(settings.comments);
@@ -250,12 +253,12 @@
   }
   function renderMemories(notes) {
     const holder=document.getElementById('memory-list');holder.replaceChildren();
-    if(!Array.isArray(notes)||!notes.length){holder.textContent='Noch keine Merksätze gespeichert.';return;}
+    if(!Array.isArray(notes)||!notes.length){holder.textContent=tr('memory.empty');return;}
     notes.forEach((note,i)=>{
       const row=document.createElement('div');row.className='memory-item';
       const text=document.createElement('span');text.textContent=String(note);
-      const btn=document.createElement('button');btn.className='secondary';btn.textContent='Löschen';
-      btn.setAttribute('aria-label','Merksatz löschen: '+note);
+      const btn=document.createElement('button');btn.className='secondary';btn.textContent=tr('action.delete');
+      btn.setAttribute('aria-label',tr('memory.deleteLabel',{note}));
       btn.addEventListener('click',()=>dispatch('memory-remove',i));
       row.append(text,btn);holder.append(row);
     });
@@ -278,7 +281,7 @@
       native.send('chat',message); messageBox.value='';
     } else {
       localAction('chat-line',{role:'user',text:message});
-      localAction('chat-line',{role:'assistant',text:'Im Browser nur Vorschau: Die Sprachfunktionen laufen in der Windows-App.'});
+      localAction('chat-line',{role:'assistant',text:tr('legacy.m020')});
       messageBox.value='';
     }
   }
@@ -297,6 +300,8 @@
   });
   for(const kind of ['screen','text'])document.getElementById('privacy-'+kind+'-revoke').addEventListener('click',()=>dispatch('privacy-revoke',kind));
   document.getElementById('stop-speaking').addEventListener('click',()=>dispatch('stop-speaking'));
+  document.getElementById('ui-locale').addEventListener('change',e=>dispatch('ui-locale',e.target.value));
+  document.getElementById('conversation-language').addEventListener('change',e=>dispatch('conversation-language',e.target.value));
   document.getElementById('ai-provider').addEventListener('change',e=>{
     refreshProviderBoxes(e.target.value);dispatch('ai-provider',e.target.value);setTimeout(requestProviderStatus,100);
   });
@@ -309,7 +314,7 @@
   document.querySelectorAll('.price-input').forEach(input=>input.addEventListener('change',()=>dispatch('pricing',{openai:{textInput:Number(document.getElementById('price-openai-text-input').value),textOutput:Number(document.getElementById('price-openai-text-output').value),audioInput:Number(document.getElementById('price-openai-audio-input').value),audioOutput:Number(document.getElementById('price-openai-audio-output').value),webSearchPer1000:Number(document.getElementById('price-openai-web').value)},gemini:{textInput:Number(document.getElementById('price-gemini-text-input').value),textOutput:Number(document.getElementById('price-gemini-text-output').value),audioInput:Number(document.getElementById('price-gemini-audio-input').value),audioOutput:Number(document.getElementById('price-gemini-audio-output').value),webSearchPer1000:14},local:{textInput:0,textOutput:0,audioInput:0,audioOutput:0,webSearchPer1000:0}})));
   document.getElementById('load-local-models').addEventListener('click',async()=>{
     const box=document.getElementById('local-model-status');box.textContent='Lokaler Server wird geprüft …';
-    try{const models=await native.listLocalModels(document.getElementById('local-base-url').value);box.textContent=models.length?'Gefunden: '+models.join(', '):'Keine Modelle gemeldet.';if(models.length&&!document.getElementById('local-model').value){document.getElementById('local-model').value=models[0];dispatch('local-model',models[0]);}}
+    try{const models=await native.listLocalModels(document.getElementById('local-base-url').value);box.textContent=models.length?tr('local.modelsFound',{models:models.join(', ')}):tr('local.modelsEmpty');if(models.length&&!document.getElementById('local-model').value){document.getElementById('local-model').value=models[0];dispatch('local-model',models[0]);}}
     catch(error){box.textContent=String(error?.message||error).slice(0,240);}
   });
   document.getElementById('save-gemini-key').addEventListener('click',()=>{dispatch('save-provider-key',{provider:'gemini',value:document.getElementById('gemini-api-key').value});document.getElementById('gemini-api-key').value='';setTimeout(requestProviderStatus,150);});
@@ -322,7 +327,7 @@
     const t=document.getElementById('memory-note');if(t.value.trim()){dispatch('memory-add',t.value.trim());t.value='';}
   });
   document.getElementById('memory-clear').addEventListener('click',()=>{
-    if(window.confirm('Wirklich alle lokal gespeicherten Merksätze löschen?')) dispatch('memory-clear');
+    if(window.confirm(tr('memory.confirm'))) dispatch('memory-clear');
   });
   document.querySelectorAll('[data-character-choice]').forEach(button=>button.addEventListener('click',()=>dispatch('character',button.dataset.characterChoice)));
   document.getElementById('live-voice').addEventListener('change',e=>dispatch('live-voice',e.target.value));

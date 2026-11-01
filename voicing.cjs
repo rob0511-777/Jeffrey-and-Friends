@@ -1,10 +1,10 @@
 'use strict';
 const {spawn} = require('node:child_process');
 const path = require('node:path');
-function powershell(script, stdin = '', timeout = 26000) {
+function powershell(script, stdin = '', timeout = 26000,extraArgs=[]) {
   let child;
   const promise = new Promise((resolve, reject) => {
-    child = spawn('powershell.exe', ['-NoLogo','-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',path.join(__dirname,'scripts',script)], {
+    child = spawn('powershell.exe', ['-NoLogo','-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',path.join(__dirname,'scripts',script),...extraArgs], {
       windowsHide:true, stdio:['pipe','pipe','pipe']
     });
     let output='', errors='';
@@ -23,8 +23,8 @@ function powershell(script, stdin = '', timeout = 26000) {
   });
   return {promise, stop:()=>child?.kill()};
 }
-function listenOnce() {
-  const task=powershell('listen-once.ps1','',22000);
+function listenOnce(locale='de-DE') {
+  const task=powershell('listen-once.ps1','',22000,['-RecognitionCulture',require('./i18n.js').locale(locale)]);
   return {...task, promise:task.promise.then(raw=>{
     if (raw.startsWith('ERROR|')) throw new Error(raw.slice(6).trim());
     if (raw.startsWith('TEXT|')) return Buffer.from(raw.slice(5),'base64').toString('utf8');
