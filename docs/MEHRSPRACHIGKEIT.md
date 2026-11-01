@@ -89,7 +89,9 @@ beliebiger Befehle. Namen Jeffrey, Kelly, Krak, Bronco und James bleiben unverä
 | es-ES | mostrar cuadrícula / cerrar cuadrícula | subdividir celda / atrás / reiniciar cuadrícula | arriba izquierda / detener | mostrar cuadrícula en monitor dos |
 | pt-BR | mostrar grade / encerrar grade | subdividir célula / voltar / reiniciar grade | superior esquerdo / parar | mostrar grade no monitor dois |
 
-A1–D5 gelten in jeder Sprache. Der Parser berücksichtigt zum Beispiel „Berta 3“,
+A1–D5 gelten in jeder Sprache für das Grundraster und die erste sichtbare
+Unterteilung. Ab der zweiten sichtbaren Unterteilung werden nur noch die vier
+lokalisierten Richtungen ausgewählt; A1–D5 sind dort gesperrt. Der Parser berücksichtigt zum Beispiel „Berta 3“,
 „bee three“, „比三“, „ビー さん“, „be tres“ und „bê três“. Eingabe als Text ist auch
 möglich, wenn Windows die Aussprache nicht erkennt. „Stop“ und „Stopp“ sind zusätzlich
 in den anderen fünf Rastergrammatiken enthalten. Weitere Varianten stehen zentral
@@ -110,7 +112,7 @@ Cloud-Zustimmung ändern sich nicht. [Desktop-Erkennung](DESKTOP-ERKENNUNG.md).
 
 ## Aufbau für Entwickler
 
-`locales/catalog.js` enthält 450 eindeutige UI-Schlüssel mit sechs Texten pro
+`locales/catalog.js` enthält 465 eindeutige UI-Schlüssel mit sechs Texten pro
 Schlüssel und eine Zuordnung bisheriger deutscher UI-Texte. `i18n.js` normalisiert
 Locales, ersetzt reine Textplatzhalter und stellt die Antwortsprachen-Anweisung
 bereit. Neue Texte erhalten semantische Schlüssel. Die `ui.s…`- und `legacy.m…`-
@@ -129,6 +131,9 @@ Windows-eigene Dialoge bleiben in der Betriebssystemsprache.
 PowerShell bekommt Unicode-Phrasen als UTF-8-JSON bzw. sichere Prozessargumente,
 keine dynamischen Shellbefehle. Der Rasterhelfer bleibt ASCII-kompatibler Quelltext
 für Windows PowerShell 5.1. Keine zusätzlichen Abhängigkeiten.
+
+[Deutsche Befehlsvarianten](MAUSBEFEHLE.de.md) und
+[Messverfahren für Reaktionszeiten](MAUS-DIAGNOSE.md).
 
 [Teststand und Windows-Prüfliste](ai/testing/2026-11-01-feature-mouse-grid-2-i18n.md).
 

@@ -1,5 +1,9 @@
 # Maussteuerung 2.0 und sechs Sprachen – Umsetzung und Testnachweis
 
+Historischer Nachweis für den ersten #7-Stand bis `408d1de`.
+Aktuelle Korrekturen, natürliche Befehle und Viererunterteilungen:
+[ergänzender Nachweis](2026-11-01-mouse-response-quarters.md).
+
 Stand 01.11.2026. Neuer Branch `feature/mouse-grid-2-i18n`, Basis
 `feature/mouse-grid-consent` bei `f72dbd32ed9226d7c9370e6ff495cec42096b339`.
 Neuer Draft-PR gegen diesen Basisbranch; PRs #4, #5 und #6 bleiben unverändert.

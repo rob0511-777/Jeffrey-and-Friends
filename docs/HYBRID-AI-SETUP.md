@@ -109,3 +109,13 @@ Sprachen vorhanden; Windows-Systemmeldungen werden nicht von der App übersetzt.
 Diese neuen Sprach-/Mikrofonpfade sind **noch nicht unter Windows getestet**.
 Automatisierte Tests simulieren Anbieter und Betriebssystemgrenzen; es erfolgten
 keine kostenpflichtigen Live-API-Tests.
+
+## Reaktionszeiten und Befehlsübergabe
+
+Bestätigte OpenAI-Mausbefehle besitzen nun getrennte einmalige Kennungen. Ein
+weiterer Befehl oder ein gewöhnlicher Sprachbeginn überschreibt ihre Freigabe
+nicht. Während der Rasterinitialisierung werden Folgeaufträge geordnet gepuffert;
+Stopp verwirft wartende Aufträge. Modellantworten bleiben getrennt geordnet.
+Die Audio-/Transkriptionsqualität des echten Windows-Systems ist damit noch nicht
+garantiert: [optionale Zeitdiagnose](MAUS-DIAGNOSE.md) und
+[aktueller Testnachweis](ai/testing/2026-11-01-mouse-response-quarters.md).
