@@ -20,7 +20,7 @@ Dies ist der Standard- und Referenzmodus. Er verwendet den bestehenden OpenAI-Re
 Dieser Modus verwendet die Gemini Live API für Sprachsitzungen. Seit der Google-Umstellung können neue Authorization Keys mit AQ. beginnen; ältere AIza-Standard-Keys werden ebenfalls akzeptiert. Die Gemini-Stimmen unterscheiden sich hörbar von den OpenAI-Originalstimmen; die App weist darauf hin. Charakterpersönlichkeit und die geprüften Windows-Werkzeuge bleiben verfügbar.
 
 1. In Google AI Studio einen API-Schlüssel erstellen. Neue Authorization Keys können mit AQ. beginnen; Details stehen in der [offiziellen Google-Schlüsseldokumentation](https://ai.google.dev/gemini-api/docs/api-key).
-2. In Jeffrey & Friends Gemini auswählen, Schlüssel speichern und ein unterstütztes Live-Modell eintragen.
+2. In Jeffrey and Friends Gemini auswählen, Schlüssel speichern und ein unterstütztes Live-Modell eintragen.
 3. Vor dem Einsatz die aktuellen Limits und Bedingungen prüfen.
 
 Es gibt keine Zusage unbegrenzter Gratisnutzung. Free-Tier-Verfügbarkeit, Regionen, Modelle und Limits können sich ändern. Bei unbezahlten Google-Diensten können Daten gemäß den jeweils geltenden Bedingungen zur Produktverbesserung verwendet werden; keine vertraulichen Inhalte übertragen. Für Nutzer im EWR, der Schweiz und dem Vereinigten Königreich gelten bei kostenpflichtigen Diensten zusätzliche regionale Vertragsanforderungen.
@@ -70,17 +70,42 @@ OpenAI-Quellen:
 
 Alle automatischen Provider-Tests arbeiten mit simulierten Antworten. Es wurden keine echten oder kostenpflichtigen OpenAI-/Gemini-Tests ausgeführt. Vor einer Veröffentlichung sind freiwillige manuelle Audio-Smoke-Tests mit eigenen Schlüsseln empfehlenswert.
 
-## Koordinatenmodus und Datenschutzfreigaben
+## Sprachen, Raster und Datenschutzfreigaben
 
-Der neue Windows-Koordinatenmodus pausiert Live und dessen Codewort-Start, während
-ein deutscher System.Speech-Erkenner lokal feste Rasterbefehle verarbeitet.
-Keine KI-Mauswerkzeuge, zusätzlichen Sprachdienste oder API-Kosten für diese
-Rasterbefehle. Beim Beenden kehrt die bisherige Wakeword-Erkennung zurück;
-normale Live-Sitzungen behalten ihre 45-Sekunden-Kostenbegrenzung.
-Gemini hat im bestehenden Kompatibilitätsmodus keine Nutzertranskripte; zum
-Rasterstart Oberfläche, Textfeld oder einmaliges Windows-Zuhören verwenden.
+Direkt unter der einzigen KI-Auswahl stehen **Bediensprache** und
+**KI-Gesprächssprache**. Beide werden unabhängig gespeichert. Die Bediensprache
+bestimmt Oberfläche, lokale Befehle und den angeforderten Windows-Erkenner;
+die Gesprächssprache ergänzt die Modellanweisung, ohne Charakterstimme oder Filter
+zu wechseln. „Automatisch“ folgt der Sprache des Nutzers. Ein Wechsel beendet
+laufendes Live und Vorlesen, damit die neue Konfiguration beim Neustart gilt;
+Profile, Notizen, Schlüssel und Zustimmungen bleiben erhalten.
+[Sprachen und Erkennungsvoraussetzungen](MEHRSPRACHIGKEIT.md).
 
-Bildschirm- und Textfreigabe können nun getrennt für OpenAI dauerhaft im lokalen
-App-Profil gespeichert und im Datenschutzbereich widerrufen werden. „Einmal“ gilt
-für genau eine Anfrage. Ein anderer Empfänger erbt diese Freigaben nicht.
+OpenAI Live verwendet denselben Mikrofon- und Transkriptpfad für Gespräch und
+Mausbefehle. Automatische VAD-Modellantworten sind abgeschaltet; nach Prüfung des
+Transkripts fordert die App nur für normale Gesprächsbeiträge eine Antwort an.
+Reine Mausbefehle werden lokal ausgeführt. Dadurch entfällt eine unnötige
+Modellantwort, nicht die Kosten der bereits laufenden Audioübertragung.
+Keine zweite oder allein fürs Raster kostenpflichtige Transkriptionsverbindung.
+
+Nach dem unveränderten 45-Sekunden-Idle-Disconnect kann ein aktives Raster lokal
+weiter bedient werden. Bei OpenAI und aktiviertem Wakeword kann der lokale
+Rasterhörer das Gespräch wieder aufrufen. „Raster aus“ beendet nur die
+Koordinatensteuerung. Mikrofonübergaben warten auf bestätigtes Prozessende;
+bei Fehler bleiben Text und Schaltflächen verfügbar.
+
+Gemini bleibt beim bestehenden minimalen Live-Setup. Ohne verlässlich verfügbaren
+Nutzertranskriptkanal wird keine gemeinsame Maussteuerung behauptet: Rasterstart
+beendet Gemini Live und verwendet den exklusiven lokalen Windows-Hörer. Für ein
+neues Gemini-Gespräch das Raster beenden. Die lokale KI bleibt ein Textmodellpfad,
+keine vollständige lokale Realtime-Sprachlösung.
+
+Bildschirm- und Textfreigabe bleiben getrennt für OpenAI dauerhaft im lokalen
+App-Profil speicherbar und widerrufbar. „Einmal“ gilt für genau eine Anfrage.
+Ein anderer Empfänger erbt diese Freigaben nicht. Die Dialoge sind in sechs
+Sprachen vorhanden; Windows-Systemmeldungen werden nicht von der App übersetzt.
 [Bedienung und Windows-Prüfliste](MAUSSTEUERUNG.md).
+
+Diese neuen Sprach-/Mikrofonpfade sind **noch nicht unter Windows getestet**.
+Automatisierte Tests simulieren Anbieter und Betriebssystemgrenzen; es erfolgten
+keine kostenpflichtigen Live-API-Tests.

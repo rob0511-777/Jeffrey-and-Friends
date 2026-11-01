@@ -4,6 +4,12 @@ Status: implementiert und mit automatisierten Mock-Tests geprüft. **Native
 Windows-Funktionen, Fokuswechsel, reale Monitore, Sprache und Audio wurden in der
 Linux-Umgebung nicht manuell verifiziert.** Kein Release-Nachweis.
 
+Die Beispiele unten gelten bei deutscher Bediensprache. Der Entwicklungsbranch
+`feature/mouse-grid-2-i18n` ergänzt fünf weitere Grundbefehlsgrammatiken und eine
+unabhängige Antwortsprachen-Präferenz; Bildschirmaufnahme, Monitorwahl, UIA und
+Zustimmung bleiben beim vorhandenen Verfahren. OpenAI Live kann Desktopfragen
+auch bei aktivem Raster bearbeiten. [Sprachen und Grenzen](MEHRSPRACHIGKEIT.md).
+
 ## Bildschirm und Monitorauswahl
 
 Für Jeffrey, Bronco, Kelly, Krak und James, mit oder ohne Namen:

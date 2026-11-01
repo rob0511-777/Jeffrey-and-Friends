@@ -1,28 +1,56 @@
 # Sprachgesteuertes Koordinatennetz und Zustimmungen
 
-Implementiert für Windows 11 auf dem Stand von Desktop Vision 2.0. PR #4 bleibt
-unverändert; diese Erweiterung liegt in `feature/mouse-grid-consent` mit
-`feature/desktop-vision-2` als Basis. Noch keine praktische Windows-Abnahme.
+Entwicklungsstand `feature/mouse-grid-2-i18n`, aufbauend auf
+`feature/mouse-grid-consent` (PR #5). Diese Erweiterung ist experimentell und
+**noch nicht unter Windows getestet**. PRs #4, #5 und #6 bleiben eigenständig.
 
 ## Starten und bedienen
 
-„Raster anzeigen“ im Steuerungsfenster startet den Koordinatenmodus. Ohne Cloud
-geht auch „Einmal zuhören“ oder das Textfeld: „Jeffrey, zeig das Koordinatennetz“.
-Ein erkanntes Startkommando im bestehenden OpenAI-Live-Gespräch wird lokal
-weitergeleitet und dessen automatische KI-Antwort abgebrochen. Das Startkommando
-wurde in diesem Fall bereits von der bestehenden Cloud-Spracherkennung transkribiert.
-Gemini hat im bisherigen Kompatibilitätsmodus keine Nutzertranskripte; dort die
-Oberfläche, Textfeld oder einmaliges Windows-Zuhören verwenden.
+„Raster anzeigen“ startet die Koordinatensteuerung auf dem ausgewählten Monitor.
+Alternativ das Textfeld verwenden, bei deutscher Bediensprache zum Beispiel
+„Jeffrey, zeig das Raster“. Ohne Live-Gespräch kann einmaliges Windows-Zuhören
+zum Start verwendet werden, sofern ein passender Windows-Erkenner installiert ist.
 
-Während der Modus aktiv ist, wird Live geschlossen und sein Wakeword-Start
-pausiert. Ein deutscher Windows-System.Speech-Erkenner hört lokal auf feste
-Rasterbefehle, mit oder ohne Charaktername. Mikrofon und deutsche
-Desktop-Spracherkennung müssen in Windows verfügbar sein. Alle fünf Namen bleiben
-verwendbar. Keine Audioübertragung an KI-Anbieter für die anschließenden
-Rasterbefehle, keine Bildschirmaufnahme. Spontane Kommentare und PC-Hinweise
-pausieren wie im Live-Gespräch, damit die eigene Ausgabe den Rasterhörer nicht stört. Bei Erkennerfehler stoppt die Bewegung;
-Oberflächen-Stopp und Textfeld bleiben benutzbar. Nach Installation einer fehlenden
-Sprachkomponente den Modus beenden und neu starten.
+**OpenAI Live:** Die bereits vorhandene Transkription übernimmt auch Rasterbefehle.
+Das Gespräch bleibt verbunden. Reine Mausbefehle werden vor einer KI-Antwort lokal
+geprüft; die App fordert dafür keine Modellantwort an. Normale Fragen und
+Bildschirm-/Textaufträge können zwischen Rasterbefehlen gestellt werden. Beispiel:
+„D4“ → „Feld unterteilen“ → „B3“ → „Jeffrey, kannst du mir erklären, was auf diesem
+Bildschirm steht?“ → „Raster aus“. Der letzte Befehl beendet nur das Raster.
+Ein Bildschirmauftrag verwendet weiterhin die vorhandene separate Datenschutzfreigabe.
+
+Im Live-Gespräch gelangen auch Mausbefehle als Audio an den vorhandenen Anbieter.
+Es entsteht keine weitere API-Verbindung allein für das Raster; die laufende
+Audio-/Transkriptionsnutzung kann weiterhin Kosten verursachen. Ohne Aktivität
+trennt die Sitzung wie bisher nach 45 Sekunden, spätestens nach 15 Minuten.
+Das Raster bleibt nach einem Idle-Disconnect aktiv. Danach übernimmt der lokale
+Rasterhörer. Bei gewähltem OpenAI und eingeschaltetem Wakeword akzeptiert dieser
+auch den aktiven Charakternamen und dessen lokalisierte Begrüßung, um Live erneut
+zu starten. Alternativ „Live sprechen“ verwenden.
+
+**Gemini Live:** Das bisherige minimale Kompatibilitäts-Setup liefert keinen
+verlässlichen appseitigen Nutzertranskriptkanal für das Abfangen von Mausbefehlen.
+Es wird deshalb unverändert ohne zusätzliche Transkriptions-/Tool-Konfiguration
+betrieben. Raster per Oberfläche oder Textfeld starten; dabei endet Gemini Live,
+bevor die lokale Erkennung übernimmt. Vor einem neuen Gemini-Gespräch das Raster
+beenden. Das ist ein ausdrücklicher Fallback, keine nahtlose Gemini-Integration.
+
+**Lokaler Rasterhörer:** Ein Windows-System.Speech-Erkenner verarbeitet nur die
+feste Grammatik der Bediensprache. Alle fünf Charakternamen bleiben verwendbar.
+`InstalledRecognizers()` muss die exakte Locale melden. Ein installiertes
+Sprachpaket oder Windows-Diktat allein beweist diese Unterstützung nicht.
+Fehlt der Erkenner, stoppt die Bewegung; eine verständliche Meldung verweist auf
+Textfeld und Schaltflächen. Nach Installation den Modus beenden und neu starten.
+[Sechs Sprachen, Befehle und Grenzen](MEHRSPRACHIGKEIT.md).
+
+Es startet immer nur ein Mikrofonbesitzer. Vor Live und vor einmaligem Zuhören
+wartet die App auf das bestätigte Ende der lokalen Erkenner. Bleibt die Freigabe
+unbestätigt, erfolgt kein zweiter Zugriff; Textfeld und Stopp bleiben verfügbar,
+gegebenenfalls App neu starten. Nach Live-Ende startet die lokale Rastererkennung
+erst nach der rendererseitigen Freigabe. Spontane Kommentare und PC-Hinweise
+pausieren während der Koordinatensteuerung, um die eigene Erkennung nicht zu stören.
+
+Die folgenden Beispiele gelten bei **Bediensprache Deutsch**:
 
 | Befehl | Wirkung |
 | --- | --- |
@@ -40,7 +68,7 @@ Sprachkomponente den Modus beenden und neu starten.
 | „Raster 50 Prozent“ | Sichtbarkeit setzen, 0–100 als Zahl; auch z. B. „fünfzig“ |
 | „Raster anzeigen“ | Sichtbar machen; bei 0 % auf 100 % setzen |
 | „Stopp“, „Maus stoppen“, „Maus anhalten“ | Bewegung abbrechen, aktuelle Position behalten |
-| „Koordinatennetz beenden“ | Bewegung stoppen, Overlay und lokalen Rasterhörer beenden |
+| „Koordinatennetz beenden“, „Raster aus“ | Bewegung stoppen, Overlay und lokalen Rasterhörer beenden; bestehendes OpenAI Live bleibt aktiv |
 
 „Stopp“ wirkt auch während der Rasterinitialisierung. Bei Erkennung wird der
 Stoppbefehl sofort an den laufenden nativen Bewegungsprozess geschickt; nach
@@ -67,14 +95,17 @@ linkes oberes Viertel (1248,877). Rechts/unten ist die exklusive Rechteckgrenze.
 
 Feinsteuerung viertelt nur intern: sichtbare Rasterlinien bleiben an ihrer Stelle.
 „Feld unterteilen“ ändert hingegen das sichtbare Raster zum ausgewählten Bereich.
-Die aktive Region wird gelb markiert, das Ziel als Punkt. Sobald die Rasterfläche
-für Beschriftungen zu klein wäre, erscheint eine große A1–D5-Legende; der Rahmen
-zeigt weiterhin die tatsächliche Region auf dem Desktop. Das ist eine Legende,
-keine Vergrößerung oder Aufnahme von Bildschirminhalten.
+Die aktive Region wird gelb markiert, das Ziel als Punkt. Jede neue A1–D5-Ebene
+erscheint genau innerhalb des gewählten Bereichs. Das Grundraster und vorherige
+Rasterebenen bleiben mit schwachen Linien sichtbar. Es gibt keine separate
+Ecklegende und keine Vergrößerung von Bildschirminhalten. Bei sehr kleinen Zellen
+werden Beschriftungen ausgeblendet; die gültigen A1–D5-Befehle und die exakten
+Mauskoordinaten bleiben erhalten. „Zurück“ stellt die vorherige Ebene samt Ziel
+wieder her; „Raster neu starten“ entfernt alle Unterteilungen.
 
 Unter „Raster & Bewegung einstellen“:
 
-- Sichtbarkeit 0–100 %, Vorgabe 100 %. Bei 0 % bleiben Modus und lokale Befehle aktiv.
+- Sichtbarkeit 0–100 %, Vorgabe 100 %. Bei 0 % bleiben Modus und Befehle aktiv (gemeinsames OpenAI-Transkript oder lokaler Erkenner).
   Der Wert wird gespeichert; explizites „Raster anzeigen“ macht ein unsichtbares
   Raster wieder sichtbar. Nach App-Start ist der Koordinatenmodus immer aus.
 - Bewegungsgeschwindigkeit 200–3000 physische Pixel/Sekunde, Vorgabe 900. Dies ist
@@ -155,35 +186,14 @@ unabhängige Systemberechtigungen und ersetzen keine App-Zustimmung.
 Temporäre Bildpuffer, begrenzte Audioabschnitte und bestehende Löschpfade bleiben
 erhalten. Keine Diagnose protokolliert Inhalte, Titel, Transkripte oder API-Schlüssel.
 Allgemeine Chat-Nachrichten bleiben wie bisher flüchtig im Chat; direkte
-Rasterbefehle werden nicht in den KI-Chat oder das Gedächtnis aufgenommen.
+Rasterbefehle erscheinen nicht als Chatzeilen und werden nicht als Gedächtnisnotizen
+gespeichert. Bei OpenAI Live sind sie Bestandteil der bestehenden Audioübertragung.
 
 ## Windows-Abnahme (noch offen)
 
-1. Windows 11 und Windows PowerShell 5.1 als normaler Benutzer, deutscher
-   Desktop-Spracherkenner und Mikrofon: Modus per Oberfläche, einmaligem Zuhören
-   und OpenAI-Live-Befehl starten. Alle fünf Namen, B/C/D und Buchstabieralternativen
-   in ruhiger Umgebung und bei Hintergrundgeräuschen prüfen. Keine zusätzlichen
-   API-Verbindungen im Koordinatenmodus; nach Ende Wakeword und normales Gespräch.
-2. 16:9, Ultrawide, Super-Ultrawide, Hochkant sowie links/oberhalb liegende Monitore
-   bei 100/125/150/200 % Skalierung: Raster, Zielpunkt und physische Zeigerposition
-   vergleichen. Monitore mit Zwischenräumen, Taskleisten, Größenwechsel und Hotplug.
-3. D4 → links oben → nochmals links oben → rechts unten; sichtbare Linien müssen
-   stehen bleiben. Mehrere „Feld unterteilen“-Schritte, große Legende, Zurück,
-   Neustart sowie Tiefen-/Pixelgrenzen prüfen. Keine Klicks oder Fokusänderungen.
-4. Langsame/lange Bewegung, neue Ziele rasch hintereinander, „Stopp“ und UI-Stopp
-   während Bewegung und Initialisierung. Zeiger muss stehen bleiben, kein altes
-   Ziel nachlaufen. Schlaf, Charakter-/Anbieterwechsel, App-Ende, fehlender Erkenner,
-   gesperrter Desktop und Cursor-Sperren anderer Apps prüfen. Sprach-Stopp-Latenz messen.
-5. Sichtbarkeit 100/50/0 %, weiter bewegen bei 0 %, anzeigen, ausblenden, Modus
-   beenden; Einstellungen und Sichtbarkeit nach App-Neustart prüfen.
-6. Jeweils Bildschirm/Text: Abbrechen, Einmal und Dauerhaft; wiederholte Aufträge
-   nach drei echten 45-Sekunden-Disconnects und vollständigem Neustart. Einmal muss
-   erneut fragen, dauerhaft nicht. Widerruf, Widerruf bei offenem Dialog, nicht
-   beschreibbares Profil und Empfängerwechsel prüfen. Ohne expliziten Auftrag
-   keine Aufnahme, kein Auslesen und kein Transfer.
-7. Desktop Vision inklusive Monitorwahl, Editor-/Browser-UIA und Vorlesen erneut
-   prüfen. Stimmen, Filter, Charaktere, einzelner KI-Modus und normale
-   OpenAI-/Gemini-/lokale Gespräche dürfen keine Regression zeigen.
-
-Automatisierte Prüfungen und Grenzen:
-[Testnachweis](ai/testing/2026-10-31-feature-mouse-grid-consent.md).
+Die vollständige Prüfliste und die tatsächlich ausgeführten Tests stehen im
+[Testnachweis Maussteuerung 2.0 und Sprachen](ai/testing/2026-11-01-feature-mouse-grid-2-i18n.md).
+Insbesondere echte DPI-/Mehrmonitor-Ausrichtung, alle verfügbaren Windows-Sprachen,
+Sprach-Stopp-Latenz und OpenAI-/Gemini-Audioübergänge sind noch offen.
+Der [Nachweis von PR #5](ai/testing/2026-10-31-feature-mouse-grid-consent.md)
+beschreibt den historischen Stand mit exklusivem lokalen Modus und Ecklegende.
