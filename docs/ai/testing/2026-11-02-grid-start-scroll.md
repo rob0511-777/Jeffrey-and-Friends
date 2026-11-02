@@ -6,6 +6,11 @@ Branch `feature/desktop-clicks-menus-characters`, [Draft PR #8](https://github.c
 Ausgangscommit `7a1a834e4208358a16196f694f875dcad6fae57c`;
 Programmcommit `60b0d9aa6f51662fce0ee50b9548bfeeb9a62f26`. Kein Merge, Release oder Versionswechsel.
 
+Nachfolgend meldete der Nutzer eine Regression: Raster erscheint gar nicht mehr.
+Der [gesonderte Nachweis](2026-11-02-grid-overlay-regression.md) korrigiert eine
+Testlücke in der Electron-Ladereihenfolge. Die folgenden Ergebnisse bleiben der
+historische Stand dieses Auftrags, keine nachträgliche Windows-Abnahme.
+
 ## Windows-Rückmeldung und belegte Ursachen getrennt
 
 Nutzerfeedback: Bewegung, Unterteilungen sowie Einzelklicks funktionieren gut.

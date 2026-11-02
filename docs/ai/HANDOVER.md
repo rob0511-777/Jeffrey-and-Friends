@@ -10,19 +10,22 @@ Chatprotokolle. Keine Freigabe für Merge, Release oder kostenpflichtige API-Tes
 | Repository | [rob0511-777/Jeffrey-and-Friends](https://github.com/rob0511-777/Jeffrey-and-Friends) |
 | Aktueller Branch | `feature/desktop-clicks-menus-characters` |
 | Aktueller PR | [Draft PR #8](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/8), offen, nicht gemergt; Basis #7 |
-| Geprüfter Programmstand (vollständig) | `60b0d9aa6f51662fce0ee50b9548bfeeb9a62f26` |
+| Geprüfter Programmstand (vollständig) | `b7e985082f0e6a06a4dd764b5a7fa35b948209c9` |
 | Historischer HEAD bei Draft-Erstellung | `a96dbd9b3893bb25e9c93ee2da87ec318ae1a6f9` |
 | Basis / unveränderter PR #7 | `feature/mouse-grid-2-i18n`, `ff3f610720e6ebc02c810e9bada90baa2710c050` |
 | Aktueller Worktree | `/workspace/work/desktop-actions` |
 | Gemeinsames Repository | `/workspace/Jeffrey-Friends` |
 | Paket / Prüfung | 0.7.4, Electron 45.0.0; Linux, Node 24.19.0, PowerShell 7.4.7 |
 
-Der aktuelle Folgeauftrag startete bei `7a1a834e4208358a16196f694f875dcad6fae57c`
-mit sauberem Arbeitsbaum. Der oben genannte Programmcommit ergänzt Rasterstart-
-Korrekturen und begrenztes Scrollen; ein anschließender eigener Dokumentationscommit
-aktualisiert diese Übergabe. Exakten aktuellen HEAD mit `git rev-parse HEAD` prüfen;
-ein Dokument kann seinen eigenen Commit-Hash nicht enthalten. Frühere #8-Commits:
-`442e099` (Klicks/Menüs/Figuren), `3ad8e75` (Nummern), `a96dbd9` und `7a1a834` (Dokumentation).
+Der aktuelle Regressionsauftrag startete bei `aa95e1cd06e02174b2d74321e319252acf944216`
+mit sauberem Arbeitsbaum. Der Nutzer meldete: Raster erschien bei `7a1a834`, nach
+dem Update kein Raster mehr, Ladehinweis gefolgt von Overlayfehler. Der obige
+Programmcommit ergänzt gezielt den fehlenden Electron-Ladeabschluss. Native Eingabe,
+Main/Realtime, Bereitschaftsprüfung, Acht-Sekunden-Fristen und Geometrie bleiben gleich.
+Dokumentation/Übergabe folgen separat; exakten HEAD mit `git rev-parse HEAD` prüfen.
+Ein Dokument kann seinen eigenen Commit-Hash nicht enthalten.
+Vorherige Folgecommits: `60b0d9a` Rasterstart/Scrollen, `61baad1` Dokumentation,
+`aa95e1c` Sitzungsregression. Frühere #8-Commits `442e099`, `3ad8e75`, `a96dbd9`, `7a1a834`.
 
 Der lokale `origin` verweist noch auf den alten Alias
 `https://github.com/rob0511-777/Jeffrey-Friends.git`; für Fetch/Push wurde die
@@ -55,7 +58,7 @@ GitHub-Metadaten von #4–#7 erneut geprüft: offen, Draft, nicht gemergt.
 | [#5](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/5) | Maussteuerung 1.0, dauerhafte Zustimmung / `feature/mouse-grid-consent` | #4 | `f72dbd32ed9226d7c9370e6ff495cec42096b339` |
 | [#6](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/6) | Zweisprachige README / `docs/bilingual-readme` | #5 | `0e3427d941ab138892ea7fdd1f8cf233115aec55` |
 | [#7](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/7) | Maussteuerung 2.0, sechs Sprachen / `feature/mouse-grid-2-i18n` | #5 | `ff3f610720e6ebc02c810e9bada90baa2710c050` |
-| [#8](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/8) | Klicks, echte UIA-Menüs, Figurenrufe / aktueller Branch | **#7** | `60b0d9aa6f51662fce0ee50b9548bfeeb9a62f26` Programmstand; Dokumentationscommit folgt |
+| [#8](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/8) | Klicks, echte UIA-Menüs, Figurenrufe / aktueller Branch | **#7** | `b7e985082f0e6a06a4dd764b5a7fa35b948209c9` Programmstand; Dokumentationscommit folgt |
 
 Abfolge: `main → #4 → #5 → #7 → #8`; **#6 zweigt parallel von #5 ab**.
 `main` steht in den Metadaten auf `e2e34f96cc8402349eb8b97f6fc2b54c4adfc0a9`.
@@ -91,7 +94,7 @@ noch unnötig übernehmen. Der aktuelle Auftrag integriert diese Änderungen nic
   Freigabe (jetzt einmalige Kennungen), fehlende natürliche Parservarianten.
   Reale ASR-/Netz-/VAD-/Startlatenzen wurden nicht gemessen. Optionale inhaltsfreie
   Diagnose `JEFFREY_MOUSE_DIAGNOSTICS=1` existiert; keine Tempoerhöhung.
-- Neueste Nutzerrückmeldung: Bewegung, Unterteilungen und Einzelklicks unter Windows
+- Vorherige Nutzerrückmeldung: Bewegung, Unterteilungen und Einzelklicks unter Windows
   funktionieren gut. **Rasterstart ist weiterhin unzuverlässig**, teils mit Reden
   statt Ausführung. Das ist der gezielte Folgeauftrag; keine vollständige eigene
   Windows-Abnahme oder pauschale Latenzursache aus diesem Feedback ableiten.
@@ -151,7 +154,7 @@ noch unnötig übernehmen. Der aktuelle Auftrag integriert diese Änderungen nic
 - Basisgrenzen: Auswahl maximal 24.000 Zeichen, lokale Erklärung/Zusammenfassung 3.500;
   Gemini ohne geeigneten Auswahl-/TTS-Pfad; keine automatische Anbieterumschaltung.
 
-## Aktueller Folgeauftrag: Rasterstart und Scrollen
+## Voriger Folgeauftrag: Rasterstart und Scrollen
 
 Programmcommit `60b0d9aa6f51662fce0ee50b9548bfeeb9a62f26`; nur gezielte Ergänzungen im bestehenden #8-Branch.
 Keine Refaktorierung, keine neuen Einstellungen oder Abhängigkeiten.
@@ -203,7 +206,7 @@ Anrede mit allen fünf Namen. „Stopp“ behält seine bisherige Wirkung.
 Bestätigungen und spätere Antworten aus. Kein eigener Windows-Ursachennachweis und
 kein größerer Ruhemodus-/Gesprächigkeitsumbau in diesem Auftrag. Separat beauftragen.
 
-## Tatsächlich ausgeführte Tests dieser Fortsetzung
+## Vorheriger Teststand (vor der aktuellen Overlayregression)
 
 | Prüfung | Ergebnis | Einordnung |
 | --- | --- | --- |
@@ -219,9 +222,53 @@ kein größerer Ruhemodus-/Gesprächigkeitsumbau in diesem Auftrag. Separat beau
 73 bestehende Testdateien bytegleich erhalten. Native Bewegungsengine unverändert.
 **Keine selbst ausgeführten Windows-Tests und keine bezahlten Live-API-Tests.**
 C#5-Kompilierung/PS7-Parsing beweisen keine Windows-PowerShell-5.1-/PInvoke-Ausführung.
-Aktueller [Testnachweis und Windows-Plan](testing/2026-11-02-grid-start-scroll.md);
+Voriger [Testnachweis und Windows-Plan](testing/2026-11-02-grid-start-scroll.md);
 [ursprünglicher #8-Nachweis](testing/2026-11-02-desktop-actions.md) und
 [historischer #7-Nachweis](testing/2026-11-01-mouse-response-quarters.md) bleiben getrennt.
+
+## Aktuelle Overlayregression: Ursache und minimale Korrektur
+
+**Nachgewiesen mit echtem Electron 45/Linux Headless:** `did-finish-load` meldete
+noch `isLoading() == true`. `publish()` sendete deshalb weder Zustand noch
+`showInactive()`. Danach wechselte der Wert bei `did-stop-loading` auf false,
+aber dieser Empfänger fehlte. Kein Zustand → kein Zeichenframe-Ack → Timeout
+und Fensterbereinigung. Der neue wartende Start blockierte auch folgende gepufferte
+Befehle. Die früheren Fakes hatten loading schon vor `did-finish-load` auf false
+gesetzt und diesen Ablauf deshalb übersehen.
+
+Korrektur ausschließlich in `grid-overlay.cjs`: instanzgebundenen Empfänger für
+`did-stop-loading` vor `loadFile` registrieren und letzten Zustand erneut veröffentlichen.
+Im bestehenden Ladeguard folgen Zustand/Anzeigen, dann echter Renderer-Frame-Ack.
+Keine Bereitschaftsprüfung entfernt, keine Frist erhöht, kein vorzeitiger Erfolg.
+Ein zusätzlicher fester Diagnosecode `overlay-load-stopped` trennt Ladeabschluss
+von `overlay-loaded` und `overlay-ready`. Keine Inhalts-/Titel-/Transkriptlogs.
+
+Neue Node-Tests führen echten Preload/Renderer mit nachgebildeter DOM-/IPC-Grenze
+aus: Schaltflächen-show und deutscher Sprachparser müssen bei der beobachteten
+Ladereihenfolge ohne weiteren Befehl anzeigen, aber auf den Frame-Ack warten.
+Zusätzlicher echter Electron-Komponententest mit produktivem HTML/Preload/Renderer,
+20 Zellen, wartender B3-Auswahl und Wiederöffnen. Native Eingabe/Monitordaten sind
+synthetisch; Linux-DPI-Konvertierung ist eine Identitätsgrenze. Kein vollständiger
+Windows-/Mikrofon-/DPI-Test, keine sichtbare physische Bildschirmabnahme.
+
+| Aktuelle Prüfung | Ergebnis |
+| --- | --- |
+| Vor Änderungen vorhandene Node-Suite | 651 bestanden, 0 Fehler |
+| Vollständige aktuelle Node-Suite | **654 bestanden, 0 Fehler, Exit 0** |
+| Neue Node-Fälle ohne/mit Korrektur | **3 rot → 3 grün** |
+| Echter Electron-Test ohne/mit korrigiertem Overlaymodul | **Exit 1 → Exit 0**, gleiche beobachtete Ladereihenfolge |
+| Bestandsschutz | 82 bisherige Testdateien bytegleich; Scrollen/Klicks/Menüs/Figuren/Geometrie und Main/Realtime unverändert |
+
+Keine eigenen Windows- oder bezahlten Live-Tests. Der genaue Ablauf am betroffenen
+Windows-Rechner bleibt zu bestätigen. [Aktueller Nachweis und Windows-Prüfung](testing/2026-11-02-grid-overlay-regression.md).
+Der separate Komponententest läuft mit installierten Projektabhängigkeiten unter Windows:
+
+```powershell
+& .\node_modules\.bin\electron.cmd .\tests\electron\grid-overlay-lifecycle.cjs
+```
+
+Er erzeugt ausschließlich ein synthetisches Raster, keine native Eingabe oder Cloud-/
+Mikrofonverbindung. Unter Linux hier Electron 45 mit Ozone Headless, kein Windowsnachweis.
 
 ## Relevante Dateien, Start und Tests
 
@@ -278,7 +325,11 @@ Add-Type -AssemblyName System.Speech
 
 1. Branch/HEAD/Arbeitsbaum und Draft-Basis gegen GitHub prüfen. Keinen alten PR ändern,
    keinen Merge/Rebase auf main und keine Veröffentlichung aus dieser Übergabe ableiten.
-2. Aktuelle [Windows-11-Prüfliste](testing/2026-11-02-grid-start-scroll.md): kalter
+2. **Zuerst aktuelle Rasterregression unter Windows prüfen:** App kalt starten,
+   Schaltfläche und Sprachstart, Schließen/Wiederöffnen, direkt folgende B3-Auswahl,
+   Stopp beim Start und Retry. Erwartete Diagnose: `input-ready` → `overlay-loaded`
+   → `overlay-load-stopped` → `overlay-ready`. [Nachweis](testing/2026-11-02-grid-overlay-regression.md).
+   Danach [bisherige Windows-11-Prüfliste](testing/2026-11-02-grid-start-scroll.md): kalter
    App-/Live-Start, Wiederöffnen, ausgeblendetes Raster, Start während normaler und
    Desktop-Sprachausgabe, drei 45-Sekunden-Disconnects, keine freie KI-Ersatzantwort.
    Helfer/Zeichnungs-Ack unter PowerShell 5.1 und gemischten DPI praktisch bestätigen.
@@ -303,6 +354,6 @@ Add-Type -AssemblyName System.Speech
 
 > Lies docs/ai/HANDOVER.md, prüfe feature/desktop-clicks-menus-characters, HEAD und
 > Arbeitsbaum, Draft PR #8 sowie dessen Basis feature/mouse-grid-2-i18n (PR #7). Erhalte das
-> funktionierende Raster und vorhandene lokale Änderungen. Trenne die 651 Node- und
-> UIA-/Klick-/Scroll-Simulationen von echter Windows-Abnahme. Bearbeite nur den nächsten
+> funktionierende Raster und vorhandene lokale Änderungen. Trenne die 654 Node- und
+> UIA-/Klick-/Scroll-Simulationen und den Linux-Electron-Test von echter Windows-Abnahme. Bearbeite nur den nächsten
 > ausdrücklich beauftragten Punkt; keine bezahlten APIs, kein Merge/Release.

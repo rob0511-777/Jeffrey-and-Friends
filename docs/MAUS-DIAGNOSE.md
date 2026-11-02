@@ -132,3 +132,17 @@ Belegte Gegenprobe und aktuelle Tests:
 [Rasterstart und Scrollen](ai/testing/2026-11-02-grid-start-scroll.md).
 Scrollen erzeugt keine ungedrosselten Detail-/Koordinatenlogs; zum Prüfen der
 Scrollrichtung und App-Reaktion die unkritischen manuellen Schritte dort verwenden.
+
+## Nachtrag: Ladeabschluss vor Rasterzeichnung (Windows-Regression)
+
+`overlay-loaded` gehört zu `did-finish-load`. Electron kann zu diesem Zeitpunkt
+noch `isLoading() == true` melden. Der neue feste Code **`overlay-load-stopped`**
+markiert den anschließend behandelten Ladeabschluss. Erst danach kann der Zustand
+bei freiem Ladeguard gesendet und das Fenster angezeigt werden; **`overlay-ready`**
+bleibt die getrennte Bestätigung des aktuellen Renderer-Zeichenframes.
+
+Bei Startfehler die Kette `input-ready` → `overlay-loaded` →
+`overlay-load-stopped` → `overlay-ready` vergleichen. Ein fehlender Helfercode ist
+von einem fehlenden Ladeabschluss bzw. Frame-Ack zu unterscheiden. Keine Inhalte
+oder freien Ausnahmen ergänzen. Limit, Opt-in und Acht-Sekunden-Fristen bleiben gleich.
+[Reproduzierter Ablauf, Electron-Test und Windows-Schritte](ai/testing/2026-11-02-grid-overlay-regression.md).

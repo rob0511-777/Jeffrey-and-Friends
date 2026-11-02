@@ -257,6 +257,12 @@ fehlende Bestätigung liefern einen visuellen Fehler. Ein nicht gestartetes Rast
 wird nicht als aktiv bestätigt. Ein Fehleroverlay wird verworfen; erneut starten
 erzeugt eine neue Instanz. Das ist keine Messung des sichtbaren Windows-Compositors.
 
+Eine nachfolgend gemeldete Windows-Regression wurde als Electron-Ladeereignisfolge
+unter Linux reproduziert: `did-finish-load` kann vor `isLoading() == false` liegen.
+Das Overlay veröffentlicht deshalb auch bei `did-stop-loading`, ohne auf einen
+weiteren Befehl zu warten. Die Frame-Bestätigung bleibt erforderlich; kein früherer
+Erfolg und keine erhöhten Fristen. [Nachweis und Windows-Prüfung](ai/testing/2026-11-02-grid-overlay-regression.md).
+
 Die bestehende begrenzte Befehlswarteschlange und Einmalfreigaben bleiben erhalten.
 Gleiche automatische Starts während Initialisierung führen zu einer gemeinsamen
 Rasterinstanz; Beenden/Wiederöffnen und ein aktives unsichtbares Raster bleiben
