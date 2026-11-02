@@ -17,6 +17,9 @@ function createGridOverlay({BrowserWindow,screen,ipcMain,onTrace=()=>{},onFailur
    const created=win;
    win.setIgnoreMouseEvents(true,{forward:true});win.webContents.setWindowOpenHandler(()=>({action:'deny'}));win.webContents.on('will-navigate',e=>e.preventDefault());
    win.webContents.on('did-finish-load',()=>{if(win!==created)return;onTrace('overlay-loaded',last?.diagnosticId||0);publish(last);});
+   // did-finish-load can precede isLoading() becoming false. Publish again at
+   // that transition so visibility and the renderer's frame ACK can progress.
+   win.webContents.on('did-stop-loading',()=>{if(win!==created)return;onTrace('overlay-load-stopped',last?.diagnosticId||0);publish(last);});
    win.webContents.on('did-fail-load',()=>{if(win===created)failure();});win.webContents.on('render-process-gone',()=>{if(win===created)failure();});
    const loading=win.loadFile(path.join(__dirname,'mouse-grid.html'));loading?.catch(()=>{if(win===created)failure();});
    win.on('closed',()=>{if(win===created)failure();});

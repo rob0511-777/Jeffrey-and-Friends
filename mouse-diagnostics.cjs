@@ -1,6 +1,6 @@
 'use strict';
 // Opt-in, bounded, content-free timings. Never accept free-form labels or payloads.
-const CODES=new Set(['grid-start','snapshot-start','snapshot-ready','input-ready','overlay-created','overlay-loaded','overlay-ready','overlay-error','speech-start','speech-stop','transcript-final','parser-accept','parser-reject','duplicate','turn-busy','ipc-send','ipc-received','ipc-rejected','ipc-return','queue-start','command-ok','command-error','command-cancelled','helper-ready','native-write','native-start','native-done','native-superseded','stop']);
+const CODES=new Set(['grid-start','snapshot-start','snapshot-ready','input-ready','overlay-created','overlay-loaded','overlay-load-stopped','overlay-ready','overlay-error','speech-start','speech-stop','transcript-final','parser-accept','parser-reject','duplicate','turn-busy','ipc-send','ipc-received','ipc-rejected','ipc-return','queue-start','command-ok','command-error','command-cancelled','helper-ready','native-write','native-start','native-done','native-superseded','stop']);
 function createMouseDiagnostics({enabled=process.env.JEFFREY_MOUSE_DIAGNOSTICS==='1',now=Date.now,sink=row=>console.info('[mouse-diag] '+JSON.stringify(row)),limit=1024}={}){
  const started=now(),previous=new Map();let count=0;
  return Object.freeze({enabled:enabled===true,record(code,payload={}){
