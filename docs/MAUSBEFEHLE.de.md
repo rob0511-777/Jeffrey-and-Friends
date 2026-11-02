@@ -1,9 +1,12 @@
 # Deutsche Mausbefehle
 
-Für **Bediensprache Deutsch**, auf `feature/mouse-grid-2-i18n` (PR #7).
+Für **Bediensprache Deutsch**, auf `feature/desktop-clicks-menus-characters`, gestapelt auf PR #7.
 Die folgenden Beispiele passieren den Befehlsparser in automatisierten Tests.
-Echte Windows-Erkennung und Sprach-Stopp-Latenz der neuen Varianten sind noch
-nicht praktisch geprüft. Man kann dieselben Befehle ins vorhandene Textfeld eingeben.
+Der Benutzer hat unter Windows das wieder funktionierende Raster und Scrollen
+wie gewünscht bestätigt; Links-/Rechtsklick und die bisherige Maussteuerung waren
+zuvor positiv getestet. Das ist keine vollständige eigene Windows-Abnahme des
+Agenten; alle Varianten und die Sprach-Stopp-Latenz bleiben gezielt zu prüfen.
+Man kann dieselben Befehle ins vorhandene Textfeld eingeben.
 
 | Auftrag | Beispiele | Eindeutige Wirkung |
 | --- | --- | --- |
@@ -39,7 +42,117 @@ Keine Teilfreigaben: „Fahr nicht nach B3“, „Fahr nach B3 und klick dort“
 werden nicht als Mausauftrag akzeptiert. Unklare Formulierungen lösen keine
 beliebige Bewegung aus. Eine echte Spracherkennung kann trotzdem falsch
 transkribieren; die große **Maus STOPP**-Schaltfläche bleibt unabhängig erreichbar.
-Es werden keine Klicks, Tasten oder sonstigen neuen Desktopaktionen ausgeführt.
+Zusammengesetzte Aufträge bleiben gesperrt. Die folgenden neuen Einzelaufträge
+werden getrennt und ausdrücklich angefordert; keine Tastaturautomation.
 
 [Rasternavigation und Grenzen](MAUSSTEUERUNG.md) ·
 [Andere Sprachen](MEHRSPRACHIGKEIT.md) · [Reaktionszeit messen](MAUS-DIAGNOSE.md)
+
+## Neue Einzelklicks, native Menüs und Charakteraufrufe
+
+Neue Befehle benötigen **Bediensprache Deutsch (`de-DE`)**. Die fünf anderen
+Rastersprachen bleiben unverändert. Texteingabe funktioniert ebenfalls.
+
+| Auftrag | Vollständige Beispiele | Wirkung / Voraussetzung |
+| --- | --- | --- |
+| Ein Linksklick | „Linksklick“, „Mach einen Linksklick“, „Klick mit der linken Maustaste“ | Genau ein Klick an der tatsächlichen aktuellen Zeigerposition, auch ohne Raster |
+| Ein Rechtsklick | „Rechtsklick“, „Mach einen Rechtsklick“, „Klick mit der rechten Maustaste“ | Ein Klick; danach das tatsächlich geöffnete fremde Kontextmenü lokal prüfen |
+| Menüeintrag wählen | „Wähle Kopieren“, „Wähle Einfügen“, „Wähle Nummer 2“, „Wähle Nummer zwei“ | Nur aktueller sichtbarer, aktivierter UIA-Eintrag; Nummer nur, wenn neben dem Menü angezeigt |
+| Untermenü öffnen | „Öffne das Untermenü Senden an“ | Nur vorhandenes UIA-ExpandCollapse-Pattern; neue Liste ersetzt die vorherige |
+| Menü schließen | „Menü schließen“ | Zugeordnetes natives Menü schließen und lokale Liste verwerfen |
+| Konkrete Bestätigung | „Wähle Löschen“ → „Bestätige Löschen“ oder die angezeigte „Bestätige Nummer 3“ | Nur der angefragte aktuelle Eintrag; kein allgemeines „Ja“ |
+| Abbrechen / Stopp | „Abbrechen“, „Stopp“, bestehende Stoppvarianten | Wartende Menüaktion/Bestätigung verwerfen und bisherige Bewegung stoppen |
+| Figur rufen | „Kelly, komm bitte“, „Ruf Kelly“, „Wechsle zu Bronco“, „Ich möchte mit James sprechen“, „Aktiviere Krak“, „Wechsle zu Jeffrey“ | Bestehendes Charakterprofil nutzen; Live geordnet beenden, keine neue Sitzung automatisch starten |
+
+Alle fünf Namen funktionieren in den expliziten Rufmustern. Der alleinstehende
+Name behält sein bisheriges Wakeword-Verhalten. Ein bereits aktiver Charakter wird
+nur gezeigt. „Kelly hat gestern gesagt …“, „Erzähl mir etwas über James“,
+„Ruf nicht Kelly“, zitierte Befehle und „Linksklick und Rechtsklick“ wechseln
+keine Figur und erteilen keinen Klickauftrag.
+
+Während Bewegung oder gedrückter Maustasten wird ein Klick abgewiesen; zunächst
+Stopp verwenden und Tasten lösen. Doppelklick und Drag-and-drop sind nicht ergänzt. Scrollen wird im folgenden
+Abschnitt ausdrücklich und getrennt angefordert. ASR-Fehlhörer bleiben möglich; automatische Parserprüfungen sind
+keine reale Sprachabnahme.
+
+Mit OpenAI Live wird ausschließlich das vorhandene finale Nutzertranskript
+verwendet. Ohne Live: vorhandenes einmaliges „Zuhören“, oder im aktiven Raster/
+gebundenen Menü derselbe lokale Windows-Erkenner. Ein zur Bediensprache passender
+`System.Speech`-Erkenner ist erforderlich. Ohne Raster oder Menü läuft kein neuer
+Dauerhörer, außer während eines ausdrücklich gestarteten langsamen Scrolllaufs:
+Dort hält derselbe lokale Steuerhörer Stopp verfügbar (siehe unten).
+Für Gemini wird keine neue Live-Transkriptunterstützung zugesagt.
+
+Bei gleichen Eintragsnamen die **angezeigte Nummer** verwenden. Fehlende Liste,
+Fokuswechsel oder nicht unterstützte UIA-Patterns erlauben keine Ersatzaktion.
+Menünamen mit Zitaten oder nicht sprechbarer Satzstruktur gegebenenfalls über
+angezeigte Nummern wählen. Menütexte bleiben lokal; gesprochene Befehle bleiben
+bei OpenAI Live Teil der bestehenden Cloud-Audioübertragung.
+
+[Native Kontextmenüs und Grenzen](KONTEXTMENUES.md) ·
+[Testnachweis und Windows-Prüfliste](ai/testing/2026-11-02-desktop-actions.md)
+
+## Scrollen: Schritt, langsamer Lauf und Stopp
+
+Nur mit **Bediensprache Deutsch (`de-DE`)**; Texteingabe ebenfalls möglich.
+
+| Auftrag | Beispiele | Wirkung |
+| --- | --- | --- |
+| Ein Schritt abwärts | „Scroll nach unten“, „Scrolle nach unten“ | Ein nativer Mausradimpuls von −120 Einheiten |
+| Ein Schritt aufwärts | „Scroll nach oben“, „Scrolle nach oben“ | Ein nativer Mausradimpuls von +120 Einheiten |
+| Langsam abwärts | „Scroll langsam nach unten“, „Scrolle langsam nach unten“ | Kleine Impulse von −15 Einheiten, höchstens alle 250 ms, maximal 30 Sekunden |
+| Langsam aufwärts | „Scroll langsam nach oben“, „Scrolle langsam nach oben“ | Kleine Impulse von +15 Einheiten mit denselben Grenzen |
+| Anhalten | „Stopp“, „Hör auf zu scrollen“, „Scrollen stoppen“ | Lauf und bisherige Maus-/Ausgabeaktionen stoppen; keine neuen Ereignisse nach verarbeitetem nativen Stopp |
+
+Zum Beispiel „Jeffrey, bitte scrolle langsam nach unten“. Entsprechende Anreden
+mit Kelly, Krak, Bronco und James funktionieren ebenfalls. Keine Ausführung aus
+„Scroll nicht nach unten“, „Er sagte Scroll nach unten“, Zitaten oder
+„Scroll nach unten und Linksklick“. Unbekannte Gesprächsformulierungen bleiben
+normaler Chat; sie werden nicht pauschal stummgeschaltet.
+
+Ziel ist der Bereich unter der tatsächlichen Zeigerposition, ohne zusätzliche
+Bewegung oder Fokus-Klick. Voraussetzung ist die von Windows bestätigte
+Mausradweiterleitung **unter den Mauszeiger** (inaktive Fenster scrollen).
+Andernfalls erscheint ein Hinweis, keine Eingabe an ein anderes fokussiertes
+Fenster. Auch bei korrekter Windows-Einstellung kann eine Anwendung die Impulse
+ignorieren oder anders auswerten. Kein fester Pixelabstand wird zugesagt.
+
+Ein Lauf ist an Zielbereich, Zeigerposition und Vordergrundfenster gebunden.
+Physische Zeigerbewegung, Fokus-/Fensterwechsel, offenes natives Menü oder
+gehaltene Maustasten beenden/verweigern ihn. Wiederholung oder Richtungswechsel
+verwendet denselben Lauf, vervielfacht die Ereignisrate nicht und verlängert die
+30-Sekunden-Frist nicht. Ein Schritt ersetzt einen laufenden Dauerauftrag.
+Bewegungs- oder Klickauftrag beendet den Lauf zuerst. Während Bewegung/Klick
+oder eines zugeordneten Kontextmenüs wird Scrollen ohne Warteschlange abgewiesen.
+
+Ohne Raster und ohne Live zuerst den vorhandenen einmaligen Zuhörweg verwenden.
+Während eines langsamen lokalen Laufs übernimmt derselbe lokale Steuerhörer auch
+Stopp; ohne verfügbare passende Engine wird der Lauf beendet. OpenAI Live nutzt
+weiterhin nur die vorhandene finale Transkription. Kein zusätzliches Mikrofon und
+keine kostenpflichtige Modellanfrage pro Scrollauftrag. Sitzungsende, Schlaf,
+Charakter-/Anbieterwechsel, App-Ende und Verlust des Steuerkanals stoppen den Lauf.
+Die große **Maus STOPP**-Schaltfläche bleibt erreichbar.
+
+## Rückmeldung beim Rasterstart
+
+Ein übernommener Startauftrag zeigt zunächst einen Verarbeitungshinweis. Erfolg
+folgt erst nach tatsächlichem `READY` des nativen Maushelfers und einer aktuellen
+Zeichnungsbestätigung des richtigen Overlay-Renderers. Fehler werden visuell
+angezeigt, ohne freie KI-Ersatzantwort. Wiederholte Startaufträge bleiben geordnet;
+ein ausgeblendetes aktives Raster wird wieder sichtbar. Ein ausdrücklicher
+Steuerauftrag kann die bisherige Desktop-Auswertung/-Sprachantwort abbrechen.
+Ein gewöhnlicher Sprachbeginn allein behält seine bisherige Wirkung.
+
+## Benutzer-Praxistest und offene Punkte
+
+Am 02.11.2026 im Sicherungsauftrag erfasst: Der Benutzer bestätigt unter Windows,
+dass das Raster nach der Korrektur wieder funktioniert und Scrollen wie gewünscht
+arbeitet. Links-/Rechtsklick und bisherige Maussteuerung wurden zuvor positiv
+getestet. Keine vollständige eigene Windows-Abnahme; insbesondere UIA-Menüs,
+Charakterübergaben, alle Formulierungen/Viererebenen sowie Stopp-Latenz und die
+exakte 30-Sekunden-Grenze sind damit nicht einzeln bestätigt.
+
+**Bekannt offen:** „Jeffrey, Ruhe“ erzeugt laut Benutzer weiterhin Bestätigungen
+und spätere Antworten; in diesem Dokumentationsauftrag nicht geändert.
+[Aktueller Praxistest und Prüfstand](ai/testing/2026-11-02-user-practice-docs.md) ·
+[historischer technischer Nachweis und Windows-Prüfliste](ai/testing/2026-11-02-grid-start-scroll.md).

@@ -26,6 +26,11 @@ try {
         $wakeBuilder=[System.Speech.Recognition.GrammarBuilder]::new();$wakeBuilder.Culture=$recognizer.Culture;$wakeBuilder.Append($wakeChoices)
         $wakeGrammar=[System.Speech.Recognition.Grammar]::new($wakeBuilder);$wakeGrammar.Name='Wake';$engine.LoadGrammar($wakeGrammar)
     }
+    if ($config.rejectedCommands -and @($config.rejectedCommands).Count -le 512) {
+        $rejectChoices=[System.Speech.Recognition.Choices]::new();$rejectChoices.Add([string[]]$config.rejectedCommands)
+        $rejectBuilder=[System.Speech.Recognition.GrammarBuilder]::new();$rejectBuilder.Culture=$recognizer.Culture;$rejectBuilder.Append($rejectChoices)
+        $rejectGrammar=[System.Speech.Recognition.Grammar]::new($rejectBuilder);$rejectGrammar.Name='DesktopRejected';$engine.LoadGrammar($rejectGrammar)
+    }
     $engine.EndSilenceTimeout=[TimeSpan]::FromMilliseconds(180)
     $engine.EndSilenceTimeoutAmbiguous=[TimeSpan]::FromMilliseconds(300)
     $engine.SetInputToDefaultAudioDevice()
@@ -36,6 +41,7 @@ try {
         $event=Wait-Event -SourceIdentifier 'MouseGridSpeech' -Timeout 1
         if ($null -eq $event) { continue }
         $result=$event.SourceEventArgs.Result
+        if ($result.Grammar.Name -eq 'DesktopRejected') { Remove-Event -EventIdentifier $event.EventIdentifier;continue }
         if ($result.Grammar.Name -eq 'Wake') {
             if ($result.Confidence -ge 0.65) { [Console]::Out.WriteLine('WAKE');[Console]::Out.Flush() }
             Remove-Event -EventIdentifier $event.EventIdentifier

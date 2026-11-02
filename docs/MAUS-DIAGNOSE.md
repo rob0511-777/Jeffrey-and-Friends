@@ -1,6 +1,6 @@
 # Mausreaktion mit festen Ereigniscodes messen
 
-Für PR #7, Branch `feature/mouse-grid-2-i18n`. Diese Diagnose ist standardmäßig aus
+Für PR #8, Branch `feature/desktop-clicks-menus-characters`, aufbauend auf PR #7. Diese Diagnose ist standardmäßig aus
 und wird nicht als Einstellung gespeichert. Die neuen Messpfade wurden mit
 Simulationen unter Linux geprüft, **noch nicht praktisch unter Windows**.
 Sie sind für die Trennung von Erkennung, Befehlsübergabe und Bewegung gedacht.
@@ -93,3 +93,56 @@ keine genaue reine Server-ASR- oder Betriebssystem-Renderlatenz.
 
 Belegte Softwareursachen und Testgrenzen:
 [Testnachweis](ai/testing/2026-11-01-mouse-response-quarters.md).
+
+## Ergänzung: ersten Rasterstart und Wiederöffnen unterscheiden
+
+Mit derselben ausdrücklich aktivierten, begrenzten Diagnose sind nun weitere
+feste Codes verfügbar. Format, Opt-in, 1.024-Zeilen-Grenze und Inhaltsfreiheit
+bleiben unverändert. Keine neuen Logdateien oder Transkriptfelder.
+
+| Abschnitt | Zusätzliche Codes | Aussage |
+| --- | --- | --- |
+| Finale lokale Klassifikation | `grid-start` | Unterstützter Start lokal erkannt; weiterhin `parser-accept` und `ipc-send` derselben numerischen Kennung |
+| Monitorermittlung | `snapshot-start`, `snapshot-ready` | Snapshot angefordert/erhalten; keine Titel, Handles oder Koordinaten |
+| Nativer Dienst | `input-ready` | Tatsächliches READY des Maushelfers erhalten oder bei warmem Helfer bereits bestätigt |
+| Overlay | `overlay-created`, `overlay-loaded` | Fenster erzeugt und Seite geladen; noch kein Nachweis fertiger Zeichnung |
+| Zeichnung / Fehler | `overlay-ready`, `overlay-error` | Aktuelle Bestätigung des richtigen Renderers nach Zeichenframe oder fester Lade-/Bereitschaftsfehler |
+
+Beim ersten Start: `grid-start` → IPC → `queue-start` → Snapshot → `input-ready`
+→ Overlay-Laden → `overlay-ready` → `command-ok`/`ipc-return`. Die genaue
+Reihenfolge unmittelbar benachbarter IPC-Codes kann durch Pufferung variieren.
+Beim Wiederanzeigen eines bereits aktiven Rasters entfallen Snapshot/Neustart;
+eine neue Zeichnung wird trotzdem bestätigt. Lokale/UI-Aufträge dürfen Kennung 0
+verwenden. Mehrere VAD-Ereignisse dürfen keinen bestätigten Auftrag widerrufen.
+
+**Für Rasterstart** erfolgt `command-ok` erst nach nativer Bereitschaft und
+Zeichnungsbestätigung. **Für eine Bewegung** bleibt es die Dispatch-Bestätigung;
+erst `native-done` bestätigt die überprüfte Zielposition. Auch `overlay-ready`
+beweist keine gemessene erste sichtbare Windows-Pixel-/Compositorzeit.
+
+Unter Windows getrennt prüfen: kalter App-/Live-Start, Start während Jeffrey spricht,
+„Raster aus“ und Wiederöffnen, verborgenes aktives Raster, wiederholte Starts während
+Initialisierung, drei reale 45-Sekunden-Disconnects und neue Live-Sitzung. Fehlt
+`grid-start`, gibt es keinen Beleg einer lokalen Parserannahme; ohne Inhaltslogs kann
+man die tatsächliche ASR-Transkription damit nicht rekonstruieren. Nicht pauschal
+ASR, Netzwerk oder Windows als Ursache behaupten. Bei technischen Fehlern bleibt
+es bei visueller Statusmeldung, ohne freie KI-Ersatzantwort.
+
+Belegte Gegenprobe und aktuelle Tests:
+[Rasterstart und Scrollen](ai/testing/2026-11-02-grid-start-scroll.md).
+Scrollen erzeugt keine ungedrosselten Detail-/Koordinatenlogs; zum Prüfen der
+Scrollrichtung und App-Reaktion die unkritischen manuellen Schritte dort verwenden.
+
+## Nachtrag: Ladeabschluss vor Rasterzeichnung (Windows-Regression)
+
+`overlay-loaded` gehört zu `did-finish-load`. Electron kann zu diesem Zeitpunkt
+noch `isLoading() == true` melden. Der neue feste Code **`overlay-load-stopped`**
+markiert den anschließend behandelten Ladeabschluss. Erst danach kann der Zustand
+bei freiem Ladeguard gesendet und das Fenster angezeigt werden; **`overlay-ready`**
+bleibt die getrennte Bestätigung des aktuellen Renderer-Zeichenframes.
+
+Bei Startfehler die Kette `input-ready` → `overlay-loaded` →
+`overlay-load-stopped` → `overlay-ready` vergleichen. Ein fehlender Helfercode ist
+von einem fehlenden Ladeabschluss bzw. Frame-Ack zu unterscheiden. Keine Inhalte
+oder freien Ausnahmen ergänzen. Limit, Opt-in und Acht-Sekunden-Fristen bleiben gleich.
+[Reproduzierter Ablauf, Electron-Test und Windows-Schritte](ai/testing/2026-11-02-grid-overlay-regression.md).

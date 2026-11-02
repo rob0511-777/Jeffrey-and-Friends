@@ -1,0 +1,3 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),{createMouseDiagnostics}=require('../mouse-diagnostics.cjs');
+test('Rasterstartdiagnose trennt Parser, Monitor, nativen Helfer und bestätigte Overlayzeichnung ohne Inhalte',()=>{const rows=[],d=createMouseDiagnostics({enabled:true,now:()=>100,sink:r=>rows.push(r)});for(const code of ['grid-start','snapshot-start','snapshot-ready','input-ready','overlay-created','overlay-loaded','overlay-ready','overlay-error'])assert.equal(d.record(code,{id:1,text:'PRIVATE',windowTitle:'PRIVATE',coordinates:[1,2]}),true);assert.equal(rows.length,8);assert.doesNotMatch(JSON.stringify(rows),/PRIVATE|text|coordinates|windowTitle/);});

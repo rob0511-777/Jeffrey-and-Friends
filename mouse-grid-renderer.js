@@ -27,5 +27,6 @@
   const region=state.region||state.grid;rectangle(el('region'),region,b);el('region').style.borderWidth=Math.min(3,region.width/b.width*innerWidth/2,region.height/b.height*innerHeight/2)+'px';el('region').hidden=!state.region&&!(state.ancestors||[]).length;
   el('target').hidden=!state.target;if(state.target){el('target').style.left=100*(state.target.x-b.x)/b.width+'%';el('target').style.top=100*(state.target.y-b.y)/b.height+'%';}
   el('help').textContent=tr(state.layout==='quarters'?'mouse.helpQuad':'mouse.help',state.uiLocale,{depth:state.subdivisionDepth})||(state.layout==='quarters'?'↖ ↗ ↙ ↘':'A1–D5');
+  if(state.overlayGeneration!==undefined)requestAnimationFrame(()=>window.mouseGrid.ready?.(state.overlayGeneration));
  });
 })();

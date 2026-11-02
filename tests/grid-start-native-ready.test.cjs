@@ -1,0 +1,4 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),{createMouseControl}=require('../mouse-control.cjs');
+const snapshot={monitors:[{id:'one',number:1,primary:true,bounds:{x:0,y:0,width:1000,height:800}}],cursor:{x:10,y:10}};
+test('Erster Rasterstart übernimmt erst nach nativer Bereitschaft; fehlgeschlagener Helfer meldet keinen Erfolg',async()=>{let release;const states=[],c=createMouseControl({platform:'win32',getSnapshot:async()=>snapshot,getOptions:()=>({opacity:100,speed:900,maxDepth:4,locale:'de-DE'}),setOpacity(){},mouse:{start(){},waitForReady:()=>new Promise((ok,fail)=>release={ok,fail}),stop(){},close(){}},onChange:s=>states.push(s)});const p=c.dispatch({action:'show',target:{kind:'auto'}});await new Promise(r=>setImmediate(r));assert.equal(c.active(),false);assert.ok(release);release.fail(Error('mouse.inputError'));await assert.rejects(p,/inputError/);assert.equal(c.active(),false);});
