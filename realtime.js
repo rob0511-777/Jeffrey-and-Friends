@@ -231,7 +231,7 @@
       if(desktopInFlight(c))return;
       stopSelectionAudio();c.desktopGeneration=(c.desktopGeneration||0)+1;
       c.desktopBlocked=false;c.desktopReply='';c.desktopTranscript='';
-      c.mouseTranscript='';c.userSpeaking=true;c.appTranscriptSeen=false;extendConversation(c);signal('user-speaking');
+      c.additionalTranscript='';c.mouseTranscript='';c.userSpeaking=true;c.appTranscriptSeen=false;extendConversation(c);signal('user-speaking');
     } else if (event.type === 'input_audio_buffer.speech_stopped') {
       traceMouse('speech-stop',mouseTurn(c,event).id);
       c.userSpeaking=false;extendConversation(c);
@@ -269,19 +269,26 @@
           traceMouse('stop',turn.id);
           signal('user',event.transcript);native.send('stop-speaking');cancelDesktop(c,true);return;
         }
+        const additional=window.RobotDesktopActions?.parseAction(event.transcript,uiLocale);
+        if(additional&&additional.action!=='click'&&(additional.action==='character'||!desktopInFlight(c))){
+          const text=event.transcript.trim();if(!itemId&&c.additionalTranscript===text)return;c.mouseTranscript='';c.additionalTranscript=text;
+          c.normalQueued=false;c.desktopBlocked=true;c.toolsInFlight++;extendConversation(c);signal('user',text,turn.id);
+          if(c.responseId){(c.desktopCancelled||(c.desktopCancelled=new Set())).add(c.responseId);c.dc?.send(JSON.stringify({type:'response.cancel',response_id:c.responseId}));}
+          void native.desktopAction(text,turn.id).then(message=>{if(current===c&&!c.stopped)status(message);}).catch(()=>{if(current===c&&!c.stopped)fail(window.RobotI18n?.t('desktop.action.unavailable',uiLocale)||'Local action unavailable.');}).finally(()=>{c.toolsInFlight=Math.max(0,c.toolsInFlight-1);extendConversation(c);});return;
+        }
         // Speech detection, duplicate commands and incidental transcripts are not
         // a cancellation request and cannot authorize tools during this turn.
         if(desktopInFlight(c)){traceMouse('turn-busy',turn.id);return;}
         if(window.RobotMouseCommands?.parseMouseCommand(event.transcript,uiLocale)){
           const text=event.transcript.trim();
           if(!itemId&&c.mouseTranscript===text){traceMouse('duplicate',turn.id);return;}
-          c.mouseTranscript=text;
+          c.additionalTranscript='';c.mouseTranscript=text;
           const requestId=turn.id;traceMouse('parser-accept',requestId);traceMouse('ipc-send',requestId);
           c.normalQueued=false;c.desktopBlocked=true;c.mousePending=true;c.toolsInFlight++;extendConversation(c);signal('user',event.transcript,requestId);
           if(c.responseId){(c.desktopCancelled||(c.desktopCancelled=new Set())).add(c.responseId);c.dc?.send(JSON.stringify({type:'response.cancel',response_id:c.responseId}));}
           void native.mouseCommand(event.transcript.trim(),requestId).then(message=>{traceMouse('ipc-return',requestId);if(current===c&&!c.stopped)status(message);}).catch(()=>{traceMouse('ipc-return',requestId);if(current===c&&!c.stopped)fail('Maussteuerbefehl nicht verfügbar.');}).finally(()=>{c.mousePending=false;c.toolsInFlight=Math.max(0,c.toolsInFlight-1);extendConversation(c);});return;
         }
-        traceMouse('parser-reject',turn.id);c.mouseTranscript='';c.desktopBlocked=false;
+        traceMouse('parser-reject',turn.id);c.additionalTranscript='';c.mouseTranscript='';c.desktopBlocked=false;
         if(/(?:\bmerk(?:e)?\s+(?:dir\s+)?|\bspeicher(?:e)?\s+)/i.test(event.transcript))c.rememberTranscriptSeen=true;
         c.appTranscriptSeen=true;
         extendConversation(c); signal('user',event.transcript);

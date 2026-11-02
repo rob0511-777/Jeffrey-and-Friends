@@ -3721,6 +3721,246 @@
    "ja-JP": "右下",
    "es-ES": "BD",
    "pt-BR": "ID"
+  },
+  "desktop.action.unavailable": {
+   "de-DE": "Lokale Desktopaktion nicht verfügbar. Menü, Sprache und Windows-Unterstützung prüfen.",
+   "en-GB": "Local desktop action unavailable. Check the menu, language and Windows support.",
+   "zh-CN": "本地桌面操作不可用。请检查菜单、语言及 Windows 支持。",
+   "ja-JP": "ローカルデスクトップ操作を利用できません。メニュー・言語・Windows対応を確認してください。",
+   "es-ES": "Acción local no disponible. Revisa menú, idioma y compatibilidad Windows.",
+   "pt-BR": "Ação local indisponível. Verifique menu, idioma e suporte Windows."
+  },
+  "desktop.action.cancelled": {
+   "de-DE": "Lokaler Auftrag abgebrochen oder nicht mehr freigegeben.",
+   "en-GB": "Local request cancelled or no longer authorised.",
+   "zh-CN": "本地请求已取消或授权已失效。",
+   "ja-JP": "ローカル要求は中止されたか許可が失効しました。",
+   "es-ES": "Solicitud local cancelada o sin autorización vigente.",
+   "pt-BR": "Pedido local cancelado ou sem autorização vigente."
+  },
+  "desktop.character.called": {
+   "de-DE": "{name} ist aktiviert und sichtbar.",
+   "en-GB": "{name} is active and visible.",
+   "zh-CN": "{name} 已启用并显示。",
+   "ja-JP": "{name}を有効にして表示しました。",
+   "es-ES": "{name} está activo y visible.",
+   "pt-BR": "{name} está ativo e visível."
+  },
+  "desktop.click.done": {
+   "de-DE": "Ein einzelner Linksklick wurde ausgeführt.",
+   "en-GB": "One left click was performed.",
+   "zh-CN": "已执行一次左键单击。",
+   "ja-JP": "左クリックを1回実行しました。",
+   "es-ES": "Se realizó un clic izquierdo.",
+   "pt-BR": "Um clique esquerdo foi executado."
+  },
+  "desktop.click.busy": {
+   "de-DE": "Kein Klick: Die Maus bewegt sich oder eine Taste ist gedrückt. Erst Bewegung stoppen und Tasten lösen.",
+   "en-GB": "No click: the pointer is moving or a button is held. Stop movement and release buttons first.",
+   "zh-CN": "未单击：鼠标正在移动或按键被按住。请先停止移动并松开按键。",
+   "ja-JP": "クリックしませんでした。移動中かボタンが押されています。先に停止してボタンを離してください。",
+   "es-ES": "Sin clic: el ratón se mueve o hay un botón pulsado. Detén el movimiento y suelta los botones.",
+   "pt-BR": "Sem clique: o mouse está em movimento ou há botão pressionado. Pare e solte os botões."
+  },
+  "desktop.click.error": {
+   "de-DE": "Klick fehlgeschlagen. Keine weitere Eingabe als Ersatz; Windows-Sitzung und Berechtigungen prüfen.",
+   "en-GB": "Click failed. No substitute input; check the Windows session and permissions.",
+   "zh-CN": "单击失败。不会执行替代输入；请检查 Windows 会话和权限。",
+   "ja-JP": "クリック失敗。代替入力は行いません。Windowsセッションと権限を確認してください。",
+   "es-ES": "Clic fallido. Sin entrada alternativa; revisa sesión y permisos Windows.",
+   "pt-BR": "Falha no clique. Sem entrada alternativa; verifique sessão e permissões Windows."
+  },
+  "desktop.click.release-error": {
+   "de-DE": "Tastenfreigabe von Windows nicht bestätigt. Weitere Eingaben bleiben gesperrt. Normalen Desktop fokussieren, Stopp verwenden; gegebenenfalls App neu starten.",
+   "en-GB": "Windows did not confirm button release. Further input is blocked. Focus the normal desktop and use Stop; restart the app if needed.",
+   "zh-CN": "Windows 未确认按键释放。后续输入已锁定。请切换至普通桌面并使用停止，必要时重启应用。",
+   "ja-JP": "Windowsでボタン解放を確認できません。追加入力を停止します。通常デスクトップで停止を使い、必要ならアプリを再起動してください。",
+   "es-ES": "Windows no confirmó soltar botones. Más entradas bloqueadas. Enfoca el escritorio normal y usa Detener; reinicia si es necesario.",
+   "pt-BR": "Windows não confirmou a liberação. Entradas bloqueadas. Foque a área de trabalho normal e use Parar; reinicie se necessário."
+  },
+  "desktop.click.cancelled": {
+   "de-DE": "Klickauftrag abgebrochen.",
+   "en-GB": "Click request cancelled.",
+   "zh-CN": "单击请求已取消。",
+   "ja-JP": "クリック要求を中止しました。",
+   "es-ES": "Solicitud de clic cancelada.",
+   "pt-BR": "Pedido de clique cancelado."
+  },
+  "menu.title": {
+   "de-DE": "Windows-Kontextmenü · lokal",
+   "en-GB": "Windows context menu · local",
+   "zh-CN": "Windows 上下文菜单 · 本地",
+   "ja-JP": "Windowsコンテキストメニュー · ローカル",
+   "es-ES": "Menú contextual Windows · local",
+   "pt-BR": "Menu de contexto Windows · local"
+  },
+  "menu.hint": {
+   "de-DE": "„Wähle Nummer …“ oder „Wähle [Name]“ · „Menü schließen“",
+   "en-GB": "German voice commands: “Wähle Nummer …”, “Wähle [name]”, “Menü schließen”.",
+   "zh-CN": "当前新语音命令仅支持德语：“Wähle Nummer …”“Wähle [名称]”“Menü schließen”。",
+   "ja-JP": "新音声コマンドは現在ドイツ語のみ：「Wähle Nummer …」「Wähle [名前]」「Menü schließen」。",
+   "es-ES": "Nuevos comandos de voz en alemán: “Wähle Nummer …”, “Wähle [nombre]”, “Menü schließen”.",
+   "pt-BR": "Novos comandos de voz em alemão: “Wähle Nummer …”, “Wähle [nome]”, “Menü schließen”."
+  },
+  "menu.confirmPrompt": {
+   "de-DE": "Vor Ausführung ausdrücklich sagen: „Bestätige {name}“. Abbrechen verwirft die Bestätigung.",
+   "en-GB": "Before execution, explicitly say the German phrase “Bestätige {name}”. “Abbrechen” cancels it.",
+   "zh-CN": "执行前请明确说德语：“Bestätige {name}”。“Abbrechen”可取消确认。",
+   "ja-JP": "実行前にドイツ語で「Bestätige {name}」と明示してください。「Abbrechen」で中止します。",
+   "es-ES": "Antes de ejecutar di expresamente en alemán “Bestätige {name}”. “Abbrechen” cancela.",
+   "pt-BR": "Antes de executar, diga explicitamente em alemão “Bestätige {name}”. “Abbrechen” cancela."
+  },
+  "menu.more": {
+   "de-DE": "Weitere Einträge im nativen Menü: per vollständigem Namen wählen. Nummern gelten nur für diese Anzeige.",
+   "en-GB": "More entries exist in the native menu: select by full name. Numbers apply only to this display.",
+   "zh-CN": "原生菜单还有其他项目：请用完整名称选择。编号仅适用于此处显示的项目。",
+   "ja-JP": "元のメニューに他の項目があります。完全な名前で選択してください。番号はこの表示のみ有効です。",
+   "es-ES": "Hay más opciones en el menú original: usa el nombre completo. Los números solo corresponden a esta lista.",
+   "pt-BR": "Há mais opções no menu original: use o nome completo. Os números valem apenas para esta lista."
+  },
+  "menu.opened": {
+   "de-DE": "Aktuelles Windows-Menü lokal erfasst. Auswahl ausdrücklich per Name oder angezeigter Nummer.",
+   "en-GB": "Current Windows menu read locally. Select explicitly by name or displayed number.",
+   "zh-CN": "已在本地读取当前 Windows 菜单。请用名称或显示的编号明确选择。",
+   "ja-JP": "現在のWindowsメニューをローカルで取得しました。名前か表示番号で明示選択してください。",
+   "es-ES": "Menú Windows actual leído localmente. Selecciona expresamente por nombre o número mostrado.",
+   "pt-BR": "Menu Windows atual lido localmente. Selecione explicitamente por nome ou número exibido."
+  },
+  "menu.closed": {
+   "de-DE": "Menüzuordnung beendet; geschlossenes Menü kann nicht mehr bedient werden.",
+   "en-GB": "Menu binding ended; a closed menu cannot be operated.",
+   "zh-CN": "菜单绑定已结束；不能再操作已关闭的菜单。",
+   "ja-JP": "メニューの関連付けを終了しました。閉じたメニューは操作できません。",
+   "es-ES": "Vínculo del menú terminado; no se puede operar un menú cerrado.",
+   "pt-BR": "Vínculo do menu encerrado; não é possível operar menu fechado."
+  },
+  "menu.executed": {
+   "de-DE": "Ausgewählten nativen Menüeintrag ausgeführt.",
+   "en-GB": "Selected native menu item invoked.",
+   "zh-CN": "已执行所选原生菜单项。",
+   "ja-JP": "選択した元のメニュー項目を実行しました。",
+   "es-ES": "Opción del menú nativo ejecutada.",
+   "pt-BR": "Item do menu nativo executado."
+  },
+  "menu.confirmation": {
+   "de-DE": "Destruktiver Menüeintrag wartet auf konkrete Bestätigung in der lokalen Anzeige.",
+   "en-GB": "Destructive menu item awaits specific confirmation in the local display.",
+   "zh-CN": "危险菜单项正在等待本地显示中的具体确认。",
+   "ja-JP": "破壊的メニュー操作はローカル表示の具体的な確認を待っています。",
+   "es-ES": "Opción destructiva pendiente de confirmación concreta en la pantalla local.",
+   "pt-BR": "Item destrutivo aguarda confirmação específica na exibição local."
+  },
+  "menu.changed": {
+   "de-DE": "Menü, Fenster oder Fokus hat sich geändert. Bitte das gewünschte Kontextmenü erneut öffnen.",
+   "en-GB": "Menu, window or focus changed. Reopen the intended context menu.",
+   "zh-CN": "菜单、窗口或焦点已变化。请重新打开所需上下文菜单。",
+   "ja-JP": "メニュー・ウィンドウ・フォーカスが変わりました。対象メニューを開き直してください。",
+   "es-ES": "Cambió menú, ventana o foco. Abre de nuevo el menú deseado.",
+   "pt-BR": "Menu, janela ou foco mudou. Reabra o menu desejado."
+  },
+  "menu.not-found": {
+   "de-DE": "Kein eindeutig passender sichtbarer Menüeintrag. Vollständigen Namen oder angezeigte Nummer verwenden.",
+   "en-GB": "No matching visible menu item. Use the full name or a displayed number.",
+   "zh-CN": "没有匹配的可见菜单项。请使用完整名称或显示的编号。",
+   "ja-JP": "一致する表示中のメニュー項目がありません。完全な名前か表示番号を使ってください。",
+   "es-ES": "No coincide ninguna opción visible. Usa nombre completo o número mostrado.",
+   "pt-BR": "Nenhum item visível correspondente. Use o nome completo ou número exibido."
+  },
+  "menu.disabled": {
+   "de-DE": "Dieser Menüeintrag ist aktuell deaktiviert. Keine Aktion ausgeführt.",
+   "en-GB": "This menu item is currently disabled. No action performed.",
+   "zh-CN": "此菜单项当前已禁用。未执行操作。",
+   "ja-JP": "この項目は現在無効です。操作しませんでした。",
+   "es-ES": "Esta opción está deshabilitada. No se ejecutó ninguna acción.",
+   "pt-BR": "Este item está desativado. Nenhuma ação foi executada."
+  },
+  "menu.unsupported": {
+   "de-DE": "Dieses Menü oder UIA-Pattern ist nicht zugänglich. Bitte das native Menü direkt bedienen; keine Ersatzkoordinaten oder Rechteerhöhung.",
+   "en-GB": "This menu or UIA pattern is unavailable. Operate the native menu directly; no coordinate fallback or elevation.",
+   "zh-CN": "无法访问此菜单或 UIA 模式。请直接操作原生菜单；不会使用替代坐标或提升权限。",
+   "ja-JP": "このメニューまたはUIAパターンは利用できません。元のメニューを直接操作してください。座標代替や権限昇格は行いません。",
+   "es-ES": "Este menú o patrón UIA no está disponible. Usa el menú original; sin coordenadas alternativas ni elevación.",
+   "pt-BR": "Este menu ou padrão UIA não está disponível. Use o menu original; sem coordenadas alternativas nem elevação."
+  },
+  "menu.ambiguous": {
+   "de-DE": "Mehrere Menüeinträge haben diesen Namen. Bitte gezielt die angezeigte Nummer wählen.",
+   "en-GB": "Several menu items share this name. Select the displayed number explicitly.",
+   "zh-CN": "多个菜单项名称相同。请明确选择显示的编号。",
+   "ja-JP": "同名の項目が複数あります。表示番号で指定してください。",
+   "es-ES": "Varias opciones tienen este nombre. Elige expresamente el número mostrado.",
+   "pt-BR": "Vários itens têm este nome. Escolha explicitamente o número exibido."
+  },
+  "menu.provider-error": {
+   "de-DE": "Lokaler UIA-Menüzugriff fehlgeschlagen. Keine Menüaktion als Ersatz ausgeführt.",
+   "en-GB": "Local UIA menu access failed. No substitute menu action performed.",
+   "zh-CN": "本地 UIA 菜单访问失败。未执行替代菜单操作。",
+   "ja-JP": "ローカルUIAメニューへのアクセスに失敗しました。代替操作は行いません。",
+   "es-ES": "Falló el acceso local UIA. No se ejecutó acción alternativa.",
+   "pt-BR": "Falha no acesso local UIA. Nenhuma ação alternativa foi executada."
+  },
+  "menu.busy": {
+   "de-DE": "Ein Menüauftrag wird noch geprüft. Bitte warten oder Abbrechen sagen.",
+   "en-GB": "A menu request is being checked. Wait or say “Abbrechen”.",
+   "zh-CN": "正在检查菜单请求。请等待或说“Abbrechen”。",
+   "ja-JP": "メニュー要求を確認中です。待つか「Abbrechen」と言ってください。",
+   "es-ES": "Se comprueba otra solicitud. Espera o di “Abbrechen”.",
+   "pt-BR": "Um pedido está sendo verificado. Aguarde ou diga “Abbrechen”."
+  },
+  "menu.cancelled": {
+   "de-DE": "Menüauftrag abgebrochen.",
+   "en-GB": "Menu request cancelled.",
+   "zh-CN": "菜单请求已取消。",
+   "ja-JP": "メニュー要求を中止しました。",
+   "es-ES": "Solicitud de menú cancelada.",
+   "pt-BR": "Pedido de menu cancelado."
+  },
+  "menu.localListener": {
+   "de-DE": "Menümodus: vorhandener lokaler Sprachweg angefordert, kein zweites Mikrofon.",
+   "en-GB": "Menu mode: existing local speech path requested, no second microphone.",
+   "zh-CN": "菜单模式：请求现有本地语音通道，不启动第二个麦克风。",
+   "ja-JP": "メニューモード：既存のローカル音声経路を要求。2つ目のマイクは使いません。",
+   "es-ES": "Modo menú: vía local existente solicitada, sin segundo micrófono.",
+   "pt-BR": "Modo menu: via local existente solicitada, sem segundo microfone."
+  },
+  "menu.speechReady": {
+   "de-DE": "Lokale Menü- und Zusatzbefehle bereit. Neue Befehle derzeit auf Deutsch.",
+   "en-GB": "Local menu and additional commands ready. New commands currently require German.",
+   "zh-CN": "本地菜单及附加命令就绪。新命令当前仅支持德语。",
+   "ja-JP": "ローカルのメニュー・追加コマンドの準備完了。新コマンドは現在ドイツ語です。",
+   "es-ES": "Comandos locales de menú listos. Los nuevos comandos requieren alemán.",
+   "pt-BR": "Comandos locais de menu prontos. Novos comandos exigem alemão."
+  },
+  "menu.noSpace": {
+   "de-DE": "Kein freier Platz neben dem Menü für die Anzeige. Vollständige Namen im nativen Menü verwenden; keine Nummernauswahl.",
+   "en-GB": "No free space beside the menu for the display. Use full native menu names; numbered selection is unavailable.",
+   "zh-CN": "菜单旁没有空间显示列表。请使用原生菜单完整名称；编号选择不可用。",
+   "ja-JP": "メニュー横に表示スペースがありません。元の項目の完全な名前を使ってください。番号選択はできません。",
+   "es-ES": "No hay espacio junto al menú. Usa nombres completos del menú original; sin selección por número.",
+   "pt-BR": "Não há espaço ao lado do menu. Use nomes completos do menu original; sem seleção por número."
+  },
+  "menu.confirmPromptNumber": {
+   "de-DE": "Für „{name}“ ausdrücklich sagen: „Bestätige Nummer {number}“. Abbrechen verwirft die Bestätigung.",
+   "en-GB": "For “{name}”, explicitly say “Bestätige Nummer {number}” (German). “Abbrechen” cancels.",
+   "zh-CN": "对于“{name}”，请明确说德语“Bestätige Nummer {number}”。“Abbrechen”取消确认。",
+   "ja-JP": "「{name}」の実行はドイツ語で「Bestätige Nummer {number}」と明示してください。「Abbrechen」で中止します。",
+   "es-ES": "Para «{name}», di expresamente en alemán “Bestätige Nummer {number}”. “Abbrechen” cancela.",
+   "pt-BR": "Para «{name}», diga explicitamente em alemão “Bestätige Nummer {number}”. “Abbrechen” cancela."
+  },
+  "menu.speechUnavailable": {
+   "de-DE": "Lokale Menüsprache {locale} nicht verfügbar. Das native Menü direkt bedienen oder nach Ende des Menüs OpenAI Live ausdrücklich starten.",
+   "en-GB": "Local menu recognition for {locale} unavailable. Operate the native menu directly, or explicitly start OpenAI Live after closing it.",
+   "zh-CN": "本地菜单语音 {locale} 不可用。请直接操作原生菜单，或关闭菜单后明确启动 OpenAI Live。",
+   "ja-JP": "ローカルの{locale}メニュー認識は利用できません。元のメニューを直接操作するか、閉じてからOpenAI Liveを明示的に開始してください。",
+   "es-ES": "Reconocimiento local de menú {locale} no disponible. Usa el menú original o inicia OpenAI Live expresamente después de cerrarlo.",
+   "pt-BR": "Reconhecimento local de menu {locale} indisponível. Use o menu original ou inicie OpenAI Live explicitamente após fechá-lo."
+  },
+  "desktop.character.transitionError": {
+   "de-DE": "Sprachwechsel nicht bestätigt. Charakter unverändert; bestehende Sprachverbindung beenden und erneut versuchen.",
+   "en-GB": "Speech handoff not confirmed. Character unchanged; stop the current voice connection and try again.",
+   "zh-CN": "未确认语音交接。角色未更改；请结束当前语音连接后重试。",
+   "ja-JP": "音声の引き継ぎを確認できません。キャラクターは変更されません。現在の音声接続を終了して再試行してください。",
+   "es-ES": "No se confirmó el relevo de audio. Personaje sin cambios; finaliza la conexión actual y reintenta.",
+   "pt-BR": "Transferência de áudio não confirmada. Personagem inalterado; encerre a conexão atual e tente novamente."
   }
  },
  "sources": {
@@ -4186,6 +4426,36 @@
   "LO": "mouse.quadShort.left-top",
   "RO": "mouse.quadShort.right-top",
   "LU": "mouse.quadShort.left-bottom",
-  "RU": "mouse.quadShort.right-bottom"
+  "RU": "mouse.quadShort.right-bottom",
+  "Lokale Desktopaktion nicht verfügbar. Menü, Sprache und Windows-Unterstützung prüfen.": "desktop.action.unavailable",
+  "Lokaler Auftrag abgebrochen oder nicht mehr freigegeben.": "desktop.action.cancelled",
+  "{name} ist aktiviert und sichtbar.": "desktop.character.called",
+  "Ein einzelner Linksklick wurde ausgeführt.": "desktop.click.done",
+  "Kein Klick: Die Maus bewegt sich oder eine Taste ist gedrückt. Erst Bewegung stoppen und Tasten lösen.": "desktop.click.busy",
+  "Klick fehlgeschlagen. Keine weitere Eingabe als Ersatz; Windows-Sitzung und Berechtigungen prüfen.": "desktop.click.error",
+  "Tastenfreigabe von Windows nicht bestätigt. Weitere Eingaben bleiben gesperrt. Normalen Desktop fokussieren, Stopp verwenden; gegebenenfalls App neu starten.": "desktop.click.release-error",
+  "Klickauftrag abgebrochen.": "desktop.click.cancelled",
+  "Windows-Kontextmenü · lokal": "menu.title",
+  "„Wähle Nummer …“ oder „Wähle [Name]“ · „Menü schließen“": "menu.hint",
+  "Vor Ausführung ausdrücklich sagen: „Bestätige {name}“. Abbrechen verwirft die Bestätigung.": "menu.confirmPrompt",
+  "Weitere Einträge im nativen Menü: per vollständigem Namen wählen. Nummern gelten nur für diese Anzeige.": "menu.more",
+  "Aktuelles Windows-Menü lokal erfasst. Auswahl ausdrücklich per Name oder angezeigter Nummer.": "menu.opened",
+  "Menüzuordnung beendet; geschlossenes Menü kann nicht mehr bedient werden.": "menu.closed",
+  "Ausgewählten nativen Menüeintrag ausgeführt.": "menu.executed",
+  "Destruktiver Menüeintrag wartet auf konkrete Bestätigung in der lokalen Anzeige.": "menu.confirmation",
+  "Menü, Fenster oder Fokus hat sich geändert. Bitte das gewünschte Kontextmenü erneut öffnen.": "menu.changed",
+  "Kein eindeutig passender sichtbarer Menüeintrag. Vollständigen Namen oder angezeigte Nummer verwenden.": "menu.not-found",
+  "Dieser Menüeintrag ist aktuell deaktiviert. Keine Aktion ausgeführt.": "menu.disabled",
+  "Dieses Menü oder UIA-Pattern ist nicht zugänglich. Bitte das native Menü direkt bedienen; keine Ersatzkoordinaten oder Rechteerhöhung.": "menu.unsupported",
+  "Mehrere Menüeinträge haben diesen Namen. Bitte gezielt die angezeigte Nummer wählen.": "menu.ambiguous",
+  "Lokaler UIA-Menüzugriff fehlgeschlagen. Keine Menüaktion als Ersatz ausgeführt.": "menu.provider-error",
+  "Ein Menüauftrag wird noch geprüft. Bitte warten oder Abbrechen sagen.": "menu.busy",
+  "Menüauftrag abgebrochen.": "menu.cancelled",
+  "Menümodus: vorhandener lokaler Sprachweg angefordert, kein zweites Mikrofon.": "menu.localListener",
+  "Lokale Menü- und Zusatzbefehle bereit. Neue Befehle derzeit auf Deutsch.": "menu.speechReady",
+  "Kein freier Platz neben dem Menü für die Anzeige. Vollständige Namen im nativen Menü verwenden; keine Nummernauswahl.": "menu.noSpace",
+  "Für „{name}“ ausdrücklich sagen: „Bestätige Nummer {number}“. Abbrechen verwirft die Bestätigung.": "menu.confirmPromptNumber",
+  "Lokale Menüsprache {locale} nicht verfügbar. Das native Menü direkt bedienen oder nach Ende des Menüs OpenAI Live ausdrücklich starten.": "menu.speechUnavailable",
+  "Sprachwechsel nicht bestätigt. Charakter unverändert; bestehende Sprachverbindung beenden und erneut versuchen.": "desktop.character.transitionError"
  }
 };if(typeof module==='object'&&module.exports)module.exports=data;if(typeof window!=='undefined')window.RobotCatalog=data;})();

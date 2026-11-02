@@ -1,5 +1,6 @@
 'use strict';
 (()=>{
+ const additions=typeof module==='object'&&module.exports?require('./desktop-action-commands.js'):window.RobotDesktopActions;
  const voice=typeof module==='object'&&module.exports?require('./voice-commands.js'):window.RobotVoiceCommands;
  const names=/^(?:(?:hey|hallo) )?(?:jeffrey|jeffry|jeffri|jeffray|jeffrei|dscheffri|dscheffrey|roboter|robot|kelly|kelli|kelley|keli|kellie|krak|krack|krakk|krag|crack|crag|kraak|bronco|bronko|broncho|branko|broncko|james|jaymes|dscheims|dschemes|dschejms) /;
  const rows={a:'A',ah:'A',anton:'A',alpha:'A',b:'B',be:'B',bee:'B',berta:'B',bravo:'B',c:'C',ce:'C',ze:'C',zeh:'C',tse:'C',casar:'C',caesar:'C',charlie:'C',d:'D',de:'D',dee:'D',dora:'D',delta:'D'};
@@ -38,8 +39,9 @@
  const intl=typeof module==='object'&&module.exports?require('./mouse-locales.js'):window.RobotMouseLocales;
  function parseMouseCommand(input,locale='de-DE'){
   if(typeof input!=='string'||input.length>250||/["'„“”‚‘’«»`「」『』;:]/.test(input))return null;
+  const extra=additions?.parseAction(input,locale);if(extra?.action==='click')return extra;
   return locale==='de-DE'?parseGerman(input):intl?.parse(input,locale)||null;
  }
- function mouseGrammar(locale='de-DE'){return locale==='de-DE'?[...germanGrammar(),'Raster aus','Zeig das Raster']:intl?.grammar(locale)||[];}
+ function mouseGrammar(locale='de-DE'){return locale==='de-DE'?[...germanGrammar(),'Raster aus','Zeig das Raster',...(additions?.clickGrammar(locale)||[])]:intl?.grammar(locale)||[];}
  const api={parseMouseCommand,mouseGrammar};if(typeof module==='object'&&module.exports)module.exports=api;if(typeof window!=='undefined')window.RobotMouseCommands=api;
 })();

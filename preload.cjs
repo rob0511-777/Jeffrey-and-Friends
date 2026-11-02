@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld('desktopRobot', {
   prepareMicrophone: () => ipcRenderer.invoke('robot:prepare-microphone'),
   connectRealtime: sdp => ipcRenderer.invoke('robot:realtime-connect', sdp),
   mouseCommand: (text,requestId) => ipcRenderer.invoke('robot:mouse-command',requestId===undefined?text:{text,requestId}),
+  desktopAction: (text,requestId) => ipcRenderer.invoke('robot:desktop-action',{text,requestId}),
   inspectDesktop: question => ipcRenderer.invoke('robot:inspect-desktop', question),
   getProviderStatus: () => ipcRenderer.invoke('robot:provider-status'),
   listLocalModels: baseUrl => ipcRenderer.invoke('robot:local-models', baseUrl),
