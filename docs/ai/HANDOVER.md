@@ -9,15 +9,17 @@ Chatprotokolle. Keine Freigabe für Merge, Release oder kostenpflichtige API-Tes
 | --- | --- |
 | Repository | [rob0511-777/Jeffrey-and-Friends](https://github.com/rob0511-777/Jeffrey-and-Friends) |
 | Aktueller Branch | `feature/desktop-clicks-menus-characters` |
-| Neuer PR | Neuer gestapelter Draft wird nach Dokumentationscommit angelegt; Link folgt in dieser Datei. |
-| Implementierungscommit (vollständig) | `3ad8e75df140c308b65c8da2ae8adcc0f4b4b673` |
+| Aktueller PR | [Draft PR #8](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/8), offen, nicht gemergt; Basis #7 |
+| Geprüfter Programmstand (vollständig) | `3ad8e75df140c308b65c8da2ae8adcc0f4b4b673` |
+| HEAD bei Draft-Erstellung, vor diesem PR-Link-Nachtrag | `a96dbd9b3893bb25e9c93ee2da87ec318ae1a6f9` |
 | Basis / unveränderter PR #7 | `feature/mouse-grid-2-i18n`, `ff3f610720e6ebc02c810e9bada90baa2710c050` |
 | Aktueller Worktree | `/workspace/work/desktop-actions` |
 | Gemeinsames Repository | `/workspace/Jeffrey-Friends` |
 | Paket / Prüfung | 0.7.4, Electron 45.0.0; Linux, Node 24.19.0, PowerShell 7.4.7 |
 
-Der Implementierungscommit ist der vollständig geprüfte Programmstand. Spätere
-Commits dieses Branches ergänzen Dokumentation/PR-Verweis. Den exakten aktuellen
+Der geprüfte Programmstand umfasst `442e099` (Desktopaktionen/Regressionstests)
+und `3ad8e75` (sichtbare Nummern). `a96dbd9` ergänzt Dokumentation und Testnachweis;
+der anschließende Dokumentationscommit ergänzt diesen verifizierten PR-Link. Den exakten aktuellen
 HEAD mit `git rev-parse HEAD` feststellen; ein Dokument kann seinen eigenen
 Commit-Hash nicht enthalten. `git log -4 --oneline` zeigt die Folgecommits.
 
@@ -30,8 +32,9 @@ Nur diesen neuen Branch pushen. #7 und ältere Branches/PRs bleiben unberührt.
 
 Im neuen Worktree stammen die Programmänderungen und neuen Tests ausschließlich
 aus diesem Auftrag; sie sind im obigen Implementierungscommit enthalten. Diese
-Übergabe und die aktualisierten technischen Dokumente werden separat committet.
-Nach Abschluss ist hier ein sauberer Arbeitsbaum vorgesehen; bei Wiederaufnahme
+Übergabe und die aktualisierten technischen Dokumente sind separat committet.
+Vor dem PR-Link-Nachtrag war der neue Arbeitsbaum sauber; der Nachtrag wird ebenfalls
+committet und gepusht. Bei Wiederaufnahme
 immer `git status --short --branch` prüfen und zusätzliche Nutzeränderungen erhalten.
 
 Die ältere, **untracked** Übergabe bleibt unverändert im alten Worktree
@@ -52,9 +55,9 @@ GitHub-Metadaten von #4–#7 erneut geprüft: offen, Draft, nicht gemergt.
 | [#5](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/5) | Maussteuerung 1.0, dauerhafte Zustimmung / `feature/mouse-grid-consent` | #4 | `f72dbd32ed9226d7c9370e6ff495cec42096b339` |
 | [#6](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/6) | Zweisprachige README / `docs/bilingual-readme` | #5 | `0e3427d941ab138892ea7fdd1f8cf233115aec55` |
 | [#7](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/7) | Maussteuerung 2.0, sechs Sprachen / `feature/mouse-grid-2-i18n` | #5 | `ff3f610720e6ebc02c810e9bada90baa2710c050` |
-| Neuer Draft | Klicks, echte UIA-Menüs, Figurenrufe / aktueller Branch | **#7** | Implementierung oben; Dokumentationscommits folgen |
+| [#8](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/8) | Klicks, echte UIA-Menüs, Figurenrufe / aktueller Branch | **#7** | `a96dbd9b3893bb25e9c93ee2da87ec318ae1a6f9` bei Draft-Erstellung; danach nur PR-Link-Nachtrag |
 
-Abfolge: `main → #4 → #5 → #7 → neuer Draft`; **#6 zweigt parallel von #5 ab**.
+Abfolge: `main → #4 → #5 → #7 → #8`; **#6 zweigt parallel von #5 ab**.
 `main` steht in den Metadaten auf `255916479077953230d4f3edc5641ca51326a5b3`.
 #6 ist nicht enthalten: geerbte README.md bleibt historisch, README.de.md existiert
 hier noch nicht. READMEs nicht ungefragt aus #6 kopieren oder aktualisieren.
@@ -238,7 +241,7 @@ Add-Type -AssemblyName System.Speech
 ## Kurzer Startprompt
 
 > Lies docs/ai/HANDOVER.md, prüfe feature/desktop-clicks-menus-characters, HEAD und
-> Arbeitsbaum sowie die Draft-Basis feature/mouse-grid-2-i18n (PR #7). Erhalte das
+> Arbeitsbaum, Draft PR #8 sowie dessen Basis feature/mouse-grid-2-i18n (PR #7). Erhalte das
 > funktionierende Raster und vorhandene lokale Änderungen. Trenne die 590 Node- und
 > UIA-/Klick-Simulationen von echter Windows-Abnahme. Bearbeite nur den nächsten
 > ausdrücklich beauftragten Punkt; keine bezahlten APIs, kein Merge/Release.
