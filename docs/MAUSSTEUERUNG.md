@@ -1,11 +1,11 @@
 # Sprachgesteuertes Koordinatennetz und Zustimmungen
 
-Entwicklungsstand `feature/mouse-grid-2-i18n`, aufbauend auf
-`feature/mouse-grid-consent` (PR #5). Diese Erweiterung ist experimentell.
-Die Grundfunktion wurde laut Nutzerrückmeldung mit OpenAI Live auf einem echten
-Windows-Rechner ausprobiert, mit wechselhafter Reaktion. Eine vollständige Abnahme
-liegt nicht vor. **Die hier ergänzten Korrekturen, Viereransichten und Diagnosen
-sind noch nicht unter Windows getestet.** PRs #4, #5 und #6 bleiben eigenständig.
+Entwicklungsstand `feature/desktop-clicks-menus-characters`, aufbauend auf
+PR #7 (`feature/mouse-grid-2-i18n`) und damit PR #5/#4. Experimenteller Draft.
+Der Nutzer hat die aktuelle PR-#7-Rastersteuerung inzwischen unter Windows
+erfolgreich getestet und ist damit zufrieden (Nutzerrückmeldung, kein hier
+ausgeführter Windows-Test). Die neuen Klick-/Menü-/Charakterfunktionen sind
+**noch nicht unter Windows geprüft**. PR #6 bleibt eine getrennte README-Arbeit.
 
 ## Starten und bedienen
 
@@ -87,7 +87,8 @@ Charakter-/Anbieterwechsel oder tatsächliches Beenden der App verlassen ihn.
 Das Schließen der Einstellungen verbirgt weiterhin nur das Fenster; über das
 Tray lässt es sich wieder öffnen. App-Ende erfolgt über „Beenden“ im Tray.
 
-Keine Klicks, Doppelklicks, Drag-and-drop oder Scrollaktionen. Das Raster fängt
+Zusätzlich sind ausdrückliche Einzelklicks und native Menüauswahl ergänzt (siehe unten).
+Keine Doppelklicks, Drag-and-drop oder Scrollaktionen. Das Raster fängt
 keine Mausinteraktionen ab und übernimmt keinen Fensterfokus. Zitate, Verneinungen
 und angehängte Aktionen werden vom Parser nicht als gültige Mausbefehle freigegeben.
 Eine eingeschränkte Sprachgrammatik kann Fehlhörer nicht vollständig ausschließen;
@@ -221,7 +222,34 @@ Allgemeine Chat-Nachrichten bleiben wie bisher flüchtig im Chat; direkte
 Rasterbefehle erscheinen nicht als Chatzeilen und werden nicht als Gedächtnisnotizen
 gespeichert. Bei OpenAI Live sind sie Bestandteil der bestehenden Audioübertragung.
 
-## Windows-Abnahme (noch offen)
+## Ergänzung: Einzelklicks und native Menüs
+
+[Deutsche Einzelbefehle](MAUSBEFEHLE.de.md#neue-einzelklicks-native-menüs-und-charakteraufrufe)
+und [Menüablauf mit Grenzen](KONTEXTMENUES.md) beschreiben die neue Erweiterung.
+Klicks benötigen kein Raster. Laufende Bewegungen werden dafür nicht umgedeutet:
+der Klick wird als beschäftigt abgewiesen. Erst stoppen oder das Ziel erreichen
+lassen. Vor dem nativen Klick wird die tatsächliche Cursorposition erneut geprüft.
+Die Bewegungsformel, Koordinaten, Monitorwahl und Unterteilungsregeln bleiben erhalten.
+
+Live nutzt denselben OpenAI-Audiokanal, lokale Erkennung denselben Windows-Prozess.
+Für Menüeinträge wird kein Modell angefragt und kein Menütext an KI/TTS geschickt.
+Die lokale Zusatzanzeige steht neben dem nativen Menü, bleibt ohne Fokus und ist
+für Mausklicks durchlässig. Ist kein freier Platz vorhanden, bleibt sie verborgen;
+Nummernwahl steht dann nicht zur Verfügung. Namen im nativen Menü bleiben nutzbar,
+sofern UIA den Eintrag eindeutig bereitstellt.
+
+Explizite Charakteraufrufe nutzen den vorhandenen Wechselpfad. Nur dieser neue
+Sprachpfad wartet zusätzlich auf bestätigte lokale Mikrofonfreigabe und das Ende
+der bisherigen Live-Verbindung (maximal fünf Sekunden auf Live-Ende). Bei Fehler
+bleibt die bisherige Figur aktiv. Während der Übergabe startet kein neuer Hörer;
+überholte oder abgebrochene Aufrufe werden verworfen. Derselbe aktive Charakter
+wird ohne Sitzungsneustart gezeigt. Es erfolgt kein automatischer Live-Neustart.
+
+## Windows-Abnahme (neue Erweiterung noch offen)
+
+Der aktuelle [Klick-/Menü-/Charakter-Testnachweis](ai/testing/2026-11-02-desktop-actions.md)
+trennt Linux-Simulationen von der noch offenen Windows-Abnahme.
+
 
 Die aktuellen Korrekturen und Ergebnisse stehen im
 [Testnachweis Reaktion und Viererunterteilung](ai/testing/2026-11-01-mouse-response-quarters.md).

@@ -100,7 +100,8 @@ in `mouse-locales.js`; die bisherige deutsche Grammatik bleibt in `mouse-command
 Erkannte Verneinungen, Zitate und angehängte Desktopaktionen werden abgewiesen.
 Eine geschlossene Windows-Grammatik verhindert nicht jede Fehltranskription:
 bei unklarer Bewegung sofort Stopp oder die Stopp-Schaltfläche verwenden.
-Es werden keine Klicks oder Tastatureingaben ausgeführt.
+Neue ausdrückliche Einzelklicks sind nur mit deutscher Bediensprache ergänzt;
+keine Tastaturautomation. Die obigen Rasterbefehle bleiben in allen sechs Sprachen erhalten.
 
 Ausdrückliche Desktop-/Textbeispiele: „read selected text“, „朗读选中文本“,
 „選択したテキストを読む“, „leer texto seleccionado“, „ler texto selecionado“.
@@ -112,7 +113,7 @@ Cloud-Zustimmung ändern sich nicht. [Desktop-Erkennung](DESKTOP-ERKENNUNG.md).
 
 ## Aufbau für Entwickler
 
-`locales/catalog.js` enthält 465 eindeutige UI-Schlüssel mit sechs Texten pro
+`locales/catalog.js` enthält 495 eindeutige UI-Schlüssel mit sechs Texten pro
 Schlüssel und eine Zuordnung bisheriger deutscher UI-Texte. `i18n.js` normalisiert
 Locales, ersetzt reine Textplatzhalter und stellt die Antwortsprachen-Anweisung
 bereit. Neue Texte erhalten semantische Schlüssel. Die `ui.s…`- und `legacy.m…`-
@@ -154,3 +155,25 @@ Nach fachlicher Abnahme diese Aussagen in beiden Sprachen gemeinsam aktualisiere
   Links auf diese Datei und den neuen Testnachweis ergänzen.
 
 PR #6 bleibt eigenständig. Diese Liste ist kein Auftrag, ihn jetzt zu verändern.
+
+## Neue Desktopaktionen auf dem Folgebranch von PR #7
+
+Branch `feature/desktop-clicks-menus-characters` ergänzt die folgenden Befehle.
+Die KI-Gesprächssprache erweitert deren Parser nicht.
+
+| Bediensprache | Neue Klick-/Menü-/Charakterbefehle | Neue sichtbare Hinweise |
+| --- | --- | --- |
+| Deutsch (`de-DE`) | Implementiert: sechs Klickvarianten, exakte Menüauswahl/Nummern, Untermenü, gebundene Bestätigung, explizite Figurenrufe | Deutsch |
+| Englisch (`en-GB`) | Nicht implementiert; bestehende Raster-/Desktopbefehle erhalten | Englisch; Hinweis auf deutsche neue Befehle |
+| Mandarin (`zh-CN`) | Nicht implementiert; bestehende Raster-/Desktopbefehle erhalten | Chinesisch; Hinweis auf deutsche neue Befehle |
+| Japanisch (`ja-JP`) | Nicht implementiert; bestehende Raster-/Desktopbefehle erhalten | Japanisch; Hinweis auf deutsche neue Befehle |
+| Spanisch (`es-ES`) | Nicht implementiert; bestehende Raster-/Desktopbefehle erhalten | Spanisch; Hinweis auf deutsche neue Befehle |
+| Portugiesisch (`pt-BR`) | Nicht implementiert; bestehende Raster-/Desktopbefehle erhalten | Portugiesisch; Hinweis auf deutsche neue Befehle |
+
+Die 30 zusätzlichen Katalogschlüssel haben jeweils sechs Übersetzungen mit
+übereinstimmenden Platzhaltern. Native Menüeinträge behalten unverändert ihre
+Betriebssystem-/Anwendungssprache. Sie durchlaufen keine DOM-Übersetzung oder KI.
+Der lokale Erkenner muss auch ihre Aussprache unterstützen; Nummern sind eine
+Alternative für angezeigte Einträge. Siehe [Befehlsliste](MAUSBEFEHLE.de.md) und
+[Unterstützungsgrenzen](KONTEXTMENUES.md). README-PR #6 bleibt unverändert und muss
+bei einer späteren gemeinsamen Dokumentationsabnahme auch diese Ergänzungen erhalten.

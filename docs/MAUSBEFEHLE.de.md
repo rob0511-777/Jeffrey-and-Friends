@@ -1,6 +1,6 @@
 # Deutsche Mausbefehle
 
-Für **Bediensprache Deutsch**, auf `feature/mouse-grid-2-i18n` (PR #7).
+Für **Bediensprache Deutsch**, auf `feature/desktop-clicks-menus-characters`, gestapelt auf PR #7.
 Die folgenden Beispiele passieren den Befehlsparser in automatisierten Tests.
 Echte Windows-Erkennung und Sprach-Stopp-Latenz der neuen Varianten sind noch
 nicht praktisch geprüft. Man kann dieselben Befehle ins vorhandene Textfeld eingeben.
@@ -39,7 +39,50 @@ Keine Teilfreigaben: „Fahr nicht nach B3“, „Fahr nach B3 und klick dort“
 werden nicht als Mausauftrag akzeptiert. Unklare Formulierungen lösen keine
 beliebige Bewegung aus. Eine echte Spracherkennung kann trotzdem falsch
 transkribieren; die große **Maus STOPP**-Schaltfläche bleibt unabhängig erreichbar.
-Es werden keine Klicks, Tasten oder sonstigen neuen Desktopaktionen ausgeführt.
+Zusammengesetzte Aufträge bleiben gesperrt. Die folgenden neuen Einzelaufträge
+werden getrennt und ausdrücklich angefordert; keine Tastaturautomation.
 
 [Rasternavigation und Grenzen](MAUSSTEUERUNG.md) ·
 [Andere Sprachen](MEHRSPRACHIGKEIT.md) · [Reaktionszeit messen](MAUS-DIAGNOSE.md)
+
+## Neue Einzelklicks, native Menüs und Charakteraufrufe
+
+Neue Befehle benötigen **Bediensprache Deutsch (`de-DE`)**. Die fünf anderen
+Rastersprachen bleiben unverändert. Texteingabe funktioniert ebenfalls.
+
+| Auftrag | Vollständige Beispiele | Wirkung / Voraussetzung |
+| --- | --- | --- |
+| Ein Linksklick | „Linksklick“, „Mach einen Linksklick“, „Klick mit der linken Maustaste“ | Genau ein Klick an der tatsächlichen aktuellen Zeigerposition, auch ohne Raster |
+| Ein Rechtsklick | „Rechtsklick“, „Mach einen Rechtsklick“, „Klick mit der rechten Maustaste“ | Ein Klick; danach das tatsächlich geöffnete fremde Kontextmenü lokal prüfen |
+| Menüeintrag wählen | „Wähle Kopieren“, „Wähle Einfügen“, „Wähle Nummer 2“, „Wähle Nummer zwei“ | Nur aktueller sichtbarer, aktivierter UIA-Eintrag; Nummer nur, wenn neben dem Menü angezeigt |
+| Untermenü öffnen | „Öffne das Untermenü Senden an“ | Nur vorhandenes UIA-ExpandCollapse-Pattern; neue Liste ersetzt die vorherige |
+| Menü schließen | „Menü schließen“ | Zugeordnetes natives Menü schließen und lokale Liste verwerfen |
+| Konkrete Bestätigung | „Wähle Löschen“ → „Bestätige Löschen“ oder die angezeigte „Bestätige Nummer 3“ | Nur der angefragte aktuelle Eintrag; kein allgemeines „Ja“ |
+| Abbrechen / Stopp | „Abbrechen“, „Stopp“, bestehende Stoppvarianten | Wartende Menüaktion/Bestätigung verwerfen und bisherige Bewegung stoppen |
+| Figur rufen | „Kelly, komm bitte“, „Ruf Kelly“, „Wechsle zu Bronco“, „Ich möchte mit James sprechen“, „Aktiviere Krak“, „Wechsle zu Jeffrey“ | Bestehendes Charakterprofil nutzen; Live geordnet beenden, keine neue Sitzung automatisch starten |
+
+Alle fünf Namen funktionieren in den expliziten Rufmustern. Der alleinstehende
+Name behält sein bisheriges Wakeword-Verhalten. Ein bereits aktiver Charakter wird
+nur gezeigt. „Kelly hat gestern gesagt …“, „Erzähl mir etwas über James“,
+„Ruf nicht Kelly“, zitierte Befehle und „Linksklick und Rechtsklick“ wechseln
+keine Figur und erteilen keinen Klickauftrag.
+
+Während Bewegung oder gedrückter Maustasten wird ein Klick abgewiesen; zunächst
+Stopp verwenden und Tasten lösen. Doppelklick, Drag-and-drop und Scrollen sind
+nicht ergänzt. ASR-Fehlhörer bleiben möglich; automatische Parserprüfungen sind
+keine reale Sprachabnahme.
+
+Mit OpenAI Live wird ausschließlich das vorhandene finale Nutzertranskript
+verwendet. Ohne Live: vorhandenes einmaliges „Zuhören“, oder im aktiven Raster/
+gebundenen Menü derselbe lokale Windows-Erkenner. Ein zur Bediensprache passender
+`System.Speech`-Erkenner ist erforderlich. Ohne Raster oder Menü läuft kein neuer
+Dauerhörer. Für Gemini wird keine neue Live-Transkriptunterstützung zugesagt.
+
+Bei gleichen Eintragsnamen die **angezeigte Nummer** verwenden. Fehlende Liste,
+Fokuswechsel oder nicht unterstützte UIA-Patterns erlauben keine Ersatzaktion.
+Menünamen mit Zitaten oder nicht sprechbarer Satzstruktur gegebenenfalls über
+angezeigte Nummern wählen. Menütexte bleiben lokal; gesprochene Befehle bleiben
+bei OpenAI Live Teil der bestehenden Cloud-Audioübertragung.
+
+[Native Kontextmenüs und Grenzen](KONTEXTMENUES.md) ·
+[Testnachweis und Windows-Prüfliste](ai/testing/2026-11-02-desktop-actions.md)
