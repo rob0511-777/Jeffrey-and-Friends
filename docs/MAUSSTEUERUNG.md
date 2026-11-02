@@ -2,10 +2,11 @@
 
 Entwicklungsstand `feature/desktop-clicks-menus-characters`, aufbauend auf
 PR #7 (`feature/mouse-grid-2-i18n`) und damit PR #5/#4. Experimenteller Draft.
-Der Nutzer hat die aktuelle PR-#7-Rastersteuerung inzwischen unter Windows
-erfolgreich getestet und ist damit zufrieden (Nutzerrückmeldung, kein hier
-ausgeführter Windows-Test). Die neuen Klick-/Menü-/Charakterfunktionen sind
-**noch nicht unter Windows geprüft**. PR #6 bleibt eine getrennte README-Arbeit.
+Aktuelle Windows-Rückmeldung: Bewegung, Unterteilungen und Einzelklicks funktionieren
+gut; Rasterstart muss teilweise wiederholt werden und wird von Antworten begleitet.
+Das ist Nutzerfeedback, keine vollständige Abnahme dieser Umgebung. Die nun
+belegten Softwarekorrekturen und Scrollaktionen sind **noch nicht unter Windows
+getestet**. PR #6 sowie README-/Bildänderungen auf `main` bleiben eigenständig.
 
 ## Starten und bedienen
 
@@ -88,7 +89,8 @@ Das Schließen der Einstellungen verbirgt weiterhin nur das Fenster; über das
 Tray lässt es sich wieder öffnen. App-Ende erfolgt über „Beenden“ im Tray.
 
 Zusätzlich sind ausdrückliche Einzelklicks und native Menüauswahl ergänzt (siehe unten).
-Keine Doppelklicks, Drag-and-drop oder Scrollaktionen. Das Raster fängt
+Keine Doppelklicks oder Drag-and-drop. Begrenztes Scrollen ist zusätzlich ergänzt
+(siehe unten). Das Raster fängt
 keine Mausinteraktionen ab und übernimmt keinen Fensterfokus. Zitate, Verneinungen
 und angehängte Aktionen werden vom Parser nicht als gültige Mausbefehle freigegeben.
 Eine eingeschränkte Sprachgrammatik kann Fehlhörer nicht vollständig ausschließen;
@@ -245,7 +247,63 @@ bleibt die bisherige Figur aktiv. Während der Übergabe startet kein neuer Hör
 überholte oder abgebrochene Aufrufe werden verworfen. Derselbe aktive Charakter
 wird ohne Sitzungsneustart gezeigt. Es erfolgt kein automatischer Live-Neustart.
 
-## Windows-Abnahme (neue Erweiterung noch offen)
+## Zuverlässiger Rasterstart und begrenztes Scrollen
+
+Rasterstart meldet zuerst Verarbeitung und wartet auf die tatsächliche Bereitschaft
+des nativen Maushelfers (Frist acht Sekunden). Danach wird das Overlay gezeichnet;
+eine aktuelle Bestätigung des richtigen Renderers nach dessen Zeichenframe ist
+nötig (weitere Frist acht Sekunden). Fehlender/abgestürzter Helfer, Ladefehler und
+fehlende Bestätigung liefern einen visuellen Fehler. Ein nicht gestartetes Raster
+wird nicht als aktiv bestätigt. Ein Fehleroverlay wird verworfen; erneut starten
+erzeugt eine neue Instanz. Das ist keine Messung des sichtbaren Windows-Compositors.
+
+Die bestehende begrenzte Befehlswarteschlange und Einmalfreigaben bleiben erhalten.
+Gleiche automatische Starts während Initialisierung führen zu einer gemeinsamen
+Rasterinstanz; Beenden/Wiederöffnen und ein aktives unsichtbares Raster bleiben
+unterstützt. Explizite Steueraufträge werden auch während Desktop-Auswertung oder
+-vorlesen lokal erkannt; sie verwerfen die bisherige Desktop-Antwort. Alte normale
+KI-Antwortanforderungen bleiben widerrufen, selbst nach einem neuen Sprachbeginn.
+Nach einem Ausführungsfehler gibt es keine freie Ersatzantwort. Normale vollständige
+Gesprächsäußerungen fordern weiterhin eine Antwort an.
+
+[Scrollbefehle](MAUSBEFEHLE.de.md#scrollen-schritt-langsamer-lauf-und-stopp):
+Ein Schritt = ein nativer Impuls von ±120 Mausradeinheiten; langsam = ±15 höchstens
+alle 250 ms, maximal 30 Sekunden. Es gibt eine Schleife, keine Nachholschübe.
+Wiederholung/Richtungswechsel erhöht die Rate nicht und verlängert die Frist nicht.
+Die Windows-/Anwendungs-Einstellung bestimmt Zeilen oder Seiten, keine feste Pixelzahl.
+
+Native `SendInput`-Mausradereignisse werden nur bei bestätigtem Windows-Routing unter
+den Zeiger zugelassen (`SPI_GETMOUSEWHEELROUTING`, Wert 2). Die App ändert diese
+Systemeinstellung nicht. „Inaktive Fenster beim Daraufzeigen scrollen“ in Windows
+prüfen. Fehlt die Bestätigung, wird der Auftrag abgewiesen, auch bei einem gerade
+fokussierten Fenster: die App darf keinen anderen Bereich heimlich bedienen.
+Einige Anwendungen ignorieren trotz richtiger Weiterleitung Hintergrund-/Teilimpulse;
+die Meldung bestätigt die gesendete Eingabe, keine tatsächliche Pixelbewegung.
+
+Ein Lauf bindet Zielprozess/-fenster/-bereich, tatsächliche Cursorposition und das
+bisherige Vordergrundfenster. Bei Änderung, geöffnetem nativen Menü, gedrückten
+Tasten oder Fehler endet/verweigert sich der Lauf. Keine Cursorbewegung, kein Fokus-
+Klick, keine Tastatur oder Zwischenablage als Ersatz. Ausdrücklich neu starten.
+
+| Kombination | Festgelegtes Verhalten |
+| --- | --- |
+| Scrollen bei laufender Bewegung oder ausstehendem Klick | Abweisen, keine Warteschlange |
+| Bewegung oder Einzelklick bei laufendem Scrollen | Scrollen zuerst stoppen, dann bestehende Aktion |
+| Scrollen bei gebundenem oder nativ geöffnetem Kontextmenü | Abweisen bzw. Lauf beenden; Menü bleibt separat bedienbar |
+| Erneuter langsamer Auftrag / Richtungswechsel | Einzelnen Lauf aktualisieren, ohne Rate/Frist zu vervielfachen |
+| Einzelner Schritt bei Dauerlauf | Dauerlauf beenden, genau einen Schritt senden |
+| Stopp, Schlaf, Sitzungs-/Charakter-/Anbieterende, App-/Kanalausfall | Lauf invalidieren und keine Ereignisse nach verarbeitetem nativen Stopp nachholen |
+
+Ohne Live nutzt ein langsamer Lauf den vorhandenen lokalen Steuerhörer auch ohne
+Raster. Kein paralleler Wakeword-Hörer; fehlende/abgebrochene lokale Erkennung stoppt
+den Lauf. OpenAI verwendet das vorhandene finale Transkript. Die 45-Sekunden-
+Kostenbegrenzung und bestehende fünf weitere Sprach-/Providerpfade bleiben erhalten.
+
+## Windows-Abnahme (neue Korrekturen und Scrollen noch offen)
+
+Der aktuelle [Rasterstart-/Scrollnachweis](ai/testing/2026-11-02-grid-start-scroll.md)
+enthält die belegten Fehlerbedingungen, Simulationen und konkrete Windows-Prüfliste.
+
 
 Der aktuelle [Klick-/Menü-/Charakter-Testnachweis](ai/testing/2026-11-02-desktop-actions.md)
 trennt Linux-Simulationen von der noch offenen Windows-Abnahme.

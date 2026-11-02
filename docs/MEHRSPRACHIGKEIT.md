@@ -113,7 +113,7 @@ Cloud-Zustimmung ändern sich nicht. [Desktop-Erkennung](DESKTOP-ERKENNUNG.md).
 
 ## Aufbau für Entwickler
 
-`locales/catalog.js` enthält 495 eindeutige UI-Schlüssel mit sechs Texten pro
+`locales/catalog.js` enthält 511 eindeutige UI-Schlüssel mit sechs Texten pro
 Schlüssel und eine Zuordnung bisheriger deutscher UI-Texte. `i18n.js` normalisiert
 Locales, ersetzt reine Textplatzhalter und stellt die Antwortsprachen-Anweisung
 bereit. Neue Texte erhalten semantische Schlüssel. Die `ui.s…`- und `legacy.m…`-
@@ -170,10 +170,21 @@ Die KI-Gesprächssprache erweitert deren Parser nicht.
 | Spanisch (`es-ES`) | Nicht implementiert; bestehende Raster-/Desktopbefehle erhalten | Spanisch; Hinweis auf deutsche neue Befehle |
 | Portugiesisch (`pt-BR`) | Nicht implementiert; bestehende Raster-/Desktopbefehle erhalten | Portugiesisch; Hinweis auf deutsche neue Befehle |
 
-Die 30 zusätzlichen Katalogschlüssel haben jeweils sechs Übersetzungen mit
+Die ursprünglich 30 zusätzlichen Katalogschlüssel haben jeweils sechs Übersetzungen mit
 übereinstimmenden Platzhaltern. Native Menüeinträge behalten unverändert ihre
 Betriebssystem-/Anwendungssprache. Sie durchlaufen keine DOM-Übersetzung oder KI.
 Der lokale Erkenner muss auch ihre Aussprache unterstützen; Nummern sind eine
 Alternative für angezeigte Einträge. Siehe [Befehlsliste](MAUSBEFEHLE.de.md) und
 [Unterstützungsgrenzen](KONTEXTMENUES.md). README-PR #6 bleibt unverändert und muss
 bei einer späteren gemeinsamen Dokumentationsabnahme auch diese Ergänzungen erhalten.
+
+## Rasterstart und Scrollen: Folgekorrektur in PR #8
+
+Neue Scrollverben („Scroll[e] [langsam] nach oben/unten“, „Hör auf zu scrollen“,
+„Scrollen stoppen“) sind nur für **de-DE** implementiert. Die fünf anderen Locales
+behalten ihre vorhandenen Befehle; Scrollen ist dort nicht implementiert.
+16 zusätzliche Katalogschlüssel decken Start-/Bereitschaftsfehler, tatsächliche
+Scrollschritte, Laufgrenze und lokale Erkennung in allen sechs UI-Sprachen ab.
+Insgesamt nun 511 Schlüssel. Neue Spracheinstellungen oder geänderte Stimmen gibt
+es nicht. Die Ausgabe übersetzt keine nativen Menütexte. Voraussetzungen und Grenzen:
+[Scrollbefehle](MAUSBEFEHLE.de.md#scrollen-schritt-langsamer-lauf-und-stopp).

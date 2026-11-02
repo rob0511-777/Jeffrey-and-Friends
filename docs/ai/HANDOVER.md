@@ -1,6 +1,6 @@
 # Jeffrey and Friends – Kontextpaket für die nächste Codex-Sitzung
 
-Geprüft am **02.11.2026 (UTC)**. Keine Zugangsdaten, privaten Inhalte oder
+Geprüft am **02.11.2026 (Europe/Berlin)**. Keine Zugangsdaten, privaten Inhalte oder
 Chatprotokolle. Keine Freigabe für Merge, Release oder kostenpflichtige API-Tests.
 
 ## Repository und belastbarer Stand
@@ -10,18 +10,19 @@ Chatprotokolle. Keine Freigabe für Merge, Release oder kostenpflichtige API-Tes
 | Repository | [rob0511-777/Jeffrey-and-Friends](https://github.com/rob0511-777/Jeffrey-and-Friends) |
 | Aktueller Branch | `feature/desktop-clicks-menus-characters` |
 | Aktueller PR | [Draft PR #8](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/8), offen, nicht gemergt; Basis #7 |
-| Geprüfter Programmstand (vollständig) | `3ad8e75df140c308b65c8da2ae8adcc0f4b4b673` |
-| HEAD bei Draft-Erstellung, vor diesem PR-Link-Nachtrag | `a96dbd9b3893bb25e9c93ee2da87ec318ae1a6f9` |
+| Geprüfter Programmstand (vollständig) | `60b0d9aa6f51662fce0ee50b9548bfeeb9a62f26` |
+| Historischer HEAD bei Draft-Erstellung | `a96dbd9b3893bb25e9c93ee2da87ec318ae1a6f9` |
 | Basis / unveränderter PR #7 | `feature/mouse-grid-2-i18n`, `ff3f610720e6ebc02c810e9bada90baa2710c050` |
 | Aktueller Worktree | `/workspace/work/desktop-actions` |
 | Gemeinsames Repository | `/workspace/Jeffrey-Friends` |
 | Paket / Prüfung | 0.7.4, Electron 45.0.0; Linux, Node 24.19.0, PowerShell 7.4.7 |
 
-Der geprüfte Programmstand umfasst `442e099` (Desktopaktionen/Regressionstests)
-und `3ad8e75` (sichtbare Nummern). `a96dbd9` ergänzt Dokumentation und Testnachweis;
-der anschließende Dokumentationscommit ergänzt diesen verifizierten PR-Link. Den exakten aktuellen
-HEAD mit `git rev-parse HEAD` feststellen; ein Dokument kann seinen eigenen
-Commit-Hash nicht enthalten. `git log -4 --oneline` zeigt die Folgecommits.
+Der aktuelle Folgeauftrag startete bei `7a1a834e4208358a16196f694f875dcad6fae57c`
+mit sauberem Arbeitsbaum. Der oben genannte Programmcommit ergänzt Rasterstart-
+Korrekturen und begrenztes Scrollen; ein anschließender eigener Dokumentationscommit
+aktualisiert diese Übergabe. Exakten aktuellen HEAD mit `git rev-parse HEAD` prüfen;
+ein Dokument kann seinen eigenen Commit-Hash nicht enthalten. Frühere #8-Commits:
+`442e099` (Klicks/Menüs/Figuren), `3ad8e75` (Nummern), `a96dbd9` und `7a1a834` (Dokumentation).
 
 Der lokale `origin` verweist noch auf den alten Alias
 `https://github.com/rob0511-777/Jeffrey-Friends.git`; für Fetch/Push wurde die
@@ -30,12 +31,11 @@ Nur diesen neuen Branch pushen. #7 und ältere Branches/PRs bleiben unberührt.
 
 ## Lokale Änderungen und erhaltene Arbeit
 
-Im neuen Worktree stammen die Programmänderungen und neuen Tests ausschließlich
-aus diesem Auftrag; sie sind im obigen Implementierungscommit enthalten. Diese
-Übergabe und die aktualisierten technischen Dokumente sind separat committet.
-Vor dem PR-Link-Nachtrag war der neue Arbeitsbaum sauber; der Nachtrag wird ebenfalls
-committet und gepusht. Bei Wiederaufnahme
-immer `git status --short --branch` prüfen und zusätzliche Nutzeränderungen erhalten.
+Ausgangszustand dieser Fortsetzung: sauber, keine fremden Programmänderungen oder
+vorgemerkten Dateien. Aktueller Programmcode und neue Tests sind im obigen Commit;
+technische Dokumente/Übergabe werden separat committet und auf denselben #8-Branch
+gepusht. Zum Abschluss wird ein sauberer Arbeitsbaum geprüft. Bei Wiederaufnahme
+`git status --short --branch` prüfen und neu hinzugekommene Nutzeränderungen erhalten.
 
 Die ältere, **untracked** Übergabe bleibt unverändert im alten Worktree
 `/workspace/work/mouse-grid-2-i18n/docs/ai/HANDOVER.md` erhalten. Ihr SHA-256:
@@ -55,13 +55,15 @@ GitHub-Metadaten von #4–#7 erneut geprüft: offen, Draft, nicht gemergt.
 | [#5](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/5) | Maussteuerung 1.0, dauerhafte Zustimmung / `feature/mouse-grid-consent` | #4 | `f72dbd32ed9226d7c9370e6ff495cec42096b339` |
 | [#6](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/6) | Zweisprachige README / `docs/bilingual-readme` | #5 | `0e3427d941ab138892ea7fdd1f8cf233115aec55` |
 | [#7](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/7) | Maussteuerung 2.0, sechs Sprachen / `feature/mouse-grid-2-i18n` | #5 | `ff3f610720e6ebc02c810e9bada90baa2710c050` |
-| [#8](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/8) | Klicks, echte UIA-Menüs, Figurenrufe / aktueller Branch | **#7** | `a96dbd9b3893bb25e9c93ee2da87ec318ae1a6f9` bei Draft-Erstellung; danach nur PR-Link-Nachtrag |
+| [#8](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/8) | Klicks, echte UIA-Menüs, Figurenrufe / aktueller Branch | **#7** | `60b0d9aa6f51662fce0ee50b9548bfeeb9a62f26` Programmstand; Dokumentationscommit folgt |
 
 Abfolge: `main → #4 → #5 → #7 → #8`; **#6 zweigt parallel von #5 ab**.
-`main` steht in den Metadaten auf `255916479077953230d4f3edc5641ca51326a5b3`.
+`main` steht in den Metadaten auf `e2e34f96cc8402349eb8b97f6fc2b54c4adfc0a9`.
 #6 ist nicht enthalten: geerbte README.md bleibt historisch, README.de.md existiert
 hier noch nicht. READMEs nicht ungefragt aus #6 kopieren oder aktualisieren.
 Die technischen Dokumente beschreiben den aktuellen experimentellen Stand.
+README-/Bildänderungen auf dem inzwischen weiterentwickelten `main` weder überschreiben
+noch unnötig übernehmen. Der aktuelle Auftrag integriert diese Änderungen nicht.
 
 ## Bereits umgesetzte Basis und frühere Verbesserungen
 
@@ -89,10 +91,10 @@ Die technischen Dokumente beschreiben den aktuellen experimentellen Stand.
   Freigabe (jetzt einmalige Kennungen), fehlende natürliche Parservarianten.
   Reale ASR-/Netz-/VAD-/Startlatenzen wurden nicht gemessen. Optionale inhaltsfreie
   Diagnose `JEFFREY_MOUSE_DIAGNOSTICS=1` existiert; keine Tempoerhöhung.
-- Neueste Nutzerrückmeldung: aktueller Rasterstand unter echtem Windows erfolgreich,
-  Nutzer mit Verhalten zufrieden. Das rechtfertigt Erhalt der Basis; keine eigene
-  vollständige Windows-Abnahme daraus ableiten. Weitere Latenzmessungen nur bei
-  konkretem Bedarf, keine spekulative Nachbesserung des funktionierenden Bestands.
+- Neueste Nutzerrückmeldung: Bewegung, Unterteilungen und Einzelklicks unter Windows
+  funktionieren gut. **Rasterstart ist weiterhin unzuverlässig**, teils mit Reden
+  statt Ausführung. Das ist der gezielte Folgeauftrag; keine vollständige eigene
+  Windows-Abnahme oder pauschale Latenzursache aus diesem Feedback ableiten.
 - Gemeinsames OpenAI-Live-Transkript für Gespräch und Raster, kein Extra-Modellaufruf
   je Rasterbefehl. 45-Sekunden-Idle, 15-Minuten-Limit, Wakeword und lokale Freigaben.
   Gemini behält lokalen Rasterfallback ohne verlässlich gemeinsamen Live-Transkriptweg.
@@ -118,7 +120,7 @@ Die technischen Dokumente beschreiben den aktuellen experimentellen Stand.
    Name kein neuer Wechselauftrag. Gleiche aktive Figur nur zeigen. Neuer Sprachwechsel
    wartet auf bestätigte lokale Freigabe und Renderer-Live-Ende nach Track.stop;
    Timeout fünf Sekunden, keine neue Sitzung automatisch. Überholte Aufrufe verfallen.
-6. **30 neue UI-Schlüssel in sechs Sprachen**, nun 495 insgesamt. Neue Befehle nur bei
+6. **30 ursprüngliche plus 16 weitere UI-Schlüssel in sechs Sprachen**, nun 511 insgesamt. Neue Befehle nur bei
    `de-DE`; übrige fünf Raster-/Desktopsprachen erhalten. Kein UI-Umbau, keine neuen
    gespeicherten Einstellungen, keine Stimme/Charakterdefinition/Abhängigkeit geändert.
 
@@ -140,7 +142,7 @@ Die technischen Dokumente beschreiben den aktuellen experimentellen Stand.
   übertragung enthält weiterhin gesprochene Auswahlbefehle. Bestehender ausdrücklich
   freigegebener Screenshot kann sichtbare Menüs wie andere Bildschirmteile enthalten.
 - Native Kopieren/Einfügen darf normale Anwendungsfunktion ausführen; die App greift
-  nicht auf die Zwischenablage zu. Keine Doubleclicks, Drag-and-drop oder Scrollaktionen.
+  nicht auf die Zwischenablage zu. Keine Doppelklicks oder Drag-and-drop. Scrollen ist nun begrenzt ergänzt (siehe unten).
 - Destruktivklassifikation verwendet Beschriftungsschlüsselwörter, keine universelle
   semantische Sicherheitsanalyse. Mehrdeutige Namen nur per aktueller angezeigter Nummer.
 - PowerShell-5.1-/native API-Kompatibilität anhand Syntax/C#5 vorbereitet, nicht real
@@ -149,24 +151,77 @@ Die technischen Dokumente beschreiben den aktuellen experimentellen Stand.
 - Basisgrenzen: Auswahl maximal 24.000 Zeichen, lokale Erklärung/Zusammenfassung 3.500;
   Gemini ohne geeigneten Auswahl-/TTS-Pfad; keine automatische Anbieterumschaltung.
 
-## Tatsächlich ausgeführte Tests
+## Aktueller Folgeauftrag: Rasterstart und Scrollen
+
+Programmcommit `60b0d9aa6f51662fce0ee50b9548bfeeb9a62f26`; nur gezielte Ergänzungen im bestehenden #8-Branch.
+Keine Refaktorierung, keine neuen Einstellungen oder Abhängigkeiten.
+
+**Belegt und korrigiert:**
+
+1. `desktopInFlight` verwarf einen finalen Rasterstart vor der Parserprüfung, wenn
+   Desktop-Auswertung/-Vorlesen aktiv war. Jetzt ausdrücklichen Steuerauftrag zuerst
+   erkennen; dieser verwirft die bisherige Desktop-Antwort, ohne normalen VAD pauschal
+   zum Abbruchgrund zu machen.
+2. `desktopBlocked` allein hielt eine alte normale Antwort nach neuem VAD nicht
+   gesperrt. Nun bleiben deren begrenzte clientseitige Kennungen widerrufen; auch
+   spätes `response.created` darf keine neue Gesprächsanforderung verbrauchen.
+3. Start meldete Erfolg vor tatsächlichem Helfer-READY und Overlayzeichnung. Nun
+   maximal acht Sekunden auf Helferbereitschaft und danach acht Sekunden auf
+   aktuelle Zeichnungsbestätigung des richtigen Overlay-Renderers warten. Feste
+   Fehler/Timeout, Fehleroverlay verwerfen, Retry mit frischer Instanz, alte Events
+   ignorieren. Start-/Ergebnisstatus visuell, keine freie KI-Ersatzantwort.
+
+Der tatsächliche Anteil dieser Fehler an Windows-ASR-/Netz-/Startlatenzen ist
+**nicht gemessen**. Zusatzdiagnose: `grid-start`, `snapshot-start/ready`,
+`input-ready`, `overlay-created/loaded/ready/error`, weiterhin ausdrückliches
+Opt-in `JEFFREY_MOUSE_DIAGNOSTICS=1`, feste Codes/Nummern/Zeitabstände, keine Inhalte.
+`overlay-ready` bestätigt Rendererzeichnung, keine gemessene Windows-Compositorzeit.
+
+**Scrollen implementiert, nur de-DE:** „Scroll[e] nach oben/unten“, „Scroll[e]
+langsam nach oben/unten“, „Hör auf zu scrollen“, „Scrollen stoppen“; höfliche
+Anrede mit allen fünf Namen. „Stopp“ behält seine bisherige Wirkung.
+
+- Schritt ±120 native Mausradeinheiten; langsam ±15 höchstens alle 250 ms,
+  maximal 30 Sekunden. Eine Schleife, keine Nachholschübe. Wiederholung/Richtungswechsel
+  erhöht weder Rate noch Laufzeit. Schritt ersetzt Dauerlauf.
+- Ohne Raster, keine Zeigerbewegung/Fokus-Klick/Tastatur. Nur bestätigtes Windows-
+  Routing unter den Zeiger (`SPI_GETMOUSEWHEELROUTING == 2`); sonst verständlich
+  abweisen. Systemoption nicht ändern. Apps können Teil-/Hintergrundimpulse ignorieren;
+  SendInput-Erfolg ist keine Garantie tatsächlicher Pixelbewegung.
+- Zielbereich/-prozess, tatsächliche Cursorposition und Vordergrund binden. Änderung,
+  geöffnetes natives Menü oder gehaltene Taste stoppt/verweigert den Lauf.
+- Bewegung/Klick beendet Scrollen zuerst. Während Bewegung/Klick/gebundenem Menü
+  wird Scrollen ohne Queue abgewiesen. Stopp, Schlaf, Sitzung/Charakter/Anbieter,
+  App-/Helfer-/Steuerkanalverlust invalidieren den Lauf. Keine alten Acks neu ausführen;
+  bereits angenommene OS-Eingabe nicht rückgängig zu machen.
+- Lokal hält derselbe Steuerhörer auch ohne Raster Stopp bereit; kein paralleler
+  Wakeword-/Mikrofonprozess. Verlust der lokalen Erkennung stoppt den Lauf. OpenAI
+  nutzt vorhandene finale Transkripte; keine Extra-Modellanfrage. Andere fünf neue
+  Scrollgrammatiken nicht implementiert, bestehende Befehle/Provider erhalten.
+
+**Offen und nicht umgesetzt:** „Jeffrey, Ruhe“ löst laut Nutzer weiterhin gesprochene
+Bestätigungen und spätere Antworten aus. Kein eigener Windows-Ursachennachweis und
+kein größerer Ruhemodus-/Gesprächigkeitsumbau in diesem Auftrag. Separat beauftragen.
+
+## Tatsächlich ausgeführte Tests dieser Fortsetzung
 
 | Prüfung | Ergebnis | Einordnung |
 | --- | --- | --- |
-| Ausgangs-Node-Suite vor Änderungen | 508 bestanden, 0 Fehler | Linux / simulierte Systemgrenzen |
-| Vollständige finale Node-Suite | **590 bestanden, 0 Fehler, Exit 0** | Linux; 508 unveränderte Basisfälle plus 82 neue Fälle |
-| Bewegungs-Vertragstest | PASS | Produktions-C#5 mit injizierten OS-Grenzen |
-| Neuer Klick-Vertragstest | PASS | Simuliertes SendInput, Busy/Stop/Cleanup |
-| Neuer Kontextmenü-Vertragstest | PASS | Produktions-C#5, Fake-UIA/native Fenster und Events |
-| Bestehender Textauswahltest | **31 bestanden, 0 Fehler** | PowerShell 7.4.7 mit Mock-UIA |
-| Quellen/Katalog/Dokumentation/Diff | bestanden | JS-Syntax, PS-Parsing, 495×6 Texte/Platzhalter, Markdown/relative Links |
+| Ausgangs-Node-Suite vor Änderungen | 590 bestanden, 0 Fehler | Frisch unter Linux ausgeführt |
+| Vollständige finale Node-Suite | **650 bestanden, 0 Fehler, Exit 0** | 590 erhaltene + 60 neue Fälle; simulierte Systemgrenzen |
+| Isolierte Gegenprobe mit drei Originalmodulen aus 7a1a834 | **6/11 fehlgeschlagen**, danach 11/11 und gesamte Suite grün | Belegt Rasterstart-/Antwort-/Bereitschaftsbedingungen, keine Windows-Reproduktion |
+| Bewegungs-/Klick-Vertragstests | beide PASS | Produktions-C#5 mit injizierten OS-Grenzen |
+| Neuer Scroll-Vertragstest | PASS | Produktionsengine/Zielbindung, virtuelle Zeit und simuliertes SendInput/Routing |
+| Kontextmenü-Vertragstest | PASS | Bestehendes Produktions-C#5 mit Fake-UIA/Fenstern/Events |
+| Textauswahltest | **31 bestanden, 0 Fehler** | PowerShell 7.4.7 unter Linux mit Mock-UIA |
+| Quellen/Katalog/Dokumentation/Diff | bestanden | JS-/PS-Quellen, 511×6 Texte/Platzhalter, Markdown/Links/Anker, Bestandsschutz |
 
-**Keine selbst ausgeführten echten Windows-Tests und keine bezahlten Live-API-Tests.**
-Nutzerfeedback zum Basisraster bleibt davon getrennt. Detaillierte Fälle, Dateiliste
-und noch offene Windows-11-Prüfschritte:
-[aktueller Testnachweis](testing/2026-11-02-desktop-actions.md).
-Frühere Ursachen und #7-Nachweis:
-[Reaktion/Viererfelder](testing/2026-11-01-mouse-response-quarters.md).
+73 bestehende Testdateien bytegleich erhalten. Native Bewegungsengine unverändert.
+**Keine selbst ausgeführten Windows-Tests und keine bezahlten Live-API-Tests.**
+C#5-Kompilierung/PS7-Parsing beweisen keine Windows-PowerShell-5.1-/PInvoke-Ausführung.
+Aktueller [Testnachweis und Windows-Plan](testing/2026-11-02-grid-start-scroll.md);
+[ursprünglicher #8-Nachweis](testing/2026-11-02-desktop-actions.md) und
+[historischer #7-Nachweis](testing/2026-11-01-mouse-response-quarters.md) bleiben getrennt.
 
 ## Relevante Dateien, Start und Tests
 
@@ -178,10 +233,11 @@ Frühere Ursachen und #7-Nachweis:
 - `context-menu-overlay.cjs`, `context-menu-preload.cjs`, `context-menu-renderer.js`,
   `context-menu.html`, `context-menu.css`: isolierte lokale Anzeige.
 - `windows-mouse.cjs`, `scripts/move-pointer.ps1`, `scripts/physical-mouse.cs`:
-  vorhandener Bewegungsprozess mit neuer gesicherter Klickoperation.
+  vorhandener Bewegungsprozess mit gesicherter Klickoperation und begrenzter Scrollengine.
 - `grid-listener.cjs`, `scripts/grid-listen.ps1`, `mouse-commands.js`:
-  Ergänzung des bestehenden lokalen Hörers. `mouse-control.cjs`, Rastermodell und
-  Rasterrenderer selbst unverändert.
+  Ergänzung des bestehenden lokalen Hörers. `mouse-control.cjs` bestätigt Startbereitschaft;
+  `grid-overlay.cjs`/`mouse-grid-preload.cjs`/`mouse-grid-renderer.js` ergänzen den
+  Zeichnungs-Ack. Rastergeometrie und Zeichenregeln bleiben erhalten.
 - `locales/catalog.js`, [deutsche Befehle](../MAUSBEFEHLE.de.md),
   [Menügrenzen](../KONTEXTMENUES.md), [Sprachen](../MEHRSPRACHIGKEIT.md),
   [Maussteuerung](../MAUSSTEUERUNG.md), [optionale Diagnose](../MAUS-DIAGNOSE.md).
@@ -203,11 +259,12 @@ npm start
 npm test
 powershell.exe -NoProfile -File tests/mouse-motion.test.ps1
 powershell.exe -NoProfile -File tests/mouse-click.test.ps1
+powershell.exe -NoProfile -File tests/mouse-wheel.test.ps1
 powershell.exe -NoProfile -File tests/context-menu-uia.test.ps1
 powershell.exe -NoProfile -File tests/read-selection.test.ps1
 ```
 
-Die vier PowerShell-Vertragstests bleiben Simulationen. Lokal verfügbar ist
+Die fünf PowerShell-Vertragstests bleiben Simulationen. Lokal verfügbar ist
 `/workspace/work/uia-diagnostics/pwsh` für Linux; das ist kein Repositorybestandteil.
 ASR-Locale ohne Inhalte prüfen:
 
@@ -221,9 +278,12 @@ Add-Type -AssemblyName System.Speech
 
 1. Branch/HEAD/Arbeitsbaum und Draft-Basis gegen GitHub prüfen. Keinen alten PR ändern,
    keinen Merge/Rebase auf main und keine Veröffentlichung aus dieser Übergabe ableiten.
-2. Unkritische Windows-11-Abnahme nach dem [Testnachweis](testing/2026-11-02-desktop-actions.md):
-   Helferstart unter PowerShell 5.1, Klicks mit/ohne Raster, reale Tastenfreigabe,
-   Explorer-Neu-/Klassikmenüs, UIA-Patterns, Untermenüs, Fokuswechsel und Nummern.
+2. Aktuelle [Windows-11-Prüfliste](testing/2026-11-02-grid-start-scroll.md): kalter
+   App-/Live-Start, Wiederöffnen, ausgeblendetes Raster, Start während normaler und
+   Desktop-Sprachausgabe, drei 45-Sekunden-Disconnects, keine freie KI-Ersatzantwort.
+   Helfer/Zeichnungs-Ack unter PowerShell 5.1 und gemischten DPI praktisch bestätigen.
+   Scrollschritte/-lauf in Explorer, Browser, Editor und inaktiven Fenstern, Windows-
+   Routing ein/aus, Teilimpulse, Richtung/Frist/Stopp/Kanalverlust prüfen.
 3. Konkrete Bestätigung/Abbruch mit entbehrlicher Testdatei, niemals private Inhalte
    protokollieren. Overlay außerhalb des Menüs, DPI/Mehrmonitor und fehlenden Platz prüfen.
 4. Charakterrufe aller fünf Figuren während Live und lokal, schnelle Wechsel,
@@ -236,12 +296,13 @@ Add-Type -AssemblyName System.Speech
    Refaktorierung oder Veränderung der bereits abgenommenen Rasterbedienung.
 7. Spätere READMEs mit #6 gemeinsam abstimmen; nicht jetzt überschreiben. Neue Befehle
    in fünf weiteren Sprachen sind **nicht implementiert**, nur neue UI-Texte übersetzt.
-   Doppelklick/Drag/Scroll sind außerhalb dieses Auftrags, keine Verfügbarkeitszusage.
+   Doppelklick/Drag sind außerhalb dieses Auftrags. Scrollen ist nun implementiert;
+   „Jeffrey, Ruhe“ bleibt offener separater Punkt, keine Korrektur behaupten.
 
 ## Kurzer Startprompt
 
 > Lies docs/ai/HANDOVER.md, prüfe feature/desktop-clicks-menus-characters, HEAD und
 > Arbeitsbaum, Draft PR #8 sowie dessen Basis feature/mouse-grid-2-i18n (PR #7). Erhalte das
-> funktionierende Raster und vorhandene lokale Änderungen. Trenne die 590 Node- und
-> UIA-/Klick-Simulationen von echter Windows-Abnahme. Bearbeite nur den nächsten
+> funktionierende Raster und vorhandene lokale Änderungen. Trenne die 650 Node- und
+> UIA-/Klick-/Scroll-Simulationen von echter Windows-Abnahme. Bearbeite nur den nächsten
 > ausdrücklich beauftragten Punkt; keine bezahlten APIs, kein Merge/Release.

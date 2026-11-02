@@ -2,8 +2,10 @@
 
 Experimenteller Folgebranch `feature/desktop-clicks-menus-characters`, Basis PR #7.
 Die Implementierung wurde unter Linux mit nachgebildeten OS-/UIA-Grenzen geprüft.
-**Noch kein echter Windows-11-Test dieser Erweiterung.** Es gibt keine universelle
-Menüunterstützung und keine Änderung an der funktionierenden Rastersteuerung.
+**Keine eigene Windows-11-Abnahme dieser Umgebung.** Der Nutzer meldet inzwischen
+funktionsfähige Einzelklicks; daraus folgt keine allgemeine Menü-/UIA-Abnahme.
+Es gibt keine universelle Menüunterstützung. Rasternavigation bleibt erhalten;
+die Startbestätigung ist gezielt korrigiert.
 
 ## Bedienung
 
@@ -24,7 +26,9 @@ Menüunterstützung und keine Änderung an der funktionierenden Rastersteuerung.
 Einzelne Linksklicks funktionieren auch ohne Raster und ohne Menü. Beide Klickarten
 werden während Bewegung oder gedrückter linker/rechter Maustaste abgewiesen.
 Ein Klick wartet nicht auf eine zufällige Zwischenposition. Kein Doppelklick,
-Drag-and-drop, Scrollen oder neues Tastaturkommando.
+Drag-and-drop oder neues Tastaturkommando. Begrenztes Scrollen ist separat
+[ergänzt](MAUSSTEUERUNG.md#zuverlässiger-rasterstart-und-begrenztes-scrollen);
+bei geöffnetem Menü wird es abgewiesen, ein Rechtsklick beendet einen Scrolllauf zuerst.
 
 Ohne Live steht der vorhandene einmalige lokale Zuhörweg zur Verfügung. Bei aktivem
 Raster oder zugeordnetem Menü verwendet die App denselben lokalen Windows-Hörer

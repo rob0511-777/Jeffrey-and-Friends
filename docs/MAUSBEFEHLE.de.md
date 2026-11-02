@@ -68,8 +68,8 @@ nur gezeigt. „Kelly hat gestern gesagt …“, „Erzähl mir etwas über Jame
 keine Figur und erteilen keinen Klickauftrag.
 
 Während Bewegung oder gedrückter Maustasten wird ein Klick abgewiesen; zunächst
-Stopp verwenden und Tasten lösen. Doppelklick, Drag-and-drop und Scrollen sind
-nicht ergänzt. ASR-Fehlhörer bleiben möglich; automatische Parserprüfungen sind
+Stopp verwenden und Tasten lösen. Doppelklick und Drag-and-drop sind nicht ergänzt. Scrollen wird im folgenden
+Abschnitt ausdrücklich und getrennt angefordert. ASR-Fehlhörer bleiben möglich; automatische Parserprüfungen sind
 keine reale Sprachabnahme.
 
 Mit OpenAI Live wird ausschließlich das vorhandene finale Nutzertranskript
@@ -86,3 +86,57 @@ bei OpenAI Live Teil der bestehenden Cloud-Audioübertragung.
 
 [Native Kontextmenüs und Grenzen](KONTEXTMENUES.md) ·
 [Testnachweis und Windows-Prüfliste](ai/testing/2026-11-02-desktop-actions.md)
+
+## Scrollen: Schritt, langsamer Lauf und Stopp
+
+Nur mit **Bediensprache Deutsch (`de-DE`)**; Texteingabe ebenfalls möglich.
+
+| Auftrag | Beispiele | Wirkung |
+| --- | --- | --- |
+| Ein Schritt abwärts | „Scroll nach unten“, „Scrolle nach unten“ | Ein nativer Mausradimpuls von −120 Einheiten |
+| Ein Schritt aufwärts | „Scroll nach oben“, „Scrolle nach oben“ | Ein nativer Mausradimpuls von +120 Einheiten |
+| Langsam abwärts | „Scroll langsam nach unten“, „Scrolle langsam nach unten“ | Kleine Impulse von −15 Einheiten, höchstens alle 250 ms, maximal 30 Sekunden |
+| Langsam aufwärts | „Scroll langsam nach oben“, „Scrolle langsam nach oben“ | Kleine Impulse von +15 Einheiten mit denselben Grenzen |
+| Anhalten | „Stopp“, „Hör auf zu scrollen“, „Scrollen stoppen“ | Lauf und bisherige Maus-/Ausgabeaktionen stoppen; keine neuen Ereignisse nach verarbeitetem nativen Stopp |
+
+Zum Beispiel „Jeffrey, bitte scrolle langsam nach unten“. Entsprechende Anreden
+mit Kelly, Krak, Bronco und James funktionieren ebenfalls. Keine Ausführung aus
+„Scroll nicht nach unten“, „Er sagte Scroll nach unten“, Zitaten oder
+„Scroll nach unten und Linksklick“. Unbekannte Gesprächsformulierungen bleiben
+normaler Chat; sie werden nicht pauschal stummgeschaltet.
+
+Ziel ist der Bereich unter der tatsächlichen Zeigerposition, ohne zusätzliche
+Bewegung oder Fokus-Klick. Voraussetzung ist die von Windows bestätigte
+Mausradweiterleitung **unter den Mauszeiger** (inaktive Fenster scrollen).
+Andernfalls erscheint ein Hinweis, keine Eingabe an ein anderes fokussiertes
+Fenster. Auch bei korrekter Windows-Einstellung kann eine Anwendung die Impulse
+ignorieren oder anders auswerten. Kein fester Pixelabstand wird zugesagt.
+
+Ein Lauf ist an Zielbereich, Zeigerposition und Vordergrundfenster gebunden.
+Physische Zeigerbewegung, Fokus-/Fensterwechsel, offenes natives Menü oder
+gehaltene Maustasten beenden/verweigern ihn. Wiederholung oder Richtungswechsel
+verwendet denselben Lauf, vervielfacht die Ereignisrate nicht und verlängert die
+30-Sekunden-Frist nicht. Ein Schritt ersetzt einen laufenden Dauerauftrag.
+Bewegungs- oder Klickauftrag beendet den Lauf zuerst. Während Bewegung/Klick
+oder eines zugeordneten Kontextmenüs wird Scrollen ohne Warteschlange abgewiesen.
+
+Ohne Raster und ohne Live zuerst den vorhandenen einmaligen Zuhörweg verwenden.
+Während eines langsamen lokalen Laufs übernimmt derselbe lokale Steuerhörer auch
+Stopp; ohne verfügbare passende Engine wird der Lauf beendet. OpenAI Live nutzt
+weiterhin nur die vorhandene finale Transkription. Kein zusätzliches Mikrofon und
+keine kostenpflichtige Modellanfrage pro Scrollauftrag. Sitzungsende, Schlaf,
+Charakter-/Anbieterwechsel, App-Ende und Verlust des Steuerkanals stoppen den Lauf.
+Die große **Maus STOPP**-Schaltfläche bleibt erreichbar.
+
+## Rückmeldung beim Rasterstart
+
+Ein übernommener Startauftrag zeigt zunächst einen Verarbeitungshinweis. Erfolg
+folgt erst nach tatsächlichem `READY` des nativen Maushelfers und einer aktuellen
+Zeichnungsbestätigung des richtigen Overlay-Renderers. Fehler werden visuell
+angezeigt, ohne freie KI-Ersatzantwort. Wiederholte Startaufträge bleiben geordnet;
+ein ausgeblendetes aktives Raster wird wieder sichtbar. Ein ausdrücklicher
+Steuerauftrag kann die bisherige Desktop-Auswertung/-Sprachantwort abbrechen.
+Ein gewöhnlicher Sprachbeginn allein behält seine bisherige Wirkung.
+
+Die neuen Korrekturen und Scrollaktionen sind **noch nicht unter Windows getestet**.
+[Nachweis und Windows-Prüfliste](ai/testing/2026-11-02-grid-start-scroll.md).
