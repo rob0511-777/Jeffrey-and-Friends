@@ -91,8 +91,9 @@ function mouseView(state=mouseControl.state()){return {...state,uiLocale:setting
 async function executeMouse(command,diagnosticId=0){
   if(command.action==='click')return runDesktopAction(command);
   if(!mouseControl){status('Maussteuerung noch nicht bereit.');return;}
-  try{if(command.action==='stop')stopTalking();const message=await mouseControl.dispatch({...command,diagnosticId});status(message);return message;}
-  catch(error){const message=I18n.catalog[error.message]?ui(error.message):uiMessage(String(error.message||'Maussteuerung nicht verfügbar.').slice(0,180));status(message);return message;}
+  if(command.action==='show'){const message=ui('mouse.starting');status(message);sendAction('mouse-status',message);}
+  try{const wasScrolling=windowsMouse?.scrolling();if(command.action==='stop')stopTalking();const result=await mouseControl.dispatch({...command,diagnosticId}),message=command.action==='stop'&&wasScrolling?ui('scroll.stopped'):result;if(command.action==='show')sendAction('mouse-status',message);status(message);return message;}
+  catch(error){const message=I18n.catalog[error.message]?ui(error.message):uiMessage(String(error.message||'Maussteuerung nicht verfügbar.').slice(0,180));if(command.action==='show')sendAction('mouse-status',message);status(message);return message;}
 }
 async function handleMouseLive(event,payload){
   const text=typeof payload==='string'?payload:payload?.text,id=typeof payload==='object'?payload?.requestId:undefined;
@@ -114,11 +115,11 @@ function activateMouseMode(){
 }
 function scheduleGridListener(){
   clearTimeout(gridListenTimer);
-  if((!mouseControl?.active()&&!contextMenu?.active())||isQuitting||characterCallTransition.active())return;
+  if((!mouseControl?.active()&&!contextMenu?.active()&&!windowsMouse?.scrolling())||isQuitting||characterCallTransition.active())return;
   gridListenTimer=setTimeout(async()=>{
     const released=await Promise.all([wakeListener?.stop(),gridListener?.stop()]);
     if(released.includes(false)){status(ui('speech.busy'));return;}
-    if(!characterCallTransition.active()&&(mouseControl?.active()||contextMenu?.active())&&!liveActive&&!voiceBusy&&settings.mode!=='sleep'){gridListener?.reset();gridListener?.start();}
+    if(!characterCallTransition.active()&&(mouseControl?.active()||contextMenu?.active()||windowsMouse?.scrolling())&&!liveActive&&!voiceBusy&&settings.mode!=='sleep'){gridListener?.reset();gridListener?.start();}
   },650);
 }
 async function prepareLiveMicrophone(event){
@@ -281,7 +282,7 @@ async function doChat(text) {
   if(isStopCommand(text)){stopTalking();return;}
   const prompt = typeof text === 'string' ? text.trim().slice(0,1200) : '';
   if (!prompt) return;
-  const extraAction=parseAction(prompt,settings.uiLocale);if(extraAction&&extraAction.action!=='click'){await runDesktopAction(extraAction);return;}
+  const extraAction=parseAction(prompt,settings.uiLocale);if(extraAction&&!['click','stop'].includes(extraAction.action)){await runDesktopAction(extraAction);return;}
   const mouseCommand=parseMouseCommand(prompt);if(mouseCommand){await executeMouse(mouseCommand);return;}
   if (chatBusy) return;
   if (Date.now()-lastChatAt < 1200) return;
@@ -362,7 +363,7 @@ async function doChat(text) {
   } finally {chatBusy=false;sendAction('chat-busy',false);}
 }
 async function doListen() {
-  if(mouseControl?.active()||contextMenu?.active()){status(ui('speech.gridBusy'));return;}
+  if(mouseControl?.active()||contextMenu?.active()||windowsMouse?.scrolling()){status(ui('speech.gridBusy'));return;}
   if (voiceBusy || chatBusy || liveActive || characterCallTransition.active() || settings.mode === 'sleep') return;
   voiceBusy=true;syncWakeListener();
   try {
@@ -471,6 +472,7 @@ function makeWindow(options, mode) {
   }});
   win.webContents.setWindowOpenHandler(() => ({action:'deny'}));
   win.webContents.on('will-navigate', event => event.preventDefault());
+  if(mode==='controls')win.webContents.on('render-process-gone',()=>windowsMouse?.stop());
   // Shared Electron session: microphone access is restricted centrally to our controls window.
   win.webContents.on('did-finish-load', () => sendState(win));
   win.loadFile(path.join(__dirname, 'index.html'), {query:{mode}});
@@ -556,20 +558,21 @@ function setWakeStatus(message) {
 }
 function syncWakeListener() {
   if (!wakeListener) return;
-  const wanted=Boolean(!characterCallTransition.active() && settings.wakeEnabled && settings.mode!=='sleep' && !isQuitting && !liveActive && !voiceBusy && !mouseControl?.active() && !contextMenu?.active());
-  if (wanted) {void Promise.resolve(gridListener?.stop()).then(ok=>{if(ok===false){setWakeStatus(ui('speech.busy'));return;}if(!characterCallTransition.active()&&!isQuitting&&settings.wakeEnabled&&settings.mode!=='sleep'&&!liveActive&&!voiceBusy&&!mouseControl?.active()&&!contextMenu?.active())wakeListener.start();});}
+  const wanted=Boolean(!characterCallTransition.active() && settings.wakeEnabled && settings.mode!=='sleep' && !isQuitting && !liveActive && !voiceBusy && !mouseControl?.active() && !contextMenu?.active() && !windowsMouse?.scrolling());
+  if (wanted) {void Promise.resolve(gridListener?.stop()).then(ok=>{if(ok===false){setWakeStatus(ui('speech.busy'));return;}if(!characterCallTransition.active()&&!isQuitting&&settings.wakeEnabled&&settings.mode!=='sleep'&&!liveActive&&!voiceBusy&&!mouseControl?.active()&&!contextMenu?.active()&&!windowsMouse?.scrolling())wakeListener.start();});}
   else {
     wakeListener.stop();
     if (!settings.wakeEnabled) setWakeStatus(ui('wake.off'));
     else if (settings.mode==='sleep') setWakeStatus(ui('wake.sleep'));
     else if(mouseControl?.active())setWakeStatus(ui('wake.grid'));
     else if(contextMenu?.active())setWakeStatus(ui('menu.localListener'));
+    else if(windowsMouse?.scrolling())setWakeStatus(ui('scroll.localListener'));
     else if (liveActive) setWakeStatus(ui('wake.live'));
   }
 }
 function onWakeDetected() {
   if (settings.mode==='sleep' || !settings.wakeEnabled || liveActive || characterCallTransition.active()) return;
-  if(mouseControl?.active()||contextMenu?.active()){try{if(selectedRealtimeProvider()!=='openai')return;}catch{return;}void gridListener?.stop();}
+  if(mouseControl?.active()||contextMenu?.active()||windowsMouse?.scrolling()){try{if(selectedRealtimeProvider()!=='openai')return;}catch{return;}void gridListener?.stop();}
   if (wakeTestUntil && Date.now() < wakeTestUntil) {
     wakeTestUntil=0; clearTimeout(wakeTestTimer);
     showRobot();
@@ -720,7 +723,7 @@ function handleAction(event, payload) {
         if (!phrase) return;
         if(kind==='user'){
           const extra=parseAction(phrase,settings.uiLocale);
-          if(extra&&extra.action!=='click'){desktopActionGate.register(value.mouseRequestId,phrase,liveSessionId);lastMouseRequest=null;lastDesktopRequest=null;lastAppRequest=null;return;}
+          if(extra&&!['click','stop'].includes(extra.action)){desktopActionGate.register(value.mouseRequestId,phrase,liveSessionId);lastMouseRequest=null;lastDesktopRequest=null;lastAppRequest=null;return;}
           desktopActionGate.endTurn();
           const mouseCommand=parseMouseCommand(phrase);
           if(mouseCommand){
@@ -896,8 +899,11 @@ else {
     windowsDesktop=createWindowsDesktop();windowsDesktop.start();
     privacyConsent=createPrivacyConsent({getSaved:()=>settings.privacyConsents,ask:askPrivacyConsent,
       save:consents=>{const next=normalizeSettings({...settings,privacyConsents:consents});try{fs.writeFileSync(file,JSON.stringify(next,null,2),'utf8');}catch{throw Error('Datenschutzentscheidung konnte nicht gespeichert werden. Bitte das lokale App-Profil prüfen.');}settings=next;syncState();}});
-    gridOverlay=createGridOverlay({BrowserWindow,screen});
-    windowsMouse=createWindowsMouse({onTrace:(code,id)=>mouseDiagnostics.record(code,{id}),onStatus:message=>sendAction('mouse-status',message)});
+    gridOverlay=createGridOverlay({BrowserWindow,screen,ipcMain,onTrace:(code,id)=>mouseDiagnostics.record(code,{id}),onFailure:()=>{mouseControl?.exit();status(ui('mouse.overlayError'));}});
+    windowsMouse=createWindowsMouse({onScrollState:(active,code)=>{
+      if(!active&&['limit','target','error'].includes(code))status(ui('scroll.'+code));
+      if(!liveActive){if(active)scheduleGridListener();else if(!mouseControl?.active()&&!contextMenu?.active()){gridListener?.stop();syncWakeListener();}}
+    },onTrace:(code,id)=>mouseDiagnostics.record(code,{id}),onStatus:message=>sendAction('mouse-status',message)});
     contextMenuBackend=createWindowsContextMenu();
     contextMenuOverlay=createContextMenuOverlay({BrowserWindow,screen,onReady:()=>contextMenu?.repaint(),onNoSpace:()=>status(ui('menu.noSpace'))});
     contextMenu=createContextMenu({backend:contextMenuBackend,isAllowed:()=>settings.mode!=='sleep'&&!isQuitting,onChange:state=>{
@@ -913,13 +919,15 @@ else {
       beforeCharacterSwitch:()=>characterCallTransition.begin(),afterCharacterSwitch:()=>characterCallTransition.end(),
       switchCharacter:value=>handleAction({sender:controls.webContents},{action:'character',value}),showCharacter:showRobot});
     contextMenuTimer=setInterval(()=>{void contextMenu.refresh();},700);
-    gridListener=createGridListener({getLocale:()=>settings.uiLocale,getRejectedGrammar:()=>rejectedGrammar(contextMenu.state().items,settings.uiLocale),getAdditionalGrammar:()=>actionGrammar(contextMenu.state().items,settings.uiLocale,contextMenu.state().confirmation?.name||'',contextMenu.state().confirmation?.number||0),onAction:command=>{if(settings.mode!=='sleep')void runDesktopAction(command);},getWakeWords:gridWakeWords,onWake:()=>{if(settings.wakeEnabled&&(mouseControl?.active()||contextMenu?.active()))onWakeDetected();},onCommand:command=>{if((mouseControl?.active()||contextMenu?.active()||command.action==='click')&&settings.mode!=='sleep')void executeMouse(command);},onStatus:(message,info)=>{
+    gridListener=createGridListener({getLocale:()=>settings.uiLocale,getRejectedGrammar:()=>rejectedGrammar(contextMenu.state().items,settings.uiLocale),getAdditionalGrammar:()=>actionGrammar(contextMenu.state().items,settings.uiLocale,contextMenu.state().confirmation?.name||'',contextMenu.state().confirmation?.number||0),onAction:command=>{if(settings.mode!=='sleep')void runDesktopAction(command);},getWakeWords:gridWakeWords,onWake:()=>{if(settings.wakeEnabled&&(mouseControl?.active()||contextMenu?.active()||windowsMouse?.scrolling()))onWakeDetected();},onCommand:command=>{if((mouseControl?.active()||contextMenu?.active()||windowsMouse?.scrolling()||command.action==='click')&&settings.mode!=='sleep')void executeMouse(command);},onStatus:(message,info)=>{
       // Loss of local voice recognition also stops motion; the large UI stop remains available.
       if(info?.kind==='ready'&&contextMenu?.active()&&!mouseControl?.active())message=ui('menu.speechReady');
       if(info?.kind==='error'&&contextMenu?.active())message=ui('menu.speechUnavailable',{locale:settings.uiLocale});
+      if(info?.kind==='ready'&&windowsMouse?.scrolling()&&!mouseControl?.active()&&!contextMenu?.active())message=ui('scroll.speechReady');
+      if(info?.kind==='error'&&windowsMouse?.scrolling())message=ui('scroll.speechUnavailable');
       if(info?.kind!=='ready')mouseControl?.stop();sendAction('mouse-status',message);
     }});
-    mouseControl=createMouseControl({onTrace:(code,id)=>mouseDiagnostics.record(code,{id}),getSnapshot:()=>windowsDesktop.snapshot(),
+    mouseControl=createMouseControl({waitForOverlay:()=>gridOverlay.waitForReady(),onTrace:(code,id)=>mouseDiagnostics.record(code,{id}),getSnapshot:()=>windowsDesktop.snapshot(),
       getOptions:()=>({locale:settings.uiLocale,opacity:settings.mouseGridOpacity,speed:settings.mouseSpeed,maxDepth:settings.mouseGridMaxDepth}),
       setOpacity:value=>{settings.mouseGridOpacity=value;storeSoon();syncState();},mouse:windowsMouse,isAllowed:()=>settings.mode!=='sleep'&&!isQuitting,
       onChange:state=>{const view=mouseView(state);sendAction('mouse-state',view);gridOverlay.publish(view);},

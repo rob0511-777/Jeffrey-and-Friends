@@ -118,6 +118,18 @@
     try{c.dc?.send(JSON.stringify({type:'response.create',event_id:eventId,response:{metadata:{client_normal:eventId}}}));}
     catch{c.normalRequestPending='';c.botSpeaking=false;signal('idle');extendConversation(c);fail('Sprachantwort konnte nicht angefordert werden. Bitte erneut fragen.');}
   }
+  function suppressControlReply(c){
+    if(desktopInFlight(c)){native.send('stop-speaking');cancelDesktop(c,true);}
+    if(c.normalRequestPending){
+      const cancelled=c.cancelledNormalRequests||(c.cancelledNormalRequests=new Set());
+      cancelled.add(c.normalRequestPending);if(cancelled.size>64)cancelled.delete(cancelled.values().next().value);
+      c.normalRequestPending='';if(!c.responseId)c.botSpeaking=false;
+    }
+    c.normalQueued=false;c.desktopBlocked=true;
+    if(c.responseId&&!c.desktopCancelled?.has(c.responseId)){
+      (c.desktopCancelled||(c.desktopCancelled=new Set())).add(c.responseId);c.dc?.send(JSON.stringify({type:'response.cancel',response_id:c.responseId}));
+    }
+  }
   function desktopInFlight(c){
     return Boolean(c.desktopPending||c.desktopReply||c.desktopReadoutEventId||c.desktopReadoutResponseId);
   }
@@ -236,6 +248,9 @@
       traceMouse('speech-stop',mouseTurn(c,event).id);
       c.userSpeaking=false;extendConversation(c);
     } else if (event.type === 'response.created') {
+      if(c.cancelledNormalRequests?.has(event.response?.metadata?.client_normal)){
+        const id=event.response?.id;if(id){(c.desktopCancelled||(c.desktopCancelled=new Set())).add(id);c.dc?.send(JSON.stringify({type:'response.cancel',response_id:id}));}return;
+      }
       const pendingNormal=c.normalRequestPending&&event.response?.metadata?.desktop!=='readout'&&(!c.responseId||event.response?.metadata?.client_normal===c.normalRequestPending);
       if(pendingNormal){c.normalRequestPending='';c.responseId=event.response.id;}
       const readout=event.response?.metadata?.desktop==='readout';
@@ -267,27 +282,25 @@
         }
         if(isStop(event.transcript)){
           traceMouse('stop',turn.id);
-          signal('user',event.transcript);native.send('stop-speaking');cancelDesktop(c,true);return;
+          suppressControlReply(c);signal('user',event.transcript);native.send('stop-speaking');cancelDesktop(c,true);return;
         }
         const additional=window.RobotDesktopActions?.parseAction(event.transcript,uiLocale);
-        if(additional&&additional.action!=='click'&&(additional.action==='character'||!desktopInFlight(c))){
+        if(additional&&additional.action!=='click'){
           const text=event.transcript.trim();if(!itemId&&c.additionalTranscript===text)return;c.mouseTranscript='';c.additionalTranscript=text;
-          c.normalQueued=false;c.desktopBlocked=true;c.toolsInFlight++;extendConversation(c);signal('user',text,turn.id);
-          if(c.responseId){(c.desktopCancelled||(c.desktopCancelled=new Set())).add(c.responseId);c.dc?.send(JSON.stringify({type:'response.cancel',response_id:c.responseId}));}
+          suppressControlReply(c);c.toolsInFlight++;extendConversation(c);signal('user',text,turn.id);
           void native.desktopAction(text,turn.id).then(message=>{if(current===c&&!c.stopped)status(message);}).catch(()=>{if(current===c&&!c.stopped)fail(window.RobotI18n?.t('desktop.action.unavailable',uiLocale)||'Local action unavailable.');}).finally(()=>{c.toolsInFlight=Math.max(0,c.toolsInFlight-1);extendConversation(c);});return;
         }
         // Speech detection, duplicate commands and incidental transcripts are not
         // a cancellation request and cannot authorize tools during this turn.
-        if(desktopInFlight(c)){traceMouse('turn-busy',turn.id);return;}
         if(window.RobotMouseCommands?.parseMouseCommand(event.transcript,uiLocale)){
           const text=event.transcript.trim();
           if(!itemId&&c.mouseTranscript===text){traceMouse('duplicate',turn.id);return;}
           c.additionalTranscript='';c.mouseTranscript=text;
-          const requestId=turn.id;traceMouse('parser-accept',requestId);traceMouse('ipc-send',requestId);
-          c.normalQueued=false;c.desktopBlocked=true;c.mousePending=true;c.toolsInFlight++;extendConversation(c);signal('user',event.transcript,requestId);
-          if(c.responseId){(c.desktopCancelled||(c.desktopCancelled=new Set())).add(c.responseId);c.dc?.send(JSON.stringify({type:'response.cancel',response_id:c.responseId}));}
+          const requestId=turn.id;if(window.RobotMouseCommands.parseMouseCommand(text,uiLocale)?.action==='show')traceMouse('grid-start',requestId);traceMouse('parser-accept',requestId);traceMouse('ipc-send',requestId);
+          suppressControlReply(c);c.mousePending=true;c.toolsInFlight++;extendConversation(c);signal('user',event.transcript,requestId);
           void native.mouseCommand(event.transcript.trim(),requestId).then(message=>{traceMouse('ipc-return',requestId);if(current===c&&!c.stopped)status(message);}).catch(()=>{traceMouse('ipc-return',requestId);if(current===c&&!c.stopped)fail('Maussteuerbefehl nicht verfügbar.');}).finally(()=>{c.mousePending=false;c.toolsInFlight=Math.max(0,c.toolsInFlight-1);extendConversation(c);});return;
         }
+        if(desktopInFlight(c)){traceMouse('turn-busy',turn.id);return;}
         traceMouse('parser-reject',turn.id);c.additionalTranscript='';c.mouseTranscript='';c.desktopBlocked=false;
         if(/(?:\bmerk(?:e)?\s+(?:dir\s+)?|\bspeicher(?:e)?\s+)/i.test(event.transcript))c.rememberTranscriptSeen=true;
         c.appTranscriptSeen=true;

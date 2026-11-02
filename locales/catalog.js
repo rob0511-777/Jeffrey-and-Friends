@@ -3961,6 +3961,134 @@
    "ja-JP": "音声の引き継ぎを確認できません。キャラクターは変更されません。現在の音声接続を終了して再試行してください。",
    "es-ES": "No se confirmó el relevo de audio. Personaje sin cambios; finaliza la conexión actual y reintenta.",
    "pt-BR": "Transferência de áudio não confirmada. Personagem inalterado; encerre a conexão atual e tente novamente."
+  },
+  "mouse.starting": {
+   "de-DE": "Raster wird geladen und gezeichnet …",
+   "en-GB": "Loading and drawing the grid …",
+   "zh-CN": "正在加载并绘制网格…",
+   "ja-JP": "グリッドを読み込み、描画中…",
+   "es-ES": "Cargando y dibujando la cuadrícula…",
+   "pt-BR": "Carregando e desenhando a grade…"
+  },
+  "mouse.overlayError": {
+   "de-DE": "Raster konnte nicht zuverlässig angezeigt werden. Bitte erneut starten; bei Wiederholung App neu starten.",
+   "en-GB": "The grid could not be displayed reliably. Try again; restart the app if needed.",
+   "zh-CN": "无法可靠显示网格。请重试；必要时重启应用。",
+   "ja-JP": "グリッド表示を確認できません。再試行し、必要ならアプリを再起動してください。",
+   "es-ES": "No se pudo confirmar la visualización. Reintenta; reinicia la app si es necesario.",
+   "pt-BR": "Não foi possível confirmar a grade. Tente novamente; reinicie o app se necessário."
+  },
+  "scroll.stepDown": {
+   "de-DE": "Ein Mausradschritt nach unten wurde an Windows gesendet.",
+   "en-GB": "One downward wheel step was sent to Windows.",
+   "zh-CN": "已向 Windows 发送一次向下滚轮操作。",
+   "ja-JP": "Windowsに下向きのホイール操作を1回送信しました。",
+   "es-ES": "Se envió un paso de rueda hacia abajo a Windows.",
+   "pt-BR": "Um passo da roda para baixo foi enviado ao Windows."
+  },
+  "scroll.stepUp": {
+   "de-DE": "Ein Mausradschritt nach oben wurde an Windows gesendet.",
+   "en-GB": "One upward wheel step was sent to Windows.",
+   "zh-CN": "已向 Windows 发送一次向上滚轮操作。",
+   "ja-JP": "Windowsに上向きのホイール操作を1回送信しました。",
+   "es-ES": "Se envió un paso de rueda hacia arriba a Windows.",
+   "pt-BR": "Um passo da roda para cima foi enviado ao Windows."
+  },
+  "scroll.started": {
+   "de-DE": "Langsames Scrollen gestartet, höchstens 30 Sekunden. Stopp beendet den Lauf.",
+   "en-GB": "Slow scrolling started, for up to 30 seconds. Stop ends it.",
+   "zh-CN": "慢速滚动已开始，最长 30 秒。停止命令可结束。",
+   "ja-JP": "低速スクロール開始。最大30秒。停止コマンドで終了します。",
+   "es-ES": "Desplazamiento lento iniciado, máximo 30 segundos. Detener lo finaliza.",
+   "pt-BR": "Rolagem lenta iniciada, por até 30 segundos. Parar encerra."
+  },
+  "scroll.busy": {
+   "de-DE": "Kein Scrollen: Bewegung, Klick oder Kontextmenü ist noch aktiv. Erst stoppen oder Menü schließen.",
+   "en-GB": "No scrolling: movement, a click or a context menu is active. Stop or close the menu first.",
+   "zh-CN": "未滚动：移动、单击或上下文菜单仍在进行。请先停止或关闭菜单。",
+   "ja-JP": "移動・クリック・メニューが有効なためスクロールしません。先に停止するかメニューを閉じてください。",
+   "es-ES": "Sin desplazamiento: movimiento, clic o menú activo. Detén o cierra el menú primero.",
+   "pt-BR": "Sem rolagem: movimento, clique ou menu ativo. Pare ou feche o menu primeiro."
+  },
+  "scroll.target": {
+   "de-DE": "Scrollen beendet oder verweigert: Ziel unter dem Mauszeiger, Fokus oder Eingabestatus hat sich geändert.",
+   "en-GB": "Scrolling stopped or refused: pointer target, focus or input state changed.",
+   "zh-CN": "滚动已停止或拒绝：指针目标、焦点或输入状态已改变。",
+   "ja-JP": "ポインターの対象・フォーカス・入力状態が変わったため、スクロールを停止または拒否しました。",
+   "es-ES": "Desplazamiento detenido o rechazado: cambió destino, foco o estado de entrada.",
+   "pt-BR": "Rolagem parada ou recusada: alvo, foco ou estado de entrada mudou."
+  },
+  "scroll.routing": {
+   "de-DE": "Kein Scrollen: Windows-Mausradweiterleitung unter den Zeiger ist nicht bestätigt. Windows-Einstellung zum Scrollen inaktiver Fenster prüfen.",
+   "en-GB": "No scrolling: Windows pointer-based wheel routing is not confirmed. Check the inactive-window scrolling setting.",
+   "zh-CN": "未滚动：未确认 Windows 按指针位置路由滚轮。请检查非活动窗口滚动设置。",
+   "ja-JP": "ポインター位置へのホイール転送を確認できません。Windowsの非アクティブウィンドウのスクロール設定を確認してください。",
+   "es-ES": "Sin desplazamiento: no se confirmó el envío de rueda bajo el puntero. Revisa la opción de desplazar ventanas inactivas en Windows.",
+   "pt-BR": "Sem rolagem: roteamento da roda sob o ponteiro não confirmado. Verifique a opção de rolar janelas inativas no Windows."
+  },
+  "scroll.error": {
+   "de-DE": "Native Scroll-Eingabe fehlgeschlagen. Lauf beendet; keine automatische Wiederholung oder Ersatzeingabe.",
+   "en-GB": "Native wheel input failed. Scrolling stopped; no automatic retry or substitute input.",
+   "zh-CN": "原生滚轮输入失败。已停止；不会自动重试或使用替代输入。",
+   "ja-JP": "ホイール入力に失敗。停止しました。自動再試行や代替入力は行いません。",
+   "es-ES": "Falló la entrada nativa de rueda. Detenida; sin reintento automático ni entrada alternativa.",
+   "pt-BR": "Falha na entrada nativa da roda. Parada; sem nova tentativa automática ou alternativa."
+  },
+  "scroll.cancelled": {
+   "de-DE": "Scrollauftrag abgebrochen.",
+   "en-GB": "Scroll request cancelled.",
+   "zh-CN": "滚动请求已取消。",
+   "ja-JP": "スクロール要求を中止しました。",
+   "es-ES": "Solicitud de desplazamiento cancelada.",
+   "pt-BR": "Pedido de rolagem cancelado."
+  },
+  "scroll.limit": {
+   "de-DE": "Scrollen nach spätestens 30 Sekunden beendet. Bei Bedarf ausdrücklich neu starten.",
+   "en-GB": "Scrolling ended after at most 30 seconds. Start it again explicitly if needed.",
+   "zh-CN": "滚动已在最长 30 秒后结束。如需继续，请明确重新启动。",
+   "ja-JP": "最大30秒でスクロールを終了しました。必要なら明示的に再開してください。",
+   "es-ES": "Desplazamiento finalizado tras un máximo de 30 segundos. Inícialo de nuevo expresamente si lo necesitas.",
+   "pt-BR": "Rolagem encerrada após no máximo 30 segundos. Inicie novamente de forma explícita se necessário."
+  },
+  "scroll.localListener": {
+   "de-DE": "Scrollen: vorhandener lokaler Steuerhörer übernimmt auch Stopp.",
+   "en-GB": "Scrolling: the existing local control listener also handles Stop.",
+   "zh-CN": "滚动中：现有本地控制识别器同时处理停止命令。",
+   "ja-JP": "スクロール中：既存のローカル認識で停止も受け付けます。",
+   "es-ES": "Desplazamiento: el reconocedor local existente también acepta Detener.",
+   "pt-BR": "Rolagem: o reconhecedor local existente também recebe Parar."
+  },
+  "scroll.speechReady": {
+   "de-DE": "Lokale Scroll- und Stoppbefehle bereit. Neue Scrollbefehle derzeit auf Deutsch.",
+   "en-GB": "Local scroll and stop commands ready. New scroll commands currently require German.",
+   "zh-CN": "本地滚动和停止命令已就绪。新滚动命令目前仅支持德语。",
+   "ja-JP": "ローカルのスクロール・停止コマンドが準備完了。新スクロールコマンドは現在ドイツ語です。",
+   "es-ES": "Comandos locales de desplazamiento y parada listos. Los nuevos comandos requieren alemán.",
+   "pt-BR": "Comandos locais de rolagem e parada prontos. Novos comandos exigem alemão."
+  },
+  "scroll.speechUnavailable": {
+   "de-DE": "Lokaler Steuerhörer nicht verfügbar. Scrollen gestoppt; Textfeld und Maus STOPP bleiben bedienbar.",
+   "en-GB": "Local control listener unavailable. Scrolling stopped; text input and Mouse STOP remain available.",
+   "zh-CN": "本地控制识别器不可用。已停止滚动；文本输入和鼠标停止仍可使用。",
+   "ja-JP": "ローカル認識を利用できません。スクロール停止。テキスト入力とマウス停止は利用できます。",
+   "es-ES": "Reconocedor local no disponible. Desplazamiento detenido; texto y PARAR ratón siguen disponibles.",
+   "pt-BR": "Reconhecedor local indisponível. Rolagem parada; texto e PARAR mouse continuam disponíveis."
+  },
+  "scroll.stopped": {
+   "de-DE": "Scrollen und laufende Mausbewegungen gestoppt.",
+   "en-GB": "Scrolling and pointer movement stopped.",
+   "zh-CN": "滚动及鼠标移动已停止。",
+   "ja-JP": "スクロールとポインター移動を停止しました。",
+   "es-ES": "Desplazamiento y movimiento del ratón detenidos.",
+   "pt-BR": "Rolagem e movimento do mouse parados."
+  },
+  "mouse.inputError": {
+   "de-DE": "Windows-Mausdienst nicht bereit. Raster nicht gestartet; Windows-Sitzung prüfen und erneut versuchen.",
+   "en-GB": "Windows mouse helper is not ready. Grid not started; check the Windows session and retry.",
+   "zh-CN": "Windows 鼠标服务未就绪。网格未启动；请检查 Windows 会话后重试。",
+   "ja-JP": "Windowsマウスサービス未準備。グリッドは開始していません。セッションを確認して再試行してください。",
+   "es-ES": "Servicio de ratón Windows no preparado. Cuadrícula no iniciada; revisa la sesión y reintenta.",
+   "pt-BR": "Serviço de mouse Windows não pronto. Grade não iniciada; verifique a sessão e tente novamente."
   }
  },
  "sources": {
@@ -4456,6 +4584,22 @@
   "Kein freier Platz neben dem Menü für die Anzeige. Vollständige Namen im nativen Menü verwenden; keine Nummernauswahl.": "menu.noSpace",
   "Für „{name}“ ausdrücklich sagen: „Bestätige Nummer {number}“. Abbrechen verwirft die Bestätigung.": "menu.confirmPromptNumber",
   "Lokale Menüsprache {locale} nicht verfügbar. Das native Menü direkt bedienen oder nach Ende des Menüs OpenAI Live ausdrücklich starten.": "menu.speechUnavailable",
-  "Sprachwechsel nicht bestätigt. Charakter unverändert; bestehende Sprachverbindung beenden und erneut versuchen.": "desktop.character.transitionError"
+  "Sprachwechsel nicht bestätigt. Charakter unverändert; bestehende Sprachverbindung beenden und erneut versuchen.": "desktop.character.transitionError",
+  "Raster wird geladen und gezeichnet …": "mouse.starting",
+  "Raster konnte nicht zuverlässig angezeigt werden. Bitte erneut starten; bei Wiederholung App neu starten.": "mouse.overlayError",
+  "Ein Mausradschritt nach unten wurde an Windows gesendet.": "scroll.stepDown",
+  "Ein Mausradschritt nach oben wurde an Windows gesendet.": "scroll.stepUp",
+  "Langsames Scrollen gestartet, höchstens 30 Sekunden. Stopp beendet den Lauf.": "scroll.started",
+  "Kein Scrollen: Bewegung, Klick oder Kontextmenü ist noch aktiv. Erst stoppen oder Menü schließen.": "scroll.busy",
+  "Scrollen beendet oder verweigert: Ziel unter dem Mauszeiger, Fokus oder Eingabestatus hat sich geändert.": "scroll.target",
+  "Kein Scrollen: Windows-Mausradweiterleitung unter den Zeiger ist nicht bestätigt. Windows-Einstellung zum Scrollen inaktiver Fenster prüfen.": "scroll.routing",
+  "Native Scroll-Eingabe fehlgeschlagen. Lauf beendet; keine automatische Wiederholung oder Ersatzeingabe.": "scroll.error",
+  "Scrollauftrag abgebrochen.": "scroll.cancelled",
+  "Scrollen nach spätestens 30 Sekunden beendet. Bei Bedarf ausdrücklich neu starten.": "scroll.limit",
+  "Scrollen: vorhandener lokaler Steuerhörer übernimmt auch Stopp.": "scroll.localListener",
+  "Lokale Scroll- und Stoppbefehle bereit. Neue Scrollbefehle derzeit auf Deutsch.": "scroll.speechReady",
+  "Lokaler Steuerhörer nicht verfügbar. Scrollen gestoppt; Textfeld und Maus STOPP bleiben bedienbar.": "scroll.speechUnavailable",
+  "Scrollen und laufende Mausbewegungen gestoppt.": "scroll.stopped",
+  "Windows-Mausdienst nicht bereit. Raster nicht gestartet; Windows-Sitzung prüfen und erneut versuchen.": "mouse.inputError"
  }
 };if(typeof module==='object'&&module.exports)module.exports=data;if(typeof window!=='undefined')window.RobotCatalog=data;})();

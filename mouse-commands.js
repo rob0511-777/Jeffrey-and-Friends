@@ -39,7 +39,7 @@
  const intl=typeof module==='object'&&module.exports?require('./mouse-locales.js'):window.RobotMouseLocales;
  function parseMouseCommand(input,locale='de-DE'){
   if(typeof input!=='string'||input.length>250||/["'„“”‚‘’«»`「」『』;:]/.test(input))return null;
-  const extra=additions?.parseAction(input,locale);if(extra?.action==='click')return extra;
+  const extra=additions?.parseAction(input,locale);if(extra?.action==='click'||extra?.action==='stop')return extra;
   return locale==='de-DE'?parseGerman(input):intl?.parse(input,locale)||null;
  }
  function mouseGrammar(locale='de-DE'){return locale==='de-DE'?[...germanGrammar(),'Raster aus','Zeig das Raster',...(additions?.clickGrammar(locale)||[])]:intl?.grammar(locale)||[];}

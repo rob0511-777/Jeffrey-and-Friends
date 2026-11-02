@@ -1,10 +1,10 @@
 'use strict';
 const I18n=require('./i18n.js');
 const {createMouseGrid}=require('./mouse-grid.cjs');const {selectMonitor}=require('./desktop-vision.cjs');
-function createMouseControl({platform=process.platform,getSnapshot,getOptions,setOpacity,mouse,isAllowed=()=>true,onTrace=()=>{},onChange=()=>{},onActivate=()=>{},onDeactivate=()=>{}}){
+function createMouseControl({platform=process.platform,getSnapshot,getOptions,setOpacity,mouse,isAllowed=()=>true,onTrace=()=>{},onChange=()=>{},onActivate=()=>{},onDeactivate=()=>{},waitForOverlay=async()=>{}}){
  let grid=null,epoch=0,lastDepth,running=false;const queue=[];
  const state=()=>({active:!!grid,opacity:getOptions().opacity,...(grid?grid.state():{})});
- const notify=value=>{const message=value==='mouse.quadOnly'?I18n.t(value,getOptions().locale):I18n.message(value,getOptions().locale);onChange({...state(),message});return message;};
+ const notify=(value,diagnosticId=0)=>{const message=value==='mouse.quadOnly'?I18n.t(value,getOptions().locale):I18n.message(value,getOptions().locale);onChange({...state(),message,...(diagnosticId?{diagnosticId}:{})});return message;};
  const cancelQueued=()=>{for(const job of queue.splice(0)){onTrace('command-cancelled',job.command.diagnosticId||0);job.resolve(I18n.t('mouse.cancelled',getOptions().locale));}};
  const stop=()=>{onTrace('stop',0);epoch++;cancelQueued();mouse.stop();};
  const halt=()=>mouse.stop();
@@ -21,10 +21,16 @@ function createMouseControl({platform=process.platform,getSnapshot,getOptions,se
    if(command.action==='show'){
     if(platform!=='win32')throw Error('Koordinatennetz ist nur unter Windows verfügbar.');
     if(!grid||command.target?.kind!=='auto'){
-     halt();const version=epoch,snapshot=await getSnapshot();if(version!==epoch||!isAllowed())return {cancelled:true};
-     const monitor=selectMonitor(snapshot,command.target),next=createMouseGrid(monitor,{maxDepth:getOptions().maxDepth});mouse.start();grid=next;lastDepth=getOptions().maxDepth;onActivate();
+     halt();const version=epoch;onTrace('snapshot-start',command.diagnosticId||0);const snapshot=await getSnapshot();onTrace('snapshot-ready',command.diagnosticId||0);if(version!==epoch||!isAllowed())return {cancelled:true};
+     const monitor=selectMonitor(snapshot,command.target),next=createMouseGrid(monitor,{maxDepth:getOptions().maxDepth});mouse.start();
+     try{await mouse.waitForReady?.(command.diagnosticId||0);}catch(error){if(version!==epoch)return {cancelled:true};mouse.close?.();throw error;}
+     if(version!==epoch||!isAllowed())return {cancelled:true};grid=next;lastDepth=getOptions().maxDepth;onActivate();
     }
-    if(getOptions().opacity===0)setOpacity(100);return notify(I18n.t('mouse.active',getOptions().locale));
+    const version=epoch;if(getOptions().opacity===0)setOpacity(100);
+    notify(I18n.t('mouse.starting',getOptions().locale),command.diagnosticId||0);
+    try{await waitForOverlay();}catch(error){if(version!==epoch)return {cancelled:true};exit();throw error;}
+    if(version!==epoch||!isAllowed())return {cancelled:true};
+    return I18n.t('mouse.active',getOptions().locale);
    }
    if(!grid)throw Error('Bitte zuerst das Koordinatennetz anzeigen.');
    try{

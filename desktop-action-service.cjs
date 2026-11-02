@@ -7,6 +7,12 @@ function createDesktopActionService({mouse,menu,isAllowed=()=>true,getCharacter,
   cancel(preserveCharacter=false){epoch++;if(!preserveCharacter)characterVersion++;menu.cancel();},
   async run(command){
    if(!isAllowed())throw failure();
+   if(command.action==='scroll'){
+    if(menu.active?.())throw Error('scroll.busy');
+    const version=epoch;await mouse.scroll(command.direction,command.continuous);
+    if(version!==epoch||!isAllowed())throw failure();
+    return command.continuous?'scroll.started':command.direction==='up'?'scroll.stepUp':'scroll.stepDown';
+   }
    if(command.action==='character'){
     if(!Object.hasOwn(CHARACTERS,command.character))throw failure();
     const version=++characterVersion;
