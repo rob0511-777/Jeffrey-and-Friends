@@ -1,5 +1,11 @@
 # Rasterstart-Regression: Electron-Ladeabschluss und Zeichnungsbestätigung
 
+> Nachtrag vom 02.11.2026: Der Benutzer bestätigt inzwischen unter Windows das
+> wieder funktionierende Raster und Scrollen wie gewünscht; Links-/Rechtsklick und
+> bisherige Maussteuerung waren zuvor positiv getestet. Die folgenden technischen
+> Versuche beschreiben ihren damaligen Prüfstand. Sie sind keine vollständige
+> eigene Windows-Abnahme. [Aktueller Praxistest und Dokumentationsprüfung](2026-11-02-user-practice-docs.md).
+
 Stand 02.11.2026 (Europe/Berlin), [Draft PR #8](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/8),
 `feature/desktop-clicks-menus-characters`. Untersucht: funktionierend gemeldeter
 Stand `7a1a834` gegenüber fehlerhaft gemeldetem `aa95e1cd06e02174b2d74321e319252acf944216`.

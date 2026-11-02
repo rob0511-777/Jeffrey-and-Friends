@@ -2,8 +2,11 @@
 
 Für **Bediensprache Deutsch**, auf `feature/desktop-clicks-menus-characters`, gestapelt auf PR #7.
 Die folgenden Beispiele passieren den Befehlsparser in automatisierten Tests.
-Echte Windows-Erkennung und Sprach-Stopp-Latenz der neuen Varianten sind noch
-nicht praktisch geprüft. Man kann dieselben Befehle ins vorhandene Textfeld eingeben.
+Der Benutzer hat unter Windows das wieder funktionierende Raster und Scrollen
+wie gewünscht bestätigt; Links-/Rechtsklick und die bisherige Maussteuerung waren
+zuvor positiv getestet. Das ist keine vollständige eigene Windows-Abnahme des
+Agenten; alle Varianten und die Sprach-Stopp-Latenz bleiben gezielt zu prüfen.
+Man kann dieselben Befehle ins vorhandene Textfeld eingeben.
 
 | Auftrag | Beispiele | Eindeutige Wirkung |
 | --- | --- | --- |
@@ -76,7 +79,9 @@ Mit OpenAI Live wird ausschließlich das vorhandene finale Nutzertranskript
 verwendet. Ohne Live: vorhandenes einmaliges „Zuhören“, oder im aktiven Raster/
 gebundenen Menü derselbe lokale Windows-Erkenner. Ein zur Bediensprache passender
 `System.Speech`-Erkenner ist erforderlich. Ohne Raster oder Menü läuft kein neuer
-Dauerhörer. Für Gemini wird keine neue Live-Transkriptunterstützung zugesagt.
+Dauerhörer, außer während eines ausdrücklich gestarteten langsamen Scrolllaufs:
+Dort hält derselbe lokale Steuerhörer Stopp verfügbar (siehe unten).
+Für Gemini wird keine neue Live-Transkriptunterstützung zugesagt.
 
 Bei gleichen Eintragsnamen die **angezeigte Nummer** verwenden. Fehlende Liste,
 Fokuswechsel oder nicht unterstützte UIA-Patterns erlauben keine Ersatzaktion.
@@ -138,5 +143,16 @@ ein ausgeblendetes aktives Raster wird wieder sichtbar. Ein ausdrücklicher
 Steuerauftrag kann die bisherige Desktop-Auswertung/-Sprachantwort abbrechen.
 Ein gewöhnlicher Sprachbeginn allein behält seine bisherige Wirkung.
 
-Die neuen Korrekturen und Scrollaktionen sind **noch nicht unter Windows getestet**.
-[Nachweis und Windows-Prüfliste](ai/testing/2026-11-02-grid-start-scroll.md).
+## Benutzer-Praxistest und offene Punkte
+
+Am 02.11.2026 im Sicherungsauftrag erfasst: Der Benutzer bestätigt unter Windows,
+dass das Raster nach der Korrektur wieder funktioniert und Scrollen wie gewünscht
+arbeitet. Links-/Rechtsklick und bisherige Maussteuerung wurden zuvor positiv
+getestet. Keine vollständige eigene Windows-Abnahme; insbesondere UIA-Menüs,
+Charakterübergaben, alle Formulierungen/Viererebenen sowie Stopp-Latenz und die
+exakte 30-Sekunden-Grenze sind damit nicht einzeln bestätigt.
+
+**Bekannt offen:** „Jeffrey, Ruhe“ erzeugt laut Benutzer weiterhin Bestätigungen
+und spätere Antworten; in diesem Dokumentationsauftrag nicht geändert.
+[Aktueller Praxistest und Prüfstand](ai/testing/2026-11-02-user-practice-docs.md) ·
+[historischer technischer Nachweis und Windows-Prüfliste](ai/testing/2026-11-02-grid-start-scroll.md).

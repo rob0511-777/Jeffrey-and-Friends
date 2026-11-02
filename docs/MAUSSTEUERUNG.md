@@ -2,11 +2,13 @@
 
 Entwicklungsstand `feature/desktop-clicks-menus-characters`, aufbauend auf
 PR #7 (`feature/mouse-grid-2-i18n`) und damit PR #5/#4. Experimenteller Draft.
-Aktuelle Windows-Rückmeldung: Bewegung, Unterteilungen und Einzelklicks funktionieren
-gut; Rasterstart muss teilweise wiederholt werden und wird von Antworten begleitet.
-Das ist Nutzerfeedback, keine vollständige Abnahme dieser Umgebung. Die nun
-belegten Softwarekorrekturen und Scrollaktionen sind **noch nicht unter Windows
-getestet**. PR #6 sowie README-/Bildänderungen auf `main` bleiben eigenständig.
+Aktuelle Windows-Rückmeldung, am 02.11.2026 erfasst: Der Benutzer bestätigt das
+wieder funktionierende Raster nach der Korrektur und Scrollen wie gewünscht.
+Links-/Rechtsklick und bisherige Maussteuerung wurden zuvor positiv getestet.
+Das ist ein **Benutzer-Praxistest, keine eigene vollständige Windows-Abnahme**.
+Die neuere zweisprachige README und das englische Projektbild von `main` sind in
+die Dokumentation dieses Branches integriert; `main` und PR #7 bleiben unverändert.
+[Aktueller Praxistest und offene Prüfungen](ai/testing/2026-11-02-user-practice-docs.md).
 
 ## Starten und bedienen
 
@@ -305,7 +307,15 @@ Raster. Kein paralleler Wakeword-Hörer; fehlende/abgebrochene lokale Erkennung 
 den Lauf. OpenAI verwendet das vorhandene finale Transkript. Die 45-Sekunden-
 Kostenbegrenzung und bestehende fünf weitere Sprach-/Providerpfade bleiben erhalten.
 
-## Windows-Abnahme (neue Korrekturen und Scrollen noch offen)
+## Windows-Praxistest und verbleibende Abnahme
+
+Der Benutzer-Praxistest bestätigt die Grundfunktion von Raster, Scrollen und zuvor
+Links-/Rechtsklick/bisheriger Maussteuerung. Das bestätigt keine vollständige
+Prüfmatrix aller Anwendungen, DPI-/Monitorfälle, Menüaktionen oder Stopp-/Zeitgrenzen.
+**„Jeffrey, Ruhe“ bleibt ein bekanntes offenes Problem** (Bestätigungen/spätere
+Antworten laut Benutzer). Dieser Auftrag ändert nur die Dokumentation.
+[Aktueller Stand](ai/testing/2026-11-02-user-practice-docs.md).
+
 
 Der aktuelle [Rasterstart-/Scrollnachweis](ai/testing/2026-11-02-grid-start-scroll.md)
 enthält die belegten Fehlerbedingungen, Simulationen und konkrete Windows-Prüfliste.

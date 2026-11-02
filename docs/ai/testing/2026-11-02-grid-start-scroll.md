@@ -1,5 +1,11 @@
 # Testnachweis: Rasterstart und begrenztes Mausradscrollen
 
+> Nachtrag vom 02.11.2026: Der Benutzer bestätigt inzwischen unter Windows das
+> wieder funktionierende Raster und Scrollen wie gewünscht; Links-/Rechtsklick und
+> bisherige Maussteuerung waren zuvor positiv getestet. Die folgenden technischen
+> Versuche beschreiben ihren damaligen Prüfstand. Sie sind keine vollständige
+> eigene Windows-Abnahme. [Aktueller Praxistest und Dokumentationsprüfung](2026-11-02-user-practice-docs.md).
+
 Geprüft am 02.11.2026 (Europe/Berlin). Repository
 [rob0511-777/Jeffrey-and-Friends](https://github.com/rob0511-777/Jeffrey-and-Friends),
 Branch `feature/desktop-clicks-menus-characters`, [Draft PR #8](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/8), Basis weiterhin PR #7.

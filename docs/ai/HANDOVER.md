@@ -1,72 +1,83 @@
 # Jeffrey and Friends – Kontextpaket für die nächste Codex-Sitzung
 
-Geprüft am **02.11.2026 (Europe/Berlin)**. Keine Zugangsdaten, privaten Inhalte oder
-Chatprotokolle. Keine Freigabe für Merge, Release oder kostenpflichtige API-Tests.
+Aktualisiert am **02.11.2026 (Europe/Berlin)**. Aktueller Auftrag: funktionierenden
+Stand sichern und Dokumentation aktualisieren. **Keine Programm- oder
+Versionsänderung, kein Merge und kein Release.** Keine Zugangsdaten oder privaten
+Inhalte. Kostenpflichtige API-Tests sind nicht Bestandteil des Auftrags.
 
 ## Repository und belastbarer Stand
 
 | Angabe | Stand |
 | --- | --- |
 | Repository | [rob0511-777/Jeffrey-and-Friends](https://github.com/rob0511-777/Jeffrey-and-Friends) |
-| Aktueller Branch | `feature/desktop-clicks-menus-characters` |
-| Aktueller PR | [Draft PR #8](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/8), offen, nicht gemergt; Basis #7 |
-| Geprüfter Programmstand (vollständig) | `b7e985082f0e6a06a4dd764b5a7fa35b948209c9` |
-| Historischer HEAD bei Draft-Erstellung | `a96dbd9b3893bb25e9c93ee2da87ec318ae1a6f9` |
-| Basis / unveränderter PR #7 | `feature/mouse-grid-2-i18n`, `ff3f610720e6ebc02c810e9bada90baa2710c050` |
-| Aktueller Worktree | `/workspace/work/desktop-actions` |
-| Gemeinsames Repository | `/workspace/Jeffrey-Friends` |
-| Paket / Prüfung | 0.7.4, Electron 45.0.0; Linux, Node 24.19.0, PowerShell 7.4.7 |
+| Branch | `feature/desktop-clicks-menus-characters` |
+| PR | [Draft PR #8](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/8), offen, nicht gemergt; Basis weiterhin #7 |
+| Bereits auf GitHub vorhandener Ausgangs-HEAD | `b77cddd2a9012e625d488817c93b04caf9556397` |
+| Letzter Programmfix | `b7e985082f0e6a06a4dd764b5a7fa35b948209c9` (im Ausgangs-HEAD enthalten) |
+| Unveränderte Basis / PR #7 | `feature/mouse-grid-2-i18n`, `ff3f610720e6ebc02c810e9bada90baa2710c050` |
+| Gelesenes aktuelles `main` | `e2e34f96cc8402349eb8b97f6fc2b54c4adfc0a9` |
+| Paket / Electron | unverändert 0.7.4 / 45.0.0 |
+| Frische Node-Prüfung dieser Dokumentationssitzung | Linux, Node 24.22.1; 654 bestanden, 0 Fehler, Exit 0 |
 
-Der aktuelle Regressionsauftrag startete bei `aa95e1cd06e02174b2d74321e319252acf944216`
-mit sauberem Arbeitsbaum. Der Nutzer meldete: Raster erschien bei `7a1a834`, nach
-dem Update kein Raster mehr, Ladehinweis gefolgt von Overlayfehler. Der obige
-Programmcommit ergänzt gezielt den fehlenden Electron-Ladeabschluss. Native Eingabe,
-Main/Realtime, Bereitschaftsprüfung, Acht-Sekunden-Fristen und Geometrie bleiben gleich.
-Dokumentation/Übergabe folgen separat; exakten HEAD mit `git rev-parse HEAD` prüfen.
-Ein Dokument kann seinen eigenen Commit-Hash nicht enthalten.
-Vorherige Folgecommits: `60b0d9a` Rasterstart/Scrollen, `61baad1` Dokumentation,
-`aa95e1c` Sitzungsregression. Frühere #8-Commits `442e099`, `3ad8e75`, `a96dbd9`, `7a1a834`.
+Der neue Dokumentationscommit folgt direkt auf `b77cddd`; seinen vollständigen
+Hash über `git rev-parse HEAD` und den PR-Head ermitteln. Ein Dokument kann seinen
+eigenen Commit-Hash nicht enthalten. Kein Rebase auf `main`, kein Force-Push und
+keine Änderung an #7 oder älteren PRs sind hierfür vorgesehen.
 
-Der lokale `origin` verweist noch auf den alten Alias
-`https://github.com/rob0511-777/Jeffrey-Friends.git`; für Fetch/Push wurde die
-kanonische Repository-URL verwendet, ohne Remote-Konfiguration zu verändern.
-Nur diesen neuen Branch pushen. #7 und ältere Branches/PRs bleiben unberührt.
+## Aktueller Benutzer-Praxistest unter Windows
 
-## Lokale Änderungen und erhaltene Arbeit
+Im Sicherungsauftrag vom 02.11.2026 ausdrücklich durch den Benutzer gemeldet:
 
-Ausgangszustand dieser Fortsetzung: sauber, keine fremden Programmänderungen oder
-vorgemerkten Dateien. Aktueller Programmcode und neue Tests sind im obigen Commit;
-technische Dokumente/Übergabe werden separat committet und auf denselben #8-Branch
-gepusht. Zum Abschluss wird ein sauberer Arbeitsbaum geprüft. Bei Wiederaufnahme
-`git status --short --branch` prüfen und neu hinzugekommene Nutzeränderungen erhalten.
+- **Raster funktioniert nach der Korrektur wieder.**
+- **Scrollen funktioniert jetzt wie gewünscht.**
+- **Links-/Rechtsklick und bisherige Maussteuerung wurden zuvor positiv getestet.**
 
-Die ältere, **untracked** Übergabe bleibt unverändert im alten Worktree
-`/workspace/work/mouse-grid-2-i18n/docs/ai/HANDOVER.md` erhalten. Ihr SHA-256:
-`ed850d52693e99a36a78915c299c36923e6ba1895920d611c4153ee5f21d2d60`.
-Sie wurde weder übernommen noch committet oder überschrieben. Diese neue, anhand
-des Codes geprüfte Übergabe erfüllt den aktuellen ausdrücklichen Dokumentationsauftrag.
-Andere Worktrees (`desktop-vision-2`, `mouse-grid-consent`, `readme-bilingual`)
-nicht zurücksetzen oder ungefragt bearbeiten.
+Das ist ein **Benutzer-Praxistest**, keine eigene vollständige Windows-Abnahme des
+Agenten. Keine Einzelbestätigung aller Raster-/Viererfolgen, Formulierungen,
+Anwendungen, Menüs, Charakterübergaben oder exakten Stopp-/30-Sekunden-Grenzen
+ableiten. Ältere Fehlerberichte und Simulationen bleiben als Verlauf erhalten.
+**„Jeffrey, Ruhe“ bleibt laut Benutzer offen:** Bestätigungen und spätere Antworten;
+keine Fehlerbehebung dieses Verhaltens behaupten.
 
-## PR-Abhängigkeiten
+[Aktueller Praxistest, Sicherung und Prüfungen](testing/2026-11-02-user-practice-docs.md)
+trennt die Benutzerbestätigung von frischen automatisierten und historischen Tests.
 
-GitHub-Metadaten von #4–#7 erneut geprüft: offen, Draft, nicht gemergt.
+## Arbeitsbaum, Sicherung und Dokumentationsbestand
 
-| PR | Inhalt / Branch | Basis | Vollständiger Head |
-| --- | --- | --- | --- |
-| [#4](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/4) | Desktop Vision 2.0 / `feature/desktop-vision-2` | `main` | `178277ebc7fee8b103dda4b58e1d077360844bac` |
-| [#5](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/5) | Maussteuerung 1.0, dauerhafte Zustimmung / `feature/mouse-grid-consent` | #4 | `f72dbd32ed9226d7c9370e6ff495cec42096b339` |
-| [#6](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/6) | Zweisprachige README / `docs/bilingual-readme` | #5 | `0e3427d941ab138892ea7fdd1f8cf233115aec55` |
-| [#7](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/7) | Maussteuerung 2.0, sechs Sprachen / `feature/mouse-grid-2-i18n` | #5 | `ff3f610720e6ebc02c810e9bada90baa2710c050` |
-| [#8](https://github.com/rob0511-777/Jeffrey-and-Friends/pull/8) | Klicks, echte UIA-Menüs, Figurenrufe / aktueller Branch | **#7** | `b7e985082f0e6a06a4dd764b5a7fa35b948209c9` Programmstand; Dokumentationscommit folgt |
+In dieser Umgebung war kein bestehender Jeffrey-Checkout oder Windows-Arbeitsbaum
+verfügbar. Ein frischer Checkout des kanonischen GitHub-Repositories bestätigte
+Branch, `origin`, sauberen Arbeitsbaum und `HEAD == origin/feature/desktop-clicks-menus-characters`
+bei `b77cddd`. **Der gemeldete Programmstand lag damit bereits auf GitHub.**
+Nicht zugängliche lokale Windows-Änderungen wurden weder geprüft noch gesichert;
+aus dem sauberen frischen Checkout keine Aussage über sie ableiten.
 
-Abfolge: `main → #4 → #5 → #7 → #8`; **#6 zweigt parallel von #5 ab**.
-`main` steht in den Metadaten auf `e2e34f96cc8402349eb8b97f6fc2b54c4adfc0a9`.
-#6 ist nicht enthalten: geerbte README.md bleibt historisch, README.de.md existiert
-hier noch nicht. READMEs nicht ungefragt aus #6 kopieren oder aktualisieren.
-Die technischen Dokumente beschreiben den aktuellen experimentellen Stand.
-README-/Bildänderungen auf dem inzwischen weiterentwickelten `main` weder überschreiben
-noch unnötig übernehmen. Der aktuelle Auftrag integriert diese Änderungen nicht.
+Für diesen Auftrag werden nur Markdown-Dokumente und das unverändert von `main`
+übernommene englische Projektbild ergänzt. Die README baut auf der **zuerst
+vollständig gelesenen aktuellen README von `main`** auf, erhält Englisch vor Deutsch
+und beide Sprachbilder, und ergänzt in beiden Sprachen denselben Entwicklungsstand.
+Die englische PNG ist bytegleich zum `main`-Blob
+`7515b7b4e8ab61ad3ee92b8e2ef563ce17dc4ea6`; das deutsche Bild bleibt unverändert.
+Kein alter README-Stand wird über `main` geschrieben; `main` selbst bleibt unberührt.
+
+Historische Arbeitsorte früherer Sitzungen (`/workspace/work/desktop-actions`,
+`/workspace/Jeffrey-Friends`, weitere Worktrees) sind **keine geprüften aktuellen
+Pfade dieser Sitzung**. Bei Wiederaufnahme tatsächlichen Checkout und Arbeitsbaum
+prüfen, fremde Änderungen erhalten. Historische untracked Übergabe im damaligen
+`mouse-grid-2-i18n`-Worktree wurde hier nicht angefasst oder erneut verifiziert.
+
+## PR-Abhängigkeiten und README auf main
+
+Die Code-Abfolge bleibt `main → #4 → #5 → #7 → #8`; #6 war ein paralleler
+README-Branch ab #5. Aktuelle Metadaten von #7/#8: offen, Draft, nicht gemergt.
+#7 steht bei `ff3f610`, #8 vor diesem Dokumentationscommit bei `b77cddd`.
+Die Basis von #8 bleibt `feature/mouse-grid-2-i18n`; die README-Aktualisierung
+übernimmt keine weiteren Commits oder Programmdateien aus `main`.
+
+Auf `main` liegen die zweisprachige README (`dd10ba8`) und das englische
+Projektbild (`e2e34f9`). Diese Arbeit ist im aktuellen #8-Dokumentationsstand
+berücksichtigt. Die README unterscheidet `main` (0.7.4-Basis), die in #7 geerbten
+Desktop-/Text-/Raster-/Sprachfunktionen und die #8-Ergänzungen ausdrücklich.
+Aktueller englischer und deutscher Abschnitt: [README](../../README.md).
 
 ## Bereits umgesetzte Basis und frühere Verbesserungen
 
@@ -94,17 +105,17 @@ noch unnötig übernehmen. Der aktuelle Auftrag integriert diese Änderungen nic
   Freigabe (jetzt einmalige Kennungen), fehlende natürliche Parservarianten.
   Reale ASR-/Netz-/VAD-/Startlatenzen wurden nicht gemessen. Optionale inhaltsfreie
   Diagnose `JEFFREY_MOUSE_DIAGNOSTICS=1` existiert; keine Tempoerhöhung.
-- Vorherige Nutzerrückmeldung: Bewegung, Unterteilungen und Einzelklicks unter Windows
-  funktionieren gut. **Rasterstart ist weiterhin unzuverlässig**, teils mit Reden
-  statt Ausführung. Das ist der gezielte Folgeauftrag; keine vollständige eigene
-  Windows-Abnahme oder pauschale Latenzursache aus diesem Feedback ableiten.
+- Historisch meldete der Nutzer unzuverlässigen Rasterstart, teils mit Reden statt
+  Ausführung. Nach dem gezielten Fix bestätigt er nun das wieder funktionierende
+  Raster und gewünschtes Scrollen; Links-/Rechtsklick/bisherige Maussteuerung waren
+  zuvor positiv getestet. Kein vollständiger Windows- oder Latenznachweis daraus.
 - Gemeinsames OpenAI-Live-Transkript für Gespräch und Raster, kein Extra-Modellaufruf
   je Rasterbefehl. 45-Sekunden-Idle, 15-Minuten-Limit, Wakeword und lokale Freigaben.
   Gemini behält lokalen Rasterfallback ohne verlässlich gemeinsamen Live-Transkriptweg.
 - Sechs bestehende Bediensprachen und Gesprächspräferenzen; passende lokale
   `System.Speech`-Engine nötig, nicht bloß modernes Windows-Sprachpaket.
 
-## Neu implementiert: aktueller Auftrag
+## Bereits implementiert in PR #8 (Programmcode jetzt unverändert)
 
 1. **Explizite Einzelklicks**, sechs deutsche Varianten, tatsächliche Cursorposition,
    ohne Raster. Ablehnung während Bewegung/gedrückter Tasten, keine Teilaufträge,
@@ -226,7 +237,7 @@ Voriger [Testnachweis und Windows-Plan](testing/2026-11-02-grid-start-scroll.md)
 [ursprünglicher #8-Nachweis](testing/2026-11-02-desktop-actions.md) und
 [historischer #7-Nachweis](testing/2026-11-01-mouse-response-quarters.md) bleiben getrennt.
 
-## Aktuelle Overlayregression: Ursache und minimale Korrektur
+## Behobene Overlayregression: Ursache und minimale Korrektur
 
 **Nachgewiesen mit echtem Electron 45/Linux Headless:** `did-finish-load` meldete
 noch `isLoading() == true`. `publish()` sendete deshalb weder Zustand noch
@@ -260,7 +271,8 @@ Windows-/Mikrofon-/DPI-Test, keine sichtbare physische Bildschirmabnahme.
 | Bestandsschutz | 82 bisherige Testdateien bytegleich; Scrollen/Klicks/Menüs/Figuren/Geometrie und Main/Realtime unverändert |
 
 Keine eigenen Windows- oder bezahlten Live-Tests. Der genaue Ablauf am betroffenen
-Windows-Rechner bleibt zu bestätigen. [Aktueller Nachweis und Windows-Prüfung](testing/2026-11-02-grid-overlay-regression.md).
+Windows-Rechner bleibt technisch zu vermessen; die Grundfunktion ist inzwischen
+vom Benutzer bestätigt. [Historischer technischer Nachweis und Windows-Prüfung](testing/2026-11-02-grid-overlay-regression.md).
 Der separate Komponententest läuft mit installierten Projektabhängigkeiten unter Windows:
 
 ```powershell
@@ -290,7 +302,7 @@ Mikrofonverbindung. Unter Linux hier Electron 45 mit Ozone Headless, kein Window
   [Maussteuerung](../MAUSSTEUERUNG.md), [optionale Diagnose](../MAUS-DIAGNOSE.md).
 
 ```bash
-cd /workspace/work/desktop-actions
+# Im tatsächlichen Projekt-Checkout ausführen; alte Worktree-Pfade nicht voraussetzen.
 git status --short --branch
 git rev-parse HEAD
 git log -4 --oneline
@@ -311,8 +323,9 @@ powershell.exe -NoProfile -File tests/context-menu-uia.test.ps1
 powershell.exe -NoProfile -File tests/read-selection.test.ps1
 ```
 
-Die fünf PowerShell-Vertragstests bleiben Simulationen. Lokal verfügbar ist
-`/workspace/work/uia-diagnostics/pwsh` für Linux; das ist kein Repositorybestandteil.
+Die fünf PowerShell-Vertragstests bleiben Simulationen. Der früher verwendete
+Linux-PowerShell-Pfad ist kein Repositorybestandteil und in dieser Sitzung nicht
+verfügbar; diese Vertragstests wurden für die Dokumentationsänderung nicht neu ausgeführt.
 ASR-Locale ohne Inhalte prüfen:
 
 ```powershell
@@ -325,7 +338,7 @@ Add-Type -AssemblyName System.Speech
 
 1. Branch/HEAD/Arbeitsbaum und Draft-Basis gegen GitHub prüfen. Keinen alten PR ändern,
    keinen Merge/Rebase auf main und keine Veröffentlichung aus dieser Übergabe ableiten.
-2. **Zuerst aktuelle Rasterregression unter Windows prüfen:** App kalt starten,
+2. **Bestätigte Grundfunktion erhalten; verbleibende Windows-Fälle gezielt prüfen:** App kalt starten,
    Schaltfläche und Sprachstart, Schließen/Wiederöffnen, direkt folgende B3-Auswahl,
    Stopp beim Start und Retry. Erwartete Diagnose: `input-ready` → `overlay-loaded`
    → `overlay-load-stopped` → `overlay-ready`. [Nachweis](testing/2026-11-02-grid-overlay-regression.md).
@@ -345,8 +358,9 @@ Add-Type -AssemblyName System.Speech
 6. Bei echten Windows-Fehlern feste Operations-/Fehlercodes statt Menü-/Textinhalten
    erfassen, gezielt reproduzieren, minimale Korrektur im neuen Branch. Keine spekulative
    Refaktorierung oder Veränderung der bereits abgenommenen Rasterbedienung.
-7. Spätere READMEs mit #6 gemeinsam abstimmen; nicht jetzt überschreiben. Neue Befehle
-   in fünf weiteren Sprachen sind **nicht implementiert**, nur neue UI-Texte übersetzt.
+7. Die jetzt zweisprachig aktualisierte README samt englischem/deutschem Bild erhalten;
+   zukünftige Änderungen auf `main` zuerst lesen. Neue Befehle in fünf weiteren
+   Sprachen sind **nicht implementiert**, nur neue UI-Texte übersetzt.
    Doppelklick/Drag sind außerhalb dieses Auftrags. Scrollen ist nun implementiert;
    „Jeffrey, Ruhe“ bleibt offener separater Punkt, keine Korrektur behaupten.
 
@@ -354,6 +368,7 @@ Add-Type -AssemblyName System.Speech
 
 > Lies docs/ai/HANDOVER.md, prüfe feature/desktop-clicks-menus-characters, HEAD und
 > Arbeitsbaum, Draft PR #8 sowie dessen Basis feature/mouse-grid-2-i18n (PR #7). Erhalte das
-> funktionierende Raster und vorhandene lokale Änderungen. Trenne die 654 Node- und
-> UIA-/Klick-/Scroll-Simulationen und den Linux-Electron-Test von echter Windows-Abnahme. Bearbeite nur den nächsten
+> funktionierende Raster/Scrollen und vorhandene lokale Änderungen. Lies den aktuellen
+> Benutzer-Praxistest. Trenne die 654 Node-Tests, historischen UIA-/Klick-/Scroll-
+> Simulationen und den Linux-Electron-Test von einer vollständigen Windows-Abnahme. Bearbeite nur den nächsten
 > ausdrücklich beauftragten Punkt; keine bezahlten APIs, kein Merge/Release.

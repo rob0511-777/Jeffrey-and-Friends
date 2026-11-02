@@ -6,6 +6,17 @@ description: Define testing approach, test cases, and quality assurance
 
 # Testing Strategy
 
+## Current evidence — PR #8
+
+[User-reported Windows practice test and documentation checkpoint, 2 November 2026](2026-11-02-user-practice-docs.md): grid works again and scrolling works as intended;
+left/right clicks and previous mouse control were positively tested earlier.
+This is user feedback, not a full agent-performed Windows acceptance test.
+The same record separates the fresh 654-test Linux run, earlier simulated tests
+and the remaining Windows checklist. “Jeffrey, Ruhe” remains a known open issue.
+
+The sections below are the existing general testing-strategy template, not a
+claim that its placeholder tests or coverage goals have been completed.
+
 ## Test Coverage Goals
 
 **What level of testing do we aim for?**
