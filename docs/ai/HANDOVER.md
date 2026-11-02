@@ -208,7 +208,7 @@ kein größerer Ruhemodus-/Gesprächigkeitsumbau in diesem Auftrag. Separat beau
 | Prüfung | Ergebnis | Einordnung |
 | --- | --- | --- |
 | Ausgangs-Node-Suite vor Änderungen | 590 bestanden, 0 Fehler | Frisch unter Linux ausgeführt |
-| Vollständige finale Node-Suite | **650 bestanden, 0 Fehler, Exit 0** | 590 erhaltene + 60 neue Fälle; simulierte Systemgrenzen |
+| Vollständige finale Node-Suite | **651 bestanden, 0 Fehler, Exit 0** | 590 erhaltene + 61 neue Fälle; simulierte Systemgrenzen |
 | Isolierte Gegenprobe mit drei Originalmodulen aus 7a1a834 | **6/11 fehlgeschlagen**, danach 11/11 und gesamte Suite grün | Belegt Rasterstart-/Antwort-/Bereitschaftsbedingungen, keine Windows-Reproduktion |
 | Bewegungs-/Klick-Vertragstests | beide PASS | Produktions-C#5 mit injizierten OS-Grenzen |
 | Neuer Scroll-Vertragstest | PASS | Produktionsengine/Zielbindung, virtuelle Zeit und simuliertes SendInput/Routing |
@@ -303,6 +303,6 @@ Add-Type -AssemblyName System.Speech
 
 > Lies docs/ai/HANDOVER.md, prüfe feature/desktop-clicks-menus-characters, HEAD und
 > Arbeitsbaum, Draft PR #8 sowie dessen Basis feature/mouse-grid-2-i18n (PR #7). Erhalte das
-> funktionierende Raster und vorhandene lokale Änderungen. Trenne die 650 Node- und
+> funktionierende Raster und vorhandene lokale Änderungen. Trenne die 651 Node- und
 > UIA-/Klick-/Scroll-Simulationen von echter Windows-Abnahme. Bearbeite nur den nächsten
 > ausdrücklich beauftragten Punkt; keine bezahlten APIs, kein Merge/Release.

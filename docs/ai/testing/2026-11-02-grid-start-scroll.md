@@ -68,7 +68,7 @@ steht bei der Remoteprüfung auf `e2e34f96cc8402349eb8b97f6fc2b54c4adfc0a9`;
 
 | Prüfung | Ergebnis | Art und Grenze |
 | --- | --- | --- |
-| Vollständige Node-Suite | **650 bestanden, 0 Fehler, Exit 0** | Node 24.19.0/Linux, 590 unveränderte Basisfälle + 60 neue; simulierte OS-/Electron-/IPC-/Audio-/Providergrenzen |
+| Vollständige Node-Suite | **651 bestanden, 0 Fehler, Exit 0** | Node 24.19.0/Linux, 590 unveränderte Basisfälle + 61 neue; simulierte OS-/Electron-/IPC-/Audio-/Providergrenzen |
 | `tests/mouse-motion.test.ps1` | PASS, Exit 0 | Produktions-C#5 mit injizierten Cursor-/Monitorgrenzen, keine user32-Ausführung |
 | `tests/mouse-click.test.ps1` | PASS, Exit 0 | Produktionsklicklogik, simuliertes SendInput/Busy/Release; kein Windows-Klick |
 | `tests/mouse-wheel.test.ps1` | PASS, Exit 0 | Produktions-Scrollengine und Zielbindung, künstliche Zeit/SendInput/Routing/Fokusgrenzen |
@@ -91,7 +91,10 @@ Caches, Diagnosedaten oder privaten Inhalte werden committet.
   Wiederholte Starts teilen die laufende Initialisierung ohne Parallelstart.
   Wiederöffnen und unsichtbares aktives Raster bleiben gültig. Stopp während
   Initialisierung, verspätete/alte Freigaben, Queue und Sichtbarkeitsregeln bleiben
-  durch die bestehenden und neuen Fälle abgesichert.
+  durch die bestehenden und neuen Fälle abgesichert. Zusätzlich Main/IPC über drei
+  simulierte Sprachsitzungen mit zwei `closed`/`opened`-Übergängen geprüft: alte
+  Freigaben gelten nicht, frischer erster Start wird einmalig angenommen. Dies ist
+  kein echter 45-Sekunden-Disconnect und keine Audioverbindungsprüfung.
 - Rasterstart während Desktop-Sprachausgabe wird übernommen; alte normale Antwort
   bleibt auch nach VAD gesperrt. Technische Fehler bei Raster, Klick, Menü und
   Scrollen erzeugen keine freie Ersatzantwort. Die nächste normale Frage bleibt möglich.
