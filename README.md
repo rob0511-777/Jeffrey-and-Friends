@@ -6,7 +6,7 @@
 
 ## English
 
-![Jeffrey and Friends — the team](assets/jeffrey-and-friends-v072.png)
+![Jeffrey and Friends — the team](assets/jeffrey-and-friends-v072-en.png)
 
 Jeffrey and Friends is a voice-controlled Windows 11 desktop assistant built with Electron, HTML, CSS and JavaScript.
 
